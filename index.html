@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Dram Notes v3.8 -->
+<!-- Dram Notes v3.9 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dram Notes v3.8</title>
+<title>Dram Notes v3.9</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -72,6 +72,8 @@ legend{color:var(--mute);font-size:14px;padding:0;margin-bottom:6px}
 .chip input:focus-visible+span{outline:2px solid var(--ink)}
 .acts{display:flex;gap:12px;margin-top:22px}
 .acts .btn{flex:1}
+.acts.pin{position:sticky;bottom:calc(57px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--line);margin:14px -16px 0;padding:10px 16px;z-index:3}
+.wdone{position:sticky;top:8px;display:flex;justify-content:flex-end;pointer-events:none;z-index:2}.wdone .btn{pointer-events:auto}
 .empty{color:var(--mute);padding:20px 4px}
 .toast{position:fixed;bottom:calc(76px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:10px 18px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
 .toast.show{opacity:1}
@@ -80,7 +82,7 @@ legend{color:var(--mute);font-size:14px;padding:0;margin-bottom:6px}
 .login .fld{width:100%;text-align:left}
 .login .acts{width:100%}
 .err{color:#a2392b;min-height:1.4em;margin:0}
-.tip{position:sticky;bottom:calc(64px + env(safe-area-inset-bottom));background:var(--ink);color:var(--cream);border-radius:var(--r);padding:10px 14px;margin:10px 0;z-index:4;cursor:pointer}
+.tip{position:sticky;bottom:calc(135px + env(safe-area-inset-bottom));background:var(--ink);color:var(--cream);border-radius:var(--r);padding:10px 14px;margin:10px 0;z-index:4;cursor:pointer}
 .tip small{color:#d9bf9c}
 .ov{position:fixed;inset:0;background:var(--bg);overflow:auto;z-index:8;padding-top:env(safe-area-inset-top)}
 .wheel{display:block;width:100%;max-width:340px;margin:10px auto}.wheel g{cursor:pointer;outline:none}.wheel g:focus-visible path{stroke:var(--ink);stroke-width:3}
@@ -209,7 +211,7 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.8";
+const VERSION = "3.9";
 let gTab = "cat", gSel = null, gDet = null, wOn = false, wSel = null, cA = "", cB = "";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
@@ -295,7 +297,7 @@ function noteView() {
   return `<div class="dhead"><h2>${saved ? "Edit tasting" : "New tasting"}</h2><span style="display:flex;align-items:center;gap:4px"><button class="heart ${n.favourite ? "on" : ""}" type="button" data-favd="1" aria-label="Favourite">♥</button><button class="btn ghost" data-a="cancel">Cancel</button></span></div>
     <div class="tabs">${STEPS.map((t, i) => `<button class="tab ${i === step ? "on" : ""}" data-step="${i}">${t}</button>`).join("")}</div>
     ${step ? `<h3>${STEPS[step]}</h3>` : ""}${part(step, true)}
-    <div class="acts">${step ? `<button class="btn ghost" data-a="back">Back</button>` : ""}${step < last ? `<button class="btn" data-a="next">Next</button>` : ""}<button class="btn ${step < last ? "ghost" : ""}" data-a="save">Save</button></div>`;
+    <div class="acts pin">${step ? `<button class="btn ghost" data-a="back">Back</button>` : ""}${step < last ? `<button class="btn" data-a="next">Next</button>` : ""}<button class="btn ${step < last ? "ghost" : ""}" data-a="save">Save</button></div>`;
 }
 
 function render() {
@@ -343,7 +345,7 @@ function paintWheel() {
   const o = $("#wheelov"); o.hidden = !wOn; if (!wOn) return;
   const sec = SECTIONS[step - 1], hasC = sec.g.some(g => g[0] === "Character");
   const chip = (g, v, l) => `<button class="tab ${(draft.tags[sec.k + "|" + g] || []).includes(v) ? "on" : ""}" data-wp="${g}" data-wv="${esc(v)}">${l}</button>`;
-  o.innerHTML = `<div class="page"><div class="dhead"><h2>${sec.t}: flavour wheel</h2><button class="btn" data-a="wdone">Done</button></div><p class="mute">Tap a slice, then pick anything that fits. Every pick is optional.</p>${wheelSvg()}${wSel ? `<h3>${wSel}</h3>${hasC ? `<small class="mute">Broad</small><div class="tabs">${chip("Character", wSel, "Any " + wSel.toLowerCase())}</div><div class="mute" style="text-align:center" aria-hidden="true">–</div>` : ""}<small class="mute">Specific</small><div class="tabs">${SPEC[wSel].map(x => chip(wSel + " notes", x, x)).join("")}</div>` : ""}</div>`;
+  o.innerHTML = `<div class="page"><h2>${sec.t}: flavour wheel</h2><p class="mute">Tap a slice, then pick anything that fits. Every pick is optional.</p><div class="wdone"><button class="btn" data-a="wdone">Done</button></div>${wheelSvg()}${wSel ? `<h3>${wSel}</h3>${hasC ? `<small class="mute">Broad</small><div class="tabs">${chip("Character", wSel, "Any " + wSel.toLowerCase())}</div><div class="mute" style="text-align:center" aria-hidden="true">–</div>` : ""}<small class="mute">Specific</small><div class="tabs">${SPEC[wSel].map(x => chip(wSel + " notes", x, x)).join("")}</div>` : ""}</div>`;
 }
 const flv = (n, k) => Object.entries(n.tags || {}).filter(([g]) => g.startsWith(k + "|") && (g.endsWith("|Character") || g.endsWith(" notes"))).flatMap(([, v]) => v);
 const pills = (a, c) => a.length ? a.map(x => `<span class="pill ${c}">${esc(x)}</span>`).join("") : '<small class="mute">None</small>';
