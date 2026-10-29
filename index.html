@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Dram Notes v3.5 -->
+<!-- Dram Notes v3.6 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dram Notes v3.5</title>
+<title>Dram Notes v3.6</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -81,6 +81,10 @@ legend{color:var(--mute);font-size:14px;padding:0;margin-bottom:6px}
 .err{color:#a2392b;min-height:1.4em;margin:0}
 .tip{position:sticky;bottom:calc(64px + env(safe-area-inset-bottom));background:var(--ink);color:var(--cream);border-radius:var(--r);padding:10px 14px;margin:10px 0;z-index:4;cursor:pointer}
 .tip small{color:#d9bf9c}
+.ov{position:fixed;inset:0;background:var(--bg);overflow:auto;z-index:8;padding-top:env(safe-area-inset-top)}
+.wheel{display:block;width:100%;max-width:340px;margin:10px auto}.wheel g{cursor:pointer;outline:none}.wheel g:focus-visible path{stroke:var(--ink);stroke-width:3}
+.cmp{display:grid;grid-template-columns:72px 1fr 1fr;gap:6px 10px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin:10px 0}.cmp>*{min-width:0;overflow-wrap:anywhere}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 10px;margin:2px 4px 2px 0;background:var(--panel);font-size:14px}.pill.sh{background:var(--brown);border-color:var(--brown);color:var(--cream)}
 .ver{font:12px Figtree,system-ui,sans-serif;color:var(--mute)}
 .hero .ver{color:#d9bf9c}
 @media(max-width:560px){.top{grid-template-columns:110px 1fr}}
@@ -203,8 +207,8 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.5";
-let gTab = "cat", gSel = null, gDet = null;
+const VERSION = "3.6";
+let gTab = "cat", gSel = null, gDet = null, wOn = false, wSel = null, cA = "", cB = "";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
 const TABS = ["All", ...CATS, "Favourites"];
@@ -227,11 +231,12 @@ async function shrink(file, max, q) {
 const home = () => `<div class="hero"><h1>Dram Notes <small class="ver">v${VERSION}</small></h1><p>Explore · Taste · Record</p><button class="btn" data-a="new">+ New Tasting</button></div>
   <button class="row" data-v="coll"><span>My Collection</span><small>${notes.length} bottle${notes.length === 1 ? "" : "s"}</small></button>
   <button class="row" data-v="learn"><span>Flavour Guide</span><small>Learn and explore</small></button>
+  <button class="row" data-v="cmp"><span>Compare</span><small>Two bottles side by side</small></button>
   ${LOCAL ? "" : `<button class="btn ghost" data-a="out">Sign out</button>`}`;
 
 const detailHtml = n => { const [w = "", t = ""] = DETAIL[n] || [], l = n.toLowerCase(); return `<div class="row card"><h3>${n}</h3>${w}<br><small>Where you might notice it: ${t}</small><br><small>In a note: "A light ${l} note on the nose." or "${n} comes through on the taste."</small></div>`; };
-const learn = () => `<h2>Flavour Guide</h2><div class="tabs"><button class="tab ${gTab === "cat" ? "on" : ""}" data-gt="cat">Categories</button><button class="tab ${gTab === "ex" ? "on" : ""}" data-gt="ex">Examples</button></div>
-  ${gTab === "cat" ? GUIDE.map(([n, d]) => `<button class="row card" data-gc="${n}"><b>${n}</b><br>${d}</button>${gSel === n ? `<div class="tabs">${SPEC[n].map(x => `<button class="tab" data-gd="${esc(x)}">${x}</button>`).join("")}</div>` : ""}`).join("")
+const learn = () => `<h2>Flavour Guide</h2><div class="tabs"><button class="tab ${gTab === "cat" ? "on" : ""}" data-gt="cat">Categories</button><button class="tab ${gTab === "ex" ? "on" : ""}" data-gt="ex">Examples</button><button class="tab ${gTab === "wh" ? "on" : ""}" data-gt="wh">Wheel</button></div>
+  ${gTab === "wh" ? wheelPage() : gTab === "cat" ? GUIDE.map(([n, d]) => `<button class="row card" data-gc="${n}"><b>${n}</b><br>${d}</button>${gSel === n ? `<div class="tabs">${SPEC[n].map(x => `<button class="tab" data-gd="${esc(x)}">${x}</button>`).join("")}</div>` : ""}`).join("")
   : `${gDet ? detailHtml(gDet) : '<p class="mute">Tap a flavour to see what it is and where to notice it.</p>'}${GUIDE.map(([n]) => `<h3>${n}</h3><div class="tabs">${SPEC[n].map(x => `<button class="tab ${x === gDet ? "on" : ""}" data-gd="${esc(x)}">${x}</button>`).join("")}</div>`).join("")}`}`;
 
 const coll = () => `<div class="dhead"><h2>My Collection</h2><button class="btn" data-a="new">+ New Tasting</button></div><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
@@ -274,7 +279,7 @@ function part(i, ed) {
     const shown = ed ? items : items.filter(x => sl.includes(x));
     return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="checkbox" ${one ? 'data-one="1"' : ""} name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sl.includes(x) ? "checked" : ""}><span>${x}</span></label>`).join("")}</div></fieldset>` : "";
   }).join("");
-  return `${s.amt ? fld("waterAmt", "Amount of water", "text", 'placeholder="e.g. 3 drops, 1 tsp"') : ""}${groups}${ed ? '<div class="tip" id="tip" hidden></div>' : ""}${s.no ? "" : fld("other." + s.k, "Other descriptors")}${tx("notes." + s.k, "Notes")}`;
+  return `${ed && s.g.some(([g]) => g.endsWith(" notes")) ? '<button class="btn ghost" type="button" data-a="wopen" style="margin-bottom:10px">Open flavour wheel</button>' : ""}${s.amt ? fld("waterAmt", "Amount of water", "text", 'placeholder="e.g. 3 drops, 1 tsp"') : ""}${groups}${ed ? '<div class="tip" id="tip" hidden></div>' : ""}${s.no ? "" : fld("other." + s.k, "Other descriptors")}${tx("notes." + s.k, "Notes")}`;
 }
 
 function noteView() {
@@ -292,7 +297,7 @@ function noteView() {
 }
 
 function render() {
-  $("#page").innerHTML = ({ home, coll, learn, note: noteView })[view]();
+  $("#page").innerHTML = ({ home, coll, learn, cmp, note: noteView })[view]();
   document.querySelectorAll(".bar button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "note" ? "coll" : view)));
   if (view === "note" && editing && step === 0) bindPhoto();
   window.scrollTo(0, 0);
@@ -329,6 +334,38 @@ function paintRate() {
   $("#rv").textContent = draft.rating ? draft.rating + " / 5" : "Tap a star. The left half gives a half star.";
 }
 
+const WCOL = { Citrus: "#dcc23e", Fruity: "#d4453f", Sweet: "#eba33a", Spicy: "#e8683a", Woody: "#8a5a3c", Smoky: "#2f6f9a" };
+function wheelSvg() {
+  const n = CHAR.length, R = 100, r = 34, c = 110, pt = (a, d) => [(c + d * Math.sin(a)).toFixed(1), (c - d * Math.cos(a)).toFixed(1)];
+  return `<svg viewBox="0 0 220 220" class="wheel" role="group" aria-label="Flavour wheel">${CHAR.map((f, i) => {
+    const a0 = i * 2 * Math.PI / n, a1 = (i + 1) * 2 * Math.PI / n, [x0, y0] = pt(a0, R), [x1, y1] = pt(a1, R), [x2, y2] = pt(a1, r), [x3, y3] = pt(a0, r), [lx, ly] = pt((a0 + a1) / 2, (R + r) / 2 + 4);
+    return `<g data-w="${f}" tabindex="0" role="button" aria-label="${f}" opacity="${wSel && wSel !== f ? .4 : 1}"><path d="M${x0} ${y0}A${R} ${R} 0 0 1 ${x1} ${y1}L${x2} ${y2}A${r} ${r} 0 0 0 ${x3} ${y3}Z" fill="${WCOL[f] || "#999"}" stroke="#fbf6ea" stroke-width="2"/><text x="${lx}" y="${ly}" text-anchor="middle" font-size="11" font-weight="600" fill="${f === "Sweet" || f === "Citrus" ? "#3b2417" : "#fff"}">${f}</text></g>`;
+  }).join("")}<circle cx="${c}" cy="${c}" r="${r - 4}" fill="#fbf6ea"/><text x="${c}" y="${c + 4}" text-anchor="middle" font-size="10" fill="#3b2417">Flavours</text></svg>`;
+}
+const wheelPage = () => `<p class="mute">Tap a slice to explore its flavours, then tap a flavour to learn about it.</p>${wheelSvg()}${wSel ? `<h3>${wSel}</h3><p>${GUIDE.find(x => x[0] === wSel)?.[1] || ""}</p><div class="tabs">${SPEC[wSel].map(x => `<button class="tab" data-gd="${esc(x)}">${x}</button>`).join("")}</div>` : ""}`;
+function paintWheel() {
+  const o = $("#wheelov"); o.hidden = !wOn; if (!wOn) return;
+  const sec = SECTIONS[step - 1], hasC = sec.g.some(g => g[0] === "Character");
+  const chip = (g, v, l) => `<button class="tab ${(draft.tags[sec.k + "|" + g] || []).includes(v) ? "on" : ""}" data-wp="${g}" data-wv="${esc(v)}">${l}</button>`;
+  o.innerHTML = `<div class="page"><div class="dhead"><h2>${sec.t}: flavour wheel</h2><button class="btn" data-a="wdone">Done</button></div><p class="mute">Tap a slice, then pick anything that fits. Every pick is optional.</p>${wheelSvg()}${wSel ? `<h3>${wSel}</h3><div class="tabs">${hasC ? chip("Character", wSel, "Any " + wSel.toLowerCase()) : ""}${SPEC[wSel].map(x => chip(wSel + " notes", x, x)).join("")}</div>` : ""}</div>`;
+}
+const flv = (n, k) => Object.entries(n.tags || {}).filter(([g]) => g.startsWith(k + "|") && (g.endsWith("|Character") || g.endsWith(" notes"))).flatMap(([, v]) => v);
+const pills = (a, c) => a.length ? a.map(x => `<span class="pill ${c}">${esc(x)}</span>`).join("") : '<small class="mute">None</small>';
+function cmpHtml(A, B) {
+  const sec = (k, t) => { const a = [...new Set(flv(A, k))], b = [...new Set(flv(B, k))]; return `<div class="sec"><h3>${t}</h3><small>In common</small><div>${pills(a.filter(x => b.includes(x)), "sh")}</div><small>Only ${esc(A.name)}</small><div>${pills(a.filter(x => !b.includes(x)), "")}</div><small>Only ${esc(B.name)}</small><div>${pills(b.filter(x => !a.includes(x)), "")}</div></div>`; };
+  const all = n => new Set([...flv(n, "nose"), ...flv(n, "taste")]), a = all(A), b = all(B), u = new Set([...a, ...b]), sh = [...a].filter(x => b.has(x)).length;
+  const pct = u.size ? Math.round(100 * sh / u.size) : null;
+  const rows = [["Rating", n => n.rating ? stars(n.rating) + " " + n.rating : "–"], ["Category", n => esc(n.category)], ["Region", n => esc(n.region) || "–"], ["Style", n => esc(n.type) || "–"], ["Age", n => n.noAge ? "No age statement" : n.age ? n.age + " years" : "–"], ["ABV", n => n.abv ? esc(n.abv) + "%" : "–"], ["Finish", n => (n.tags?.["finish|Length"] || []).join(", ") || "–"]];
+  return `<div class="row card"><b>Flavour match</b><div class="big">${pct === null ? "–" : pct + "%"}</div><small>${pct === null ? "No Nose or Taste flavours recorded yet." : sh + " of " + u.size + " Nose and Taste flavours in common."}</small></div>
+  <div class="cmp"><b></b><b>${esc(A.name)}</b><b>${esc(B.name)}</b>${rows.map(([l, f]) => `<span class="mute">${l}</span><span>${f(A)}</span><span>${f(B)}</span>`).join("")}</div>${sec("nose", "Nose")}${sec("taste", "Taste")}${sec("finish", "Finish")}`;
+}
+const cmp = () => {
+  const o = v => `<option value="">Choose a bottle</option>${[...notes].sort((x, y) => x.name.localeCompare(y.name)).map(n => `<option value="${n.id}" ${n.id === v ? "selected" : ""}>${esc(n.name)}</option>`).join("")}`;
+  const A = notes.find(n => n.id === cA), B = notes.find(n => n.id === cB);
+  return `<h2>Compare</h2><div class="grid"><label class="fld">Bottle 1<select data-cmp="A">${o(cA)}</select></label><label class="fld">Bottle 2<select data-cmp="B">${o(cB)}</select></label></div>
+  ${notes.length < 2 ? '<p class="empty">Add at least two bottles to compare them.</p>' : A && B ? (A.id === B.id ? '<p class="empty">Choose two different bottles.</p>' : cmpHtml(A, B)) : '<p class="empty">Choose two bottles to compare.</p>'}`;
+};
+
 function onClick(e) {
   const t = e.target;
   if (t.closest("#tip")) { t.closest("#tip").hidden = true; return; }
@@ -338,6 +375,8 @@ function onClick(e) {
   const gt = t.closest("[data-gt]"); if (gt) { gTab = gt.dataset.gt; render(); return; }
   const gc = t.closest("[data-gc]"); if (gc) { const y = scrollY; gSel = gSel === gc.dataset.gc ? null : gc.dataset.gc; render(); scrollTo(0, y); return; }
   const gd = t.closest("[data-gd]"); if (gd) { const x = gd.dataset.gd, was = gTab; gTab = "ex"; gDet = (was === "ex" && gDet === x) ? null : x; render(); return; }
+  const gw = t.closest("[data-w]"); if (gw) { wSel = wSel === gw.dataset.w ? null : gw.dataset.w; if (wOn) paintWheel(); else { const y = scrollY; render(); scrollTo(0, y); } return; }
+  const wp = t.closest("[data-wp]"); if (wp) { const k = SECTIONS[step - 1].k + "|" + wp.dataset.wp, v = wp.dataset.wv, cur = draft.tags[k] || []; draft.tags[k] = cur.includes(v) ? cur.filter(x => x !== v) : [...cur, v]; paintWheel(); return; }
   const id = t.closest("[data-id]")?.dataset.id;
   if (id) { openNote({ ...blank(), ...structuredClone(notes.find(n => n.id === id)) }, false); return; }
   const c = t.closest("[data-c]"); if (c) { cat = c.dataset.c; render(); return; }
@@ -346,6 +385,8 @@ function onClick(e) {
   const sp = t.closest("[data-step]"); if (sp) { step = +sp.dataset.step; render(); return; }
   const a = t.closest("[data-a]")?.dataset.a;
   if (a === "new") openNote(blank(), true);
+  if (a === "wopen") { wOn = true; wSel = null; paintWheel(); }
+  if (a === "wdone") { wOn = false; paintWheel(); const y = scrollY; render(); scrollTo(0, y); }
   if (a === "out") fb.signOut(auth);
   if (a === "back") { step--; render(); }
   if (a === "next") { step++; render(); }
@@ -378,6 +419,7 @@ function tip(v) {
 function onInput(e) {
   const t = e.target;
   if (t.id === "q") { q = t.value; renderList(); return; }
+  if (t.dataset.cmp) { t.dataset.cmp === "A" ? cA = t.value : cB = t.value; const y = scrollY; render(); scrollTo(0, y); return; }
   if (!editing) return;
   if (t.dataset.g) {
     if (t.dataset.one && t.checked) document.querySelectorAll(`[data-g="${t.dataset.g}"]`).forEach(i => { if (i !== t) i.checked = false; });
@@ -390,13 +432,14 @@ function onInput(e) {
 $("#root").addEventListener("click", onClick);
 $("#root").addEventListener("input", onInput);
 $("#root").addEventListener("change", onInput);
+$("#root").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.dataset?.w) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); } });
 
 function start() {
   view = "home"; draft = null; editing = false;
-  $("#root").innerHTML = `<main class="page" id="page"></main><nav class="bar">${[["home", "Home"], ["coll", "Collection"], ["learn", "Learn"]].map(([v, l]) => `<button data-v="${v}">${l}</button>`).join("")}</nav>`;
+  $("#root").innerHTML = `<main class="page" id="page"></main><nav class="bar">${[["home", "Home"], ["coll", "Collection"], ["learn", "Learn"]].map(([v, l]) => `<button data-v="${v}">${l}</button>`).join("")}</nav><div class="ov" id="wheelov" hidden></div>`;
   render();
   unsub?.();
-  unsub = store.listen(list => { notes = list; if (view === "coll") renderList(); else if (view === "home") render(); });
+  unsub = store.listen(list => { notes = list; if (view === "coll") renderList(); else if (view === "home" || view === "cmp") render(); });
 }
 
 /* ---------- Boot ---------- */
