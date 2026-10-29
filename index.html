@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Dram Notes v3.3 -->
+<!-- Dram Notes v3.4 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dram Notes v3.3</title>
+<title>Dram Notes v3.4</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -114,6 +114,40 @@ const SPECG = Object.entries(SPEC).map(([f, l]) => [f + " notes", 0, l]);
 const TYPES = ["Single malt", "Blended malt", "Blended", "Single grain", "Single pot still", "Straight", "Other"];
 const REGIONS = { Scotch: ["Islay", "Speyside", "Highland", "Lowland", "Campbeltown", "Islands"], Irish: ["Ireland", "Northern Ireland"], Bourbon: ["Kentucky", "Tennessee", "Indiana", "Texas"], Rye: ["Kentucky", "Pennsylvania", "Maryland", "Canada"], Other: ["Japan", "Canada", "India", "Taiwan", "Australia"] };
 const GUIDE = [["Citrus", "Bright and zesty, like fresh peel or juice."], ["Fruity", "Orchard, berry and dried fruit, from crisp to jammy."], ["Sweet", "Dessert-like notes such as vanilla, caramel and honey."], ["Spicy", "A warm, tingling kick, like baking spices or pepper."], ["Woody", "Notes from the barrel: oak, cedar, tobacco and leather."], ["Smoky", "Peat, bonfire and ash, sometimes with a salty sea edge."]];
+const DETAIL = {
+  Lemon: ["Sharp, clean acidity, like fresh juice or zest.", "A bright lift on the nose, or a tang in lighter whiskies."],
+  Orange: ["Rounder and sweeter than lemon, like juice or marmalade.", "Common in sherry-matured whiskies. Try again after a drop of water."],
+  Grapefruit: ["Tart, with a slight bitterness.", "Often at the back of the taste in lighter, younger whiskies."],
+  "Orange peel": ["Aromatic, slightly bitter oils, like fresh zest.", "Frequent in bourbon, on the nose and finish."],
+  Lime: ["Sharp, green and fresh.", "Less common. Shows as a crisp edge in lighter styles."],
+  Apple: ["Crisp green apple or baked apple.", "A very common nose note in Speyside and Irish whiskies."],
+  Pear: ["Soft, juicy and gently sweet, like pear drops.", "Often on the nose in light, younger whiskies."],
+  "Stone fruit": ["Peach, apricot or plum: juicy and soft.", "Look for it in the middle of the taste."],
+  Berries: ["Red or dark berries, like jam or cranberry.", "Often in sherry-cask and rye whiskies."],
+  "Dried fruit": ["Raisin, fig or date: rich and concentrated.", "Typical of sherry-matured whiskies, on the nose and taste."],
+  Banana: ["Ripe banana or banana bread.", "Sometimes a young, fermentation-led note on the nose."],
+  Vanilla: ["Soft, creamy sweetness, like custard or ice cream.", "Common from oak casks, especially bourbon barrels."],
+  Caramel: ["Cooked sugar, a little richer than vanilla.", "Often mid-taste."],
+  Honey: ["Floral, golden sweetness.", "Often on the nose and the finish."],
+  Toffee: ["Thick, chewy, buttery sugar.", "Often on the taste, with a long sweet finish."],
+  Maple: ["Syrupy sweetness with a woody edge.", "Common in bourbon and rye, on the nose and taste."],
+  Butterscotch: ["Buttery caramel with a hint of salt.", "Often noticed in the middle of the taste."],
+  Cinnamon: ["Warm, sweet baking spice.", "Common in bourbon and rye. A gentle warmth on the finish."],
+  "Black pepper": ["A dry tingle on the tongue.", "Common in rye, often on the finish."],
+  Clove: ["Sharp, warming, almost medicinal sweetness.", "Often a nose note in sherried and older whiskies."],
+  Ginger: ["Warm and zesty, with a slight bite.", "Often on the taste, as a lively kick."],
+  Nutmeg: ["Soft, warm, slightly nutty spice.", "A light nose note, often alongside vanilla."],
+  Oak: ["The classic barrel note: dry, slightly bitter, like sawdust.", "Stronger in older whiskies, often on the finish."],
+  Cedar: ["Dry, aromatic wood, like a pencil or cigar box.", "On the nose, in older or longer-aged whiskies."],
+  Tobacco: ["Dry leaf, like pipe tobacco.", "Often a nose note in older, sherry-cask whiskies."],
+  Leather: ["Rich, dark and slightly dry, like an old saddle.", "Noticed on the taste and finish in mature whiskies."],
+  "Charred wood": ["Toasted, burnt wood, like a campfire log.", "Bourbon barrels are charred, so common in bourbon."],
+  Peat: ["Earthy, medicinal smoke, like burning damp earth.", "Strong in Islay whiskies, on the nose first."],
+  Bonfire: ["Light, sweet wood smoke.", "Often a gentle note rather than an overpowering one."],
+  Char: ["A burnt, toasty edge, like toast or grilled food.", "Common on the taste, from charred barrels."],
+  Ash: ["Dry and dusty, like a cold fireplace.", "Often lingers on the finish."],
+  Brine: ["Salty, like sea air or a pinch of sea salt.", "Common in coastal whiskies, on the nose and finish."]
+};
 const SECTIONS = [
   { k: "appearance", t: "Appearance", g: [["Color", 1, ["Pale straw", "Gold", "Amber", "Copper", "Mahogany"]], ["Viscosity", 1, ["Thin", "Medium", "Oily"]]] },
   { k: "nose", t: "Nose", g: [["Character", 0, CHAR], ...SPECG] },
@@ -167,7 +201,8 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.3";
+const VERSION = "3.4";
+let gTab = "cat", gSel = null, gDet = null;
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
 const TABS = ["All", ...CATS, "Favourites"];
@@ -192,7 +227,10 @@ const home = () => `<div class="hero"><h1>Dram Notes <small class="ver">v${VERSI
   <button class="row" data-v="learn"><span>Flavour Guide</span><small>Learn and explore</small></button>
   ${LOCAL ? "" : `<button class="btn ghost" data-a="out">Sign out</button>`}`;
 
-const learn = () => `<h2>Flavour Guide</h2><p class="mute">The six flavours used in your tasting notes.</p>${GUIDE.map(([n, d]) => `<div class="row card"><b>${n}</b><br>${d}<br><small>${SPEC[n].join(", ").toLowerCase()}</small></div>`).join("")}`;
+const detailHtml = n => { const [w = "", t = ""] = DETAIL[n] || [], l = n.toLowerCase(); return `<div class="row card"><h3>${n}</h3>${w}<br><small>Where you might notice it: ${t}</small><br><small>In a note: "A light ${l} note on the nose." or "${n} comes through on the taste."</small></div>`; };
+const learn = () => `<h2>Flavour Guide</h2><div class="tabs"><button class="tab ${gTab === "cat" ? "on" : ""}" data-gt="cat">Categories</button><button class="tab ${gTab === "ex" ? "on" : ""}" data-gt="ex">Examples</button></div>
+  ${gTab === "cat" ? GUIDE.map(([n, d]) => `<button class="row card" data-gc="${n}"><b>${n}</b><br>${d}</button>${gSel === n ? `<div class="tabs">${SPEC[n].map(x => `<button class="tab" data-gd="${esc(x)}">${x}</button>`).join("")}</div>` : ""}`).join("")
+  : `${gDet ? detailHtml(gDet) : '<p class="mute">Tap a flavour to see what it is and where to notice it.</p>'}${GUIDE.map(([n]) => `<h3>${n}</h3><div class="tabs">${SPEC[n].map(x => `<button class="tab ${x === gDet ? "on" : ""}" data-gd="${esc(x)}">${x}</button>`).join("")}</div>`).join("")}`}`;
 
 const coll = () => `<div class="dhead"><h2>My Collection</h2><button class="btn" data-a="new">+ New Tasting</button></div><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
   <div class="tabs">${TABS.map(c => `<button class="tab ${c === cat ? "on" : ""}" data-c="${c}">${c === "Favourites" ? "♥ Favourites" : c}</button>${c === "Bourbon" ? '<span class="brk"></span>' : ""}`).join("")}</div>
@@ -294,6 +332,9 @@ function onClick(e) {
   const r = t.closest("[data-r]");
   if (r && editing) { const v = +r.dataset.r; draft.rating = draft.rating === v ? 0 : v; paintRate(); return; }
   const f = t.closest("[data-fav]"); if (f) { toggleFav(f.dataset.fav); return; }
+  const gt = t.closest("[data-gt]"); if (gt) { gTab = gt.dataset.gt; render(); return; }
+  const gc = t.closest("[data-gc]"); if (gc) { const y = scrollY; gSel = gSel === gc.dataset.gc ? null : gc.dataset.gc; render(); scrollTo(0, y); return; }
+  const gd = t.closest("[data-gd]"); if (gd) { const x = gd.dataset.gd, was = gTab; gTab = "ex"; gDet = (was === "ex" && gDet === x) ? null : x; render(); return; }
   const id = t.closest("[data-id]")?.dataset.id;
   if (id) { openNote({ ...blank(), ...structuredClone(notes.find(n => n.id === id)) }, false); return; }
   const c = t.closest("[data-c]"); if (c) { cat = c.dataset.c; render(); return; }
