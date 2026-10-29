@@ -1,89 +1,87 @@
 <!doctype html>
-<!-- Dram Notes v2.2 -->
+<!-- Dram Notes v3.0 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dram Notes v2.2</title>
+<title>Dram Notes v3.0</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#14211d;--panel:#1b2c27;--line:#2e443d;--ink:#efe6d4;--mute:#9bab9f;--amber:#e0953a;--amber-ink:#1a1206;--r:10px}
+:root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
 *{box-sizing:border-box}
-html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--ink);font:16px/1.45 Figtree,system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-h1,h2{font-family:Fraunces,Georgia,serif;margin:0}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font:16px/1.45 Figtree,system-ui,sans-serif;padding-top:env(safe-area-inset-top)}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0;font-weight:600}
+h2{font-size:26px}h3{font-size:21px;margin:4px 0 10px}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
-:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
-.app{display:grid;grid-template-columns:350px 1fr;height:100%}
-.list{border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
-.lhead{padding:16px 16px 8px;display:flex;justify-content:space-between;align-items:center}
-.lhead h1{font-size:26px}
-.btn{background:var(--amber);color:var(--amber-ink);border:0;border-radius:var(--r);padding:10px 16px;font-weight:600;min-height:44px}
+:focus-visible{outline:2px solid var(--brown);outline-offset:2px}
+.page{max-width:760px;margin:0 auto;padding:16px 16px calc(90px + env(safe-area-inset-bottom))}
+.bar{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--panel);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:5}
+.bar button{flex:1;background:none;border:0;min-height:56px;color:var(--mute);font-weight:600}
+.bar button.on{color:var(--brown);box-shadow:inset 0 3px var(--brown)}
+.btn{background:var(--brown);color:var(--cream);border:0;border-radius:var(--r);padding:12px 18px;font-weight:600;min-height:48px}
 .btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
-.btn.danger{background:none;color:#e58b7a;border:1px solid #5a3a35}
-.tabs{display:flex;flex-wrap:wrap;gap:6px;padding:4px 16px 12px}
+.btn.danger{background:none;color:#a2392b;border:1px solid #d9a79c}
+.hero{background:linear-gradient(160deg,#3a2012,#6b3519);color:var(--cream);border-radius:20px;padding:28px 20px;margin-bottom:16px}
+.hero h1{font-size:34px}.hero p{margin:4px 0 20px;color:#d9bf9c}
+.hero .btn{background:var(--cream);color:var(--brown);width:100%;font-size:18px}
+.row{display:flex;justify-content:space-between;align-items:center;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;text-align:left}
+.row small,.mute,.item small{color:var(--mute)}
+.card{display:block}
+.srch{width:100%;margin:10px 0 4px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px;font-size:16px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.tab{background:none;border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--mute);min-height:38px}
+.tab.on{background:var(--brown);border-color:var(--brown);color:var(--cream)}
 .brk{flex-basis:100%;height:0}
-.tab{flex:none;background:none;border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--mute);min-height:36px}
-.tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.items{overflow-y:auto;flex:1;padding:0 8px 16px}
-.item{display:flex;gap:12px;width:100%;text-align:left;background:none;border:0;border-radius:var(--r);padding:8px;align-items:center}
-.item:hover,.item.on{background:var(--panel)}
-.item img,.ph{width:56px;height:72px;border-radius:6px;object-fit:cover;background:var(--line);flex:none}
-.item b{display:block;font-family:Fraunces,Georgia,serif;font-weight:500}
-.item small{color:var(--mute)}
-.stars{color:var(--amber);letter-spacing:2px}
-.empty{color:var(--mute);padding:24px 16px}
-.detail{overflow-y:auto;min-height:0;padding:20px 24px 48px}
-.form{max-width:900px;margin:0 auto}
-.dhead{display:flex;gap:12px;align-items:center;margin-bottom:16px}
-.dhead h2{font-size:28px;flex:1}
-.back{display:none}
-.top{display:grid;grid-template-columns:160px 1fr;gap:20px}
+.item{display:flex;gap:4px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px;margin-bottom:10px}
+.main{display:flex;gap:12px;flex:1;min-width:0;background:none;border:0;text-align:left;align-items:center;padding:0}
+.item img,.ph{width:56px;height:72px;border-radius:8px;object-fit:cover;background:var(--line);flex:none}
+.item b{display:block;font-family:Fraunces,Georgia,serif}
+.heart{background:none;border:0;font-size:26px;color:var(--line);min-width:44px;min-height:44px}
+.heart.on{color:#c0392b}
+.s{display:inline-block;position:relative;color:var(--line)}
+.s.f{color:var(--amber)}
+.s.h{background:linear-gradient(90deg,var(--amber) 50%,var(--line) 50%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stars{letter-spacing:1px}
+.rate{display:flex;margin:8px 0}
+.rate .s{font-size:40px;width:44px;height:44px;line-height:44px;text-align:center}
+.rate b{position:absolute;top:0;bottom:0;width:50%;cursor:pointer}
+.rate b:first-child{left:0}.rate b:last-child{right:0}
+.big{font-size:30px;margin:6px 0}
+.dhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+.top{display:grid;grid-template-columns:150px 1fr;gap:16px;margin:12px 0}
 .photo{aspect-ratio:3/4;border:1px dashed var(--line);border-radius:var(--r);display:grid;place-items:center;text-align:center;color:var(--mute);cursor:pointer;overflow:hidden;position:relative;padding:8px}
-.photo.drag{border-color:var(--amber)}
+.photo.drag{border-color:var(--brown)}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.fld{display:block;color:var(--mute);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;align-content:start}
+.fld{display:block;color:var(--mute);font-size:14px;margin-bottom:10px}
+.grid .fld{margin:0}
 .fld input,.fld select,.fld textarea{display:block;width:100%;margin-top:4px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:16px;color:var(--ink)}
 .fld textarea{min-height:72px;resize:vertical}
-.sec{border-top:1px solid var(--line);margin-top:16px;padding-top:8px}
-.sec summary{font-family:Fraunces,Georgia,serif;font-size:21px;padding:8px 0;cursor:pointer}
+.sec{border-top:1px solid var(--line);margin-top:14px;padding-top:10px}
+.lock{border:0;margin:0;padding:0;min-width:0}
+.lock[disabled] input,.lock[disabled] select,.lock[disabled] textarea{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink);border-color:transparent;background:var(--panel)}
 fieldset{border:0;padding:0;margin:8px 0 12px}
 legend{color:var(--mute);font-size:14px;padding:0;margin-bottom:6px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip input{position:absolute;opacity:0;pointer-events:none}
-.chip span{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:9px 14px;min-height:44px;line-height:24px;cursor:pointer;user-select:none}
-.chip input:checked+span{background:var(--amber);border-color:var(--amber);color:var(--amber-ink);font-weight:600}
+.chip span{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:9px 14px;min-height:44px;line-height:24px;cursor:pointer;user-select:none;background:var(--panel)}
+.chip input:checked+span{background:var(--brown);border-color:var(--brown);color:var(--cream);font-weight:600}
 .chip input:focus-visible+span{outline:2px solid var(--ink)}
-.rate{display:flex;gap:2px;margin:8px 0}
-.rate button{background:none;border:0;font-size:36px;color:var(--line);padding:0 4px;min-width:44px;min-height:44px}
-.rate button.on{color:var(--amber)}
-.acts{display:flex;gap:12px;margin-top:24px}
-.acts .btn:first-child{flex:1}
-.none{display:grid;place-items:center;height:100%;color:var(--mute);text-align:center;padding:24px}
-.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none}
+.acts{display:flex;gap:12px;margin-top:22px}
+.acts .btn{flex:1}
+.empty{color:var(--mute);padding:20px 4px}
+.toast{position:fixed;bottom:calc(76px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:10px 18px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
 .toast.show{opacity:1}
-.login{display:grid;justify-items:center;height:100%;text-align:center;gap:14px;align-content:center;max-width:340px;margin:0 auto;padding:0 16px}
+.login{display:grid;justify-items:center;min-height:100vh;text-align:center;gap:14px;align-content:center;max-width:340px;margin:0 auto;padding:0 16px}
+.login h1{font-size:40px}
 .login .fld{width:100%;text-align:left}
 .login .acts{width:100%}
-.err{color:#e58b7a;min-height:1.4em;margin:0}
-.foot{padding:8px 16px;border-top:1px solid var(--line)}
-.login h1{font-size:40px}
-.lock{border:0;margin:0;padding:0;min-width:0}
-.lock[disabled] input,.lock[disabled] select,.lock[disabled] textarea{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink);border-color:transparent;background:var(--panel)}
-.lock[disabled] .rate button{color:var(--line)}
-.lock[disabled] .rate button.on{color:var(--amber)}
+.err{color:#a2392b;min-height:1.4em;margin:0}
 .ver{font:12px Figtree,system-ui,sans-serif;color:var(--mute)}
-@media(max-width:700px){
- .app{grid-template-columns:1fr}
- .detail{display:none;padding:12px 16px 48px}
- .app.open .list{display:none}
- .app.open .detail{display:block}
- .back{display:inline-block}
- .top{grid-template-columns:110px 1fr}
- .dhead h2{font-size:22px}
-}
+.hero .ver{color:#d9bf9c}
+@media(max-width:560px){.top{grid-template-columns:110px 1fr}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -99,18 +97,20 @@ const FIREBASE_CONFIG = {
   storageBucket: "whiskey-notes-513ed.firebasestorage.app",
   messagingSenderId: "365703540348",
   appId: "1:365703540348:web:626da1915b95fd2b0623f9"
-};
-
+}
 
 /* ---------- 2. Descriptor lists. Edit freely. ---------- */
 const CATS = ["Scotch", "Irish", "Bourbon", "Rye", "Other"];
 const CHAR = ["Sweet", "Spicy", "Fruity", "Smoky", "Grainy"];
+const TYPES = ["Single malt", "Blended malt", "Blended", "Single grain", "Single pot still", "Straight", "Other"];
+const REGIONS = { Scotch: ["Islay", "Speyside", "Highland", "Lowland", "Campbeltown", "Islands"], Irish: ["Ireland", "Northern Ireland"], Bourbon: ["Kentucky", "Tennessee", "Indiana", "Texas"], Rye: ["Kentucky", "Pennsylvania", "Maryland", "Canada"], Other: ["Japan", "Canada", "India", "Taiwan", "Australia"] };
+const GUIDE = [["Sweet", "vanilla, caramel, honey, toffee, maple"], ["Spicy", "cinnamon, black pepper, clove, ginger, nutmeg"], ["Fruity", "apple, pear, citrus, berries, dried fruit"], ["Smoky", "smoke, peat, char, ash, brine"], ["Grainy", "malt, cereal, bread, nuts, grass"]];
 const SECTIONS = [
   { k: "appearance", t: "Appearance", g: [["Color", 1, ["Pale straw", "Gold", "Amber", "Copper", "Mahogany"]], ["Viscosity", 1, ["Thin", "Medium", "Oily"]]] },
   { k: "nose", t: "Nose", g: [["Character", 0, CHAR]] },
   { k: "taste", t: "Taste", g: [["Character", 0, CHAR]] },
-  { k: "finish", t: "Finish", no: 1, g: [["Length", 1, ["Short", "Medium", "Long"]]] },
-  { k: "water", t: "Water", no: 1, amt: 1, g: [["Effect on aroma", 0, ["Opened up", "Softer", "Muted", "No change"]], ["Effect on taste", 0, ["Sweeter", "Spicier", "Smoother", "Flatter", "No change"]]] }
+  { k: "water", t: "Water", no: 1, amt: 1, g: [["Effect on aroma", 0, ["Opened up", "Softer", "Muted", "No change"]], ["Effect on taste", 0, ["Sweeter", "Spicier", "Smoother", "Flatter", "No change"]]] },
+  { k: "finish", t: "Finish", no: 1, g: [["Length", 1, ["Short", "Medium", "Long"]]] }
 ];
 
 /* ---------- Storage: Firebase, or localStorage for testing ---------- */
@@ -158,13 +158,14 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "2.2";
-let notes = [], cat = "All", draft = null, pending = null, editing = false;
-
-const blank = () => ({ id: crypto.randomUUID(), name: "", distillery: "", category: "Scotch", age: "", abv: "", price: "", waterAmt: "", tags: {}, other: {}, notes: {}, rating: 0, comments: "", thumb: "", updated: 0 });
+const VERSION = "3.0";
+let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
+const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
+const TABS = ["All", ...CATS, "Favourites"];
+const blank = () => ({ id: crypto.randomUUID(), name: "", distillery: "", category: "Scotch", type: "", region: "", age: "", noAge: false, abv: "", price: "", favourite: false, waterAmt: "", tags: {}, other: {}, notes: {}, rating: 0, comments: "", thumb: "", updated: 0 });
 const getP = (o, p) => p.split(".").reduce((a, k) => a?.[k], o);
 const setP = (o, p, v) => { const ks = p.split("."), l = ks.pop(); ks.reduce((a, k) => a[k], o)[l] = v; };
-const stars = n => "★".repeat(n) + "☆".repeat(5 - n);
+const stars = v => `<span class="stars">${[1, 2, 3, 4, 5].map(i => `<span class="s ${v >= i ? "f" : v >= i - .5 ? "h" : ""}">★</span>`).join("")}</span>`;
 function toast(t) { const e = $("#toast"); e.textContent = t; e.classList.add("show"); setTimeout(() => e.classList.remove("show"), 1800); }
 
 async function shrink(file, max, q) {
@@ -176,85 +177,85 @@ async function shrink(file, max, q) {
   return c.toDataURL("image/jpeg", q);
 }
 
-/* ---------- Rendering ---------- */
-function shell() {
-  $("#root").innerHTML = `<div class="app" id="app">
-    <section class="list">
-      <div class="lhead"><h1>Dram Notes <small class="ver">v${VERSION}</small></h1><button class="btn" id="new">New note</button></div>
-      <div class="tabs" id="tabs"></div>
-      <div class="items" id="items"></div>
-      ${LOCAL ? "" : `<div class="foot"><button class="btn ghost" id="out">Sign out</button></div>`}
-    </section>
-    <section class="detail" id="detail"></section></div>`;
-  $("#new").onclick = () => open(blank(), true);
-  $("#tabs").onclick = e => { const t = e.target.closest("[data-c]"); if (t) { cat = t.dataset.c; renderList(); } };
-  $("#items").onclick = e => { const t = e.target.closest("[data-id]"); if (t) open({ ...blank(), ...structuredClone(notes.find(n => n.id === t.dataset.id)) }); };
-  $("#detail").addEventListener("input", onEdit);
-  $("#detail").addEventListener("change", onEdit);
-  $("#detail").addEventListener("click", onClick);
-  $("#out")?.addEventListener("click", () => fb.signOut(auth));
-  renderList(); renderDetail();
-}
+/* ---------- Pages ---------- */
+const home = () => `<div class="hero"><h1>Dram Notes <small class="ver">v${VERSION}</small></h1><p>Explore · Taste · Record</p><button class="btn" data-a="new">+ New Tasting</button></div>
+  <button class="row" data-v="coll"><span>My Collection</span><small>${notes.length} bottle${notes.length === 1 ? "" : "s"}</small></button>
+  <button class="row" data-v="learn"><span>Flavour Guide</span><small>Learn and explore</small></button>
+  ${LOCAL ? "" : `<button class="btn ghost" data-a="out">Sign out</button>`}`;
 
-function renderList() {
-  $("#tabs").innerHTML = ["All", ...CATS].map(c => `<button class="tab ${c === cat ? "on" : ""}" data-c="${c}">${c}</button>${c === "Bourbon" ? '<span class="brk"></span>' : ""}`).join("");
-  const rows = notes.filter(n => cat === "All" || n.category === cat).sort((a, b) => b.updated - a.updated);
-  $("#items").innerHTML = rows.length ? rows.map(n => `<button class="item ${draft?.id === n.id ? "on" : ""}" data-id="${n.id}">
-      ${n.thumb ? `<img src="${n.thumb}" alt="">` : `<div class="ph"></div>`}
-      <span><b>${esc(n.name)}</b><small>${esc(n.distillery)}${n.distillery && n.category ? ", " : ""}${esc(n.category)}</small><br><span class="stars">${stars(n.rating || 0)}</span></span></button>`).join("")
-    : `<p class="empty">${cat === "All" ? "No notes yet. Select New note to log your first bottle." : "No " + cat + " notes yet."}</p>`;
-}
+const learn = () => `<h2>Flavour Guide</h2><p class="mute">The five flavours used in your tasting notes.</p>${GUIDE.map(([n, e]) => `<div class="row card"><b>${n}</b><br><small>${e}</small></div>`).join("")}`;
 
-async function open(n, edit = false) {
-  draft = n; editing = edit; pending = null;
-  renderDetail(); renderList();
-  $("#app").classList.add("open");
-  if (n.thumb) { const full = await store.photo(n.id); if (full && draft?.id === n.id) { const i = $("#pimg"); if (i) i.src = full; } }
-}
+const coll = () => `<h2>My Collection</h2><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
+  <div class="tabs">${TABS.map(c => `<button class="tab ${c === cat ? "on" : ""}" data-c="${c}">${c === "Favourites" ? "♥ Favourites" : c}</button>${c === "Bourbon" ? '<span class="brk"></span>' : ""}`).join("")}</div>
+  <div id="list">${listHtml()}</div>`;
 
-function renderDetail() {
-  const d = $("#detail");
-  if (!draft) { d.innerHTML = `<div class="none"><p>Select a note or create a new one.</p></div>`; return; }
-  const n = draft, ed = editing, saved = notes.some(x => x.id === n.id);
-  const fld = (k, l, t = "text", extra = "") => (!ed && !getP(n, k)) ? "" : `<label class="fld">${l}<input data-f="${k}" type="${t}" ${extra} value="${esc(getP(n, k))}"></label>`;
+function listHtml() {
+  const k = q.toLowerCase();
+  const rows = notes.filter(n => (cat === "All" || (cat === "Favourites" ? n.favourite : n.category === cat)) && (!k || (n.name + " " + n.distillery).toLowerCase().includes(k))).sort((a, b) => b.updated - a.updated);
+  return rows.length ? rows.map(n => `<div class="item"><button class="main" data-id="${n.id}">${n.thumb ? `<img src="${n.thumb}" alt="">` : `<div class="ph"></div>`}
+      <span><b>${esc(n.name)}</b><small>${esc(n.category)}${n.region ? " · " + esc(n.region) : ""}${n.abv ? " · " + esc(n.abv) + "%" : ""}</small><br>${stars(n.rating || 0)} <small>${n.rating || ""}</small></span></button>
+      <button class="heart ${n.favourite ? "on" : ""}" data-fav="${n.id}" aria-label="Favourite">♥</button></div>`).join("")
+    : `<p class="empty">${notes.length ? "No bottles match." : "No notes yet. Start with New Tasting on the Home page."}</p>`;
+}
+const renderList = () => { const l = $("#list"); if (l) l.innerHTML = listHtml(); };
+
+function part(i, ed) {
+  const n = draft;
+  const fld = (k, l, t = "text", x = "") => (!ed && !getP(n, k)) ? "" : `<label class="fld">${l}<input data-f="${k}" type="${t}" ${x} value="${esc(getP(n, k))}"></label>`;
   const tx = (k, l) => (!ed && !getP(n, k)) ? "" : `<label class="fld">${l}<textarea data-f="${k}">${esc(getP(n, k))}</textarea></label>`;
-  const sec = (s, i) => {
-    const groups = s.g.map(([g, one, items]) => {
-      const sel = n.tags[s.k + "|" + g] || [];
-      const shown = ed ? items : items.filter(x => sel.includes(x));
-      return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="${one ? "radio" : "checkbox"}" name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sel.includes(x) ? "checked" : ""}><span>${x}</span></label>`).join("")}</div></fieldset>` : "";
-    }).join("");
-    return `<details class="sec" ${ed ? (i === 0 ? "open" : "") : "open"}><summary>${s.t}</summary>${s.amt ? fld("waterAmt", "Amount of water", "text", 'placeholder="e.g. 3 drops, 1 tsp"') : ""}${groups}${s.no ? "" : fld("other." + s.k, "Other descriptors")}${tx("notes." + s.k, "Notes")}</details>`;
-  };
-  const photo = n.thumb ? `<img id="pimg" src="${n.thumb}" alt="Bottle photo">` : (ed ? "Add bottle photo<br>(tap or drop a file)" : "No photo");
-  d.innerHTML = `<div class="form">
-    <div class="dhead"><button class="btn ghost back" data-a="back">Back</button><h2>${esc(n.name) || "New note"}</h2></div>
-    <fieldset class="lock" ${ed ? "" : "disabled"}>
-    <div class="top">
-      <label class="photo" id="drop">${photo}<input type="file" id="file" accept="image/*" hidden ${ed ? "" : "disabled"}></label>
-      <div class="grid">
-        ${fld("name", "Bottle name")}${fld("distillery", "Distillery")}
-        <label class="fld">Category<select data-f="category">${CATS.map(c => `<option ${c === n.category ? "selected" : ""}>${c}</option>`).join("")}</select></label>
-        ${fld("age", "Age (years)", "number", 'inputmode="numeric"')}${fld("abv", "ABV %", "number", 'inputmode="decimal" step="0.1"')}${fld("price", "Price", "text")}
-      </div>
-    </div>
-    ${SECTIONS.map(sec).join("")}
-    <details class="sec" open><summary>Rating</summary>
-      <div class="rate" id="rate">${[1, 2, 3, 4, 5].map(i => `<button type="button" data-star="${i}" class="${i <= n.rating ? "on" : ""}" aria-label="${i} star${i > 1 ? "s" : ""}">★</button>`).join("")}</div>
-      ${tx("comments", "Overall comments")}</details>
-    </fieldset>
-    <div class="acts">${ed
-      ? `<button class="btn" data-a="save">Save note</button><button class="btn ghost" data-a="cancel">Cancel</button>`
-      : `<button class="btn" data-a="edit">Edit note</button>${saved ? `<button class="btn danger" data-a="del">Delete</button>` : ""}`}</div></div>`;
-  if (ed) {
-    const drop = $("#drop");
-    drop.ondragover = e => { e.preventDefault(); drop.classList.add("drag"); };
-    drop.ondragleave = () => drop.classList.remove("drag");
-    drop.ondrop = e => { e.preventDefault(); drop.classList.remove("drag"); if (e.dataTransfer.files[0]) setPhoto(e.dataTransfer.files[0]); };
-    $("#file").onchange = e => e.target.files[0] && setPhoto(e.target.files[0]);
+  if (i === 0) {
+    const src = pending || n.thumb;
+    const ph = src ? `<img id="pimg" src="${src}" alt="Bottle photo">` : (ed ? "Add bottle photo<br>(tap or drop)" : "No photo");
+    const sel = (k, l, opts, nb) => (!ed && !n[k]) ? "" : `<label class="fld">${l}<select data-f="${k}">${nb ? `<option value="">Not set</option>` : ""}${opts.map(o => `<option ${o === n[k] ? "selected" : ""}>${o}</option>`).join("")}</select></label>`;
+    return `<div class="top"><label class="photo" id="drop">${ph}<input type="file" id="file" accept="image/*" hidden ${ed ? "" : "disabled"}></label><div class="grid">
+      ${fld("name", "Bottle name *")}${fld("distillery", "Distillery")}${sel("category", "Category", CATS)}${sel("type", "Style", TYPES, 1)}
+      ${fld("region", "Region", "text", 'list="rg"')}<datalist id="rg">${(REGIONS[n.category] || []).map(r => `<option value="${r}">`).join("")}</datalist>
+      ${fld("age", "Age (years)", "number", `inputmode="numeric" ${n.noAge ? "disabled" : ""}`)}${ed || n.noAge ? `<label class="chip"><input type="checkbox" data-f="noAge" ${n.noAge ? "checked" : ""}><span>No age statement</span></label>` : ""}
+      ${fld("abv", "ABV %", "number", 'inputmode="decimal" step="0.1"')}${fld("price", "Price")}</div></div>`;
   }
+  if (i === STEPS.length - 1) {
+    const v = n.rating || 0;
+    const r = ed ? `<div class="rate" id="rate">${[1, 2, 3, 4, 5].map(k => `<span class="s ${v >= k ? "f" : v >= k - .5 ? "h" : ""}"><b data-r="${k - .5}"></b><b data-r="${k}"></b>★</span>`).join("")}</div><p class="mute" id="rv">${v ? v + " / 5" : "Tap a star. The left half gives a half star."}</p>`
+      : (v ? `<div class="big">${stars(v)} <span class="mute">${v} / 5</span></div>` : "");
+    return r + tx("comments", "Overall comments");
+  }
+  const s = SECTIONS[i - 1];
+  const groups = s.g.map(([g, one, items]) => {
+    const sl = n.tags[s.k + "|" + g] || [];
+    const shown = ed ? items : items.filter(x => sl.includes(x));
+    return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="${one ? "radio" : "checkbox"}" name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sl.includes(x) ? "checked" : ""}><span>${x}</span></label>`).join("")}</div></fieldset>` : "";
+  }).join("");
+  return `${s.amt ? fld("waterAmt", "Amount of water", "text", 'placeholder="e.g. 3 drops, 1 tsp"') : ""}${groups}${s.no ? "" : fld("other." + s.k, "Other descriptors")}${tx("notes." + s.k, "Notes")}`;
 }
 
+function noteView() {
+  const n = draft, saved = notes.some(x => x.id === n.id), last = STEPS.length - 1;
+  if (!editing) {
+    const body = STEPS.map((t, i) => { const h = part(i, false); return i === 0 ? h : (h.trim() ? `<div class="sec"><h3>${t}</h3>${h}</div>` : ""); }).join("");
+    return `<div class="dhead"><button class="btn ghost" data-v="coll">‹ Collection</button><button class="heart ${n.favourite ? "on" : ""}" data-fav="${n.id}" aria-label="Favourite">♥</button></div>
+      <h2>${esc(n.name)}</h2><fieldset class="lock" disabled>${body}</fieldset>
+      <div class="acts"><button class="btn" data-a="edit">Edit note</button>${saved ? `<button class="btn danger" data-a="del">Delete</button>` : ""}</div>`;
+  }
+  return `<div class="dhead"><h2>${saved ? "Edit tasting" : "New tasting"}</h2><button class="btn ghost" data-a="cancel">Cancel</button></div>
+    <div class="tabs">${STEPS.map((t, i) => `<button class="tab ${i === step ? "on" : ""}" data-step="${i}">${t}</button>`).join("")}</div>
+    ${step ? `<h3>${STEPS[step]}</h3>` : ""}${part(step, true)}
+    <div class="acts">${step ? `<button class="btn ghost" data-a="back">Back</button>` : ""}${step < last ? `<button class="btn" data-a="next">Next</button>` : ""}<button class="btn ${step < last ? "ghost" : ""}" data-a="save">Save</button></div>`;
+}
+
+function render() {
+  $("#page").innerHTML = ({ home, coll, learn, note: noteView })[view]();
+  document.querySelectorAll(".bar button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "note" ? "coll" : view)));
+  if (view === "note" && editing && step === 0) bindPhoto();
+  window.scrollTo(0, 0);
+}
+
+function bindPhoto() {
+  const d = $("#drop");
+  d.ondragover = e => { e.preventDefault(); d.classList.add("drag"); };
+  d.ondragleave = () => d.classList.remove("drag");
+  d.ondrop = e => { e.preventDefault(); d.classList.remove("drag"); if (e.dataTransfer.files[0]) setPhoto(e.dataTransfer.files[0]); };
+  $("#file").onchange = e => e.target.files[0] && setPhoto(e.target.files[0]);
+}
 async function setPhoto(file) {
   try {
     draft.thumb = await shrink(file, 200, 0.7);
@@ -264,49 +265,76 @@ async function setPhoto(file) {
   } catch { toast("Could not read that image. Try a JPEG or PNG."); }
 }
 
-function onEdit(e) {
-  if (!editing) return;
-  const t = e.target;
-  if (t.dataset.g) {
-    draft.tags[t.dataset.g] = [...document.querySelectorAll(`[data-g="${t.dataset.g}"]:checked`)].map(i => i.value);
-  } else if (t.dataset.f) setP(draft, t.dataset.f, t.value);
+async function openNote(n, edit) {
+  draft = n; editing = edit; pending = null; step = 0; view = "note"; render();
+  if (n.thumb && !edit) { const f = await store.photo(n.id); const i = $("#pimg"); if (f && i && draft?.id === n.id) i.src = f; }
+}
+function toggleFav(id) {
+  const n = notes.find(x => x.id === id); if (!n) return;
+  n.favourite = !n.favourite; store.save({ ...n }, null);
+  if (draft?.id === id) draft.favourite = n.favourite;
+  view === "note" ? render() : renderList();
+}
+function paintRate() {
+  document.querySelectorAll("#rate .s").forEach((e, k) => { const i = k + 1, v = draft.rating; e.className = "s " + (v >= i ? "f" : v >= i - .5 ? "h" : ""); });
+  $("#rv").textContent = draft.rating ? draft.rating + " / 5" : "Tap a star. The left half gives a half star.";
 }
 
 function onClick(e) {
-  const s = e.target.closest("[data-star]");
-  if (s) {
-    if (!editing) return;
-    const v = +s.dataset.star;
-    draft.rating = draft.rating === v ? 0 : v;
-    document.querySelectorAll("[data-star]").forEach(b => b.classList.toggle("on", +b.dataset.star <= draft.rating));
-    return;
-  }
-  const a = e.target.closest("[data-a]")?.dataset.a;
-  if (a === "back") $("#app").classList.remove("open");
-  if (a === "edit") { editing = true; renderDetail(); }
+  const t = e.target;
+  const r = t.closest("[data-r]");
+  if (r && editing) { const v = +r.dataset.r; draft.rating = draft.rating === v ? 0 : v; paintRate(); return; }
+  const f = t.closest("[data-fav]"); if (f) { toggleFav(f.dataset.fav); return; }
+  const id = t.closest("[data-id]")?.dataset.id;
+  if (id) { openNote({ ...blank(), ...structuredClone(notes.find(n => n.id === id)) }, false); return; }
+  const c = t.closest("[data-c]"); if (c) { cat = c.dataset.c; render(); return; }
+  const v = t.closest("[data-v]");
+  if (v) { if (editing && !confirm("Discard unsaved changes?")) return; editing = false; view = v.dataset.v; if (view !== "note") draft = null; render(); return; }
+  const sp = t.closest("[data-step]"); if (sp) { step = +sp.dataset.step; render(); return; }
+  const a = t.closest("[data-a]")?.dataset.a;
+  if (a === "new") openNote(blank(), true);
+  if (a === "out") fb.signOut(auth);
+  if (a === "back") { step--; render(); }
+  if (a === "next") { step++; render(); }
+  if (a === "edit") { editing = true; step = 0; render(); }
   if (a === "cancel") {
-    const orig = notes.find(n => n.id === draft.id);
-    if (orig) open({ ...blank(), ...structuredClone(orig) });
-    else { draft = null; editing = false; renderDetail(); renderList(); $("#app").classList.remove("open"); }
+    const o = notes.find(n => n.id === draft.id);
+    if (o) openNote({ ...blank(), ...structuredClone(o) }, false); else { draft = null; editing = false; view = "coll"; render(); }
   }
   if (a === "save") {
-    if (!draft.name.trim()) { toast("Add a bottle name first"); return; }
+    if (!draft.name.trim()) { toast("Add a bottle name first"); step = 0; render(); return; }
     draft.updated = Date.now();
     store.save(draft, pending);
     const copy = structuredClone(draft), i = notes.findIndex(n => n.id === draft.id);
     if (i < 0) notes.push(copy); else notes[i] = copy;
-    toast("Saved"); renderList(); open(structuredClone(copy));
+    toast("Saved"); openNote(structuredClone(copy), false);
   }
   if (a === "del" && confirm("Delete this note? This cannot be undone.")) {
     store.del(draft.id); notes = notes.filter(n => n.id !== draft.id);
-    draft = null; renderDetail(); renderList(); $("#app").classList.remove("open"); toast("Deleted");
+    draft = null; editing = false; view = "coll"; render(); toast("Deleted");
   }
 }
 
+function onInput(e) {
+  const t = e.target;
+  if (t.id === "q") { q = t.value; renderList(); return; }
+  if (!editing) return;
+  if (t.dataset.g) { draft.tags[t.dataset.g] = [...document.querySelectorAll(`[data-g="${t.dataset.g}"]:checked`)].map(i => i.value); return; }
+  const f = t.dataset.f; if (!f) return;
+  setP(draft, f, t.type === "checkbox" ? t.checked : t.value);
+  if (f === "noAge") { const a = document.querySelector('[data-f="age"]'); a.disabled = t.checked; if (t.checked) { a.value = ""; draft.age = ""; } }
+  if (f === "category") $("#rg").innerHTML = (REGIONS[t.value] || []).map(r => `<option value="${r}">`).join("");
+}
+$("#root").addEventListener("click", onClick);
+$("#root").addEventListener("input", onInput);
+$("#root").addEventListener("change", onInput);
+
 function start() {
-  shell();
+  view = "home"; draft = null; editing = false;
+  $("#root").innerHTML = `<main class="page" id="page"></main><nav class="bar">${[["home", "Home"], ["coll", "Collection"], ["learn", "Learn"]].map(([v, l]) => `<button data-v="${v}">${l}</button>`).join("")}</nav>`;
+  render();
   unsub?.();
-  unsub = store.listen(list => { notes = list; renderList(); });
+  unsub = store.listen(list => { notes = list; if (view === "coll") renderList(); else if (view === "home") render(); });
 }
 
 /* ---------- Boot ---------- */
