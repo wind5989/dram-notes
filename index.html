@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Dram Notes v3.6 -->
+<!-- Dram Notes v3.8 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dram Notes v3.6</title>
+<title>Dram Notes v3.8</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -62,6 +62,7 @@ button{cursor:pointer}
 .sec{border-top:1px solid var(--line);margin-top:14px;padding-top:10px}
 .lock{border:0;margin:0;padding:0;min-width:0}
 .lock[disabled] input,.lock[disabled] select,.lock[disabled] textarea{color:var(--ink);opacity:1;-webkit-text-fill-color:var(--ink);border-color:transparent;background:var(--panel)}
+.lock[disabled] .chip input{opacity:0}
 fieldset{border:0;padding:0;margin:8px 0 12px}
 legend{color:var(--mute);font-size:14px;padding:0;margin-bottom:6px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -85,6 +86,7 @@ legend{color:var(--mute);font-size:14px;padding:0;margin-bottom:6px}
 .wheel{display:block;width:100%;max-width:340px;margin:10px auto}.wheel g{cursor:pointer;outline:none}.wheel g:focus-visible path{stroke:var(--ink);stroke-width:3}
 .cmp{display:grid;grid-template-columns:72px 1fr 1fr;gap:6px 10px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin:10px 0}.cmp>*{min-width:0;overflow-wrap:anywhere}
 .pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 10px;margin:2px 4px 2px 0;background:var(--panel);font-size:14px}.pill.sh{background:var(--brown);border-color:var(--brown);color:var(--cream)}
+span.heart{display:inline-block;text-align:center;line-height:44px;pointer-events:none}
 .ver{font:12px Figtree,system-ui,sans-serif;color:var(--mute)}
 .hero .ver{color:#d9bf9c}
 @media(max-width:560px){.top{grid-template-columns:110px 1fr}}
@@ -207,7 +209,7 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.6";
+const VERSION = "3.8";
 let gTab = "cat", gSel = null, gDet = null, wOn = false, wSel = null, cA = "", cB = "";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
@@ -239,7 +241,7 @@ const learn = () => `<h2>Flavour Guide</h2><div class="tabs"><button class="tab 
   ${gTab === "wh" ? wheelPage() : gTab === "cat" ? GUIDE.map(([n, d]) => `<button class="row card" data-gc="${n}"><b>${n}</b><br>${d}</button>${gSel === n ? `<div class="tabs">${SPEC[n].map(x => `<button class="tab" data-gd="${esc(x)}">${x}</button>`).join("")}</div>` : ""}`).join("")
   : `${gDet ? detailHtml(gDet) : '<p class="mute">Tap a flavour to see what it is and where to notice it.</p>'}${GUIDE.map(([n]) => `<h3>${n}</h3><div class="tabs">${SPEC[n].map(x => `<button class="tab ${x === gDet ? "on" : ""}" data-gd="${esc(x)}">${x}</button>`).join("")}</div>`).join("")}`}`;
 
-const coll = () => `<div class="dhead"><h2>My Collection</h2><button class="btn" data-a="new">+ New Tasting</button></div><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
+const coll = () => `<h2>My Collection</h2><div class="acts" style="margin:10px 0"><button class="btn" data-a="new">+ New Tasting</button><button class="btn ghost" data-v="cmp">Compare</button></div><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
   <div class="tabs">${TABS.map(c => `<button class="tab ${c === cat ? "on" : ""}" data-c="${c}">${c === "Favourites" ? "♥ Favourites" : c}</button>${c === "Bourbon" ? '<span class="brk"></span>' : ""}`).join("")}</div>
   <div id="list">${listHtml()}</div>`;
 
@@ -248,7 +250,7 @@ function listHtml() {
   const rows = notes.filter(n => (cat === "All" || (cat === "Favourites" ? n.favourite : n.category === cat)) && (!k || (n.name + " " + n.distillery).toLowerCase().includes(k))).sort((a, b) => b.updated - a.updated);
   return rows.length ? rows.map(n => `<div class="item"><button class="main" data-id="${n.id}">${n.thumb ? `<img src="${n.thumb}" alt="">` : `<div class="ph"></div>`}
       <span><b>${esc(n.name)}</b><small>${esc(n.category)}${n.region ? " · " + esc(n.region) : ""}${n.abv ? " · " + esc(n.abv) + "%" : ""}</small><br>${stars(n.rating || 0)} <small>${n.rating || ""}</small></span></button>
-      <button class="heart ${n.favourite ? "on" : ""}" data-fav="${n.id}" aria-label="Favourite">♥</button></div>`).join("")
+      ${n.favourite ? '<span class="heart on" aria-label="Favourite">♥</span>' : ""}</div>`).join("")
     : `<p class="empty">${notes.length ? "No bottles match." : "No notes yet. Start with New Tasting on the Home page."}</p>`;
 }
 const renderList = () => { const l = $("#list"); if (l) l.innerHTML = listHtml(); };
@@ -286,11 +288,11 @@ function noteView() {
   const n = draft, saved = notes.some(x => x.id === n.id), last = STEPS.length - 1;
   if (!editing) {
     const body = STEPS.map((t, i) => { const h = part(i, false); return i === 0 ? h : (h.trim() ? `<div class="sec"><h3>${t}</h3>${h}</div>` : ""); }).join("");
-    return `<div class="dhead"><button class="btn ghost" data-v="coll">‹ Collection</button><button class="heart ${n.favourite ? "on" : ""}" data-fav="${n.id}" aria-label="Favourite">♥</button></div>
+    return `<div class="dhead"><button class="btn ghost" data-v="coll">‹ Collection</button><span style="display:flex;align-items:center;gap:8px">${n.favourite ? '<span class="heart on" aria-label="Favourite">♥</span>' : ""}<button class="btn" data-a="edit">Edit</button></span></div>
       <h2>${esc(n.name)}</h2><fieldset class="lock" disabled>${body}</fieldset>
-      <div class="acts"><button class="btn" data-a="edit">Edit note</button>${saved ? `<button class="btn danger" data-a="del">Delete</button>` : ""}</div>`;
+      ${saved ? `<div class="acts"><button class="btn danger" data-a="del">Delete</button></div>` : ""}`;
   }
-  return `<div class="dhead"><h2>${saved ? "Edit tasting" : "New tasting"}</h2><button class="btn ghost" data-a="cancel">Cancel</button></div>
+  return `<div class="dhead"><h2>${saved ? "Edit tasting" : "New tasting"}</h2><span style="display:flex;align-items:center;gap:4px"><button class="heart ${n.favourite ? "on" : ""}" type="button" data-favd="1" aria-label="Favourite">♥</button><button class="btn ghost" data-a="cancel">Cancel</button></span></div>
     <div class="tabs">${STEPS.map((t, i) => `<button class="tab ${i === step ? "on" : ""}" data-step="${i}">${t}</button>`).join("")}</div>
     ${step ? `<h3>${STEPS[step]}</h3>` : ""}${part(step, true)}
     <div class="acts">${step ? `<button class="btn ghost" data-a="back">Back</button>` : ""}${step < last ? `<button class="btn" data-a="next">Next</button>` : ""}<button class="btn ${step < last ? "ghost" : ""}" data-a="save">Save</button></div>`;
@@ -323,12 +325,6 @@ async function openNote(n, edit) {
   draft = n; editing = edit; pending = null; step = 0; view = "note"; render();
   if (n.thumb && !edit) { const f = await store.photo(n.id); const i = $("#pimg"); if (f && i && draft?.id === n.id) i.src = f; }
 }
-function toggleFav(id) {
-  const n = notes.find(x => x.id === id); if (!n) return;
-  n.favourite = !n.favourite; store.save({ ...n }, null);
-  if (draft?.id === id) draft.favourite = n.favourite;
-  view === "note" ? render() : renderList();
-}
 function paintRate() {
   document.querySelectorAll("#rate .s").forEach((e, k) => { const i = k + 1, v = draft.rating; e.className = "s " + (v >= i ? "f" : v >= i - .5 ? "h" : ""); });
   $("#rv").textContent = draft.rating ? draft.rating + " / 5" : "Tap a star. The left half gives a half star.";
@@ -347,7 +343,7 @@ function paintWheel() {
   const o = $("#wheelov"); o.hidden = !wOn; if (!wOn) return;
   const sec = SECTIONS[step - 1], hasC = sec.g.some(g => g[0] === "Character");
   const chip = (g, v, l) => `<button class="tab ${(draft.tags[sec.k + "|" + g] || []).includes(v) ? "on" : ""}" data-wp="${g}" data-wv="${esc(v)}">${l}</button>`;
-  o.innerHTML = `<div class="page"><div class="dhead"><h2>${sec.t}: flavour wheel</h2><button class="btn" data-a="wdone">Done</button></div><p class="mute">Tap a slice, then pick anything that fits. Every pick is optional.</p>${wheelSvg()}${wSel ? `<h3>${wSel}</h3><div class="tabs">${hasC ? chip("Character", wSel, "Any " + wSel.toLowerCase()) : ""}${SPEC[wSel].map(x => chip(wSel + " notes", x, x)).join("")}</div>` : ""}</div>`;
+  o.innerHTML = `<div class="page"><div class="dhead"><h2>${sec.t}: flavour wheel</h2><button class="btn" data-a="wdone">Done</button></div><p class="mute">Tap a slice, then pick anything that fits. Every pick is optional.</p>${wheelSvg()}${wSel ? `<h3>${wSel}</h3>${hasC ? `<small class="mute">Broad</small><div class="tabs">${chip("Character", wSel, "Any " + wSel.toLowerCase())}</div><div class="mute" style="text-align:center" aria-hidden="true">–</div>` : ""}<small class="mute">Specific</small><div class="tabs">${SPEC[wSel].map(x => chip(wSel + " notes", x, x)).join("")}</div>` : ""}</div>`;
 }
 const flv = (n, k) => Object.entries(n.tags || {}).filter(([g]) => g.startsWith(k + "|") && (g.endsWith("|Character") || g.endsWith(" notes"))).flatMap(([, v]) => v);
 const pills = (a, c) => a.length ? a.map(x => `<span class="pill ${c}">${esc(x)}</span>`).join("") : '<small class="mute">None</small>';
@@ -371,7 +367,7 @@ function onClick(e) {
   if (t.closest("#tip")) { t.closest("#tip").hidden = true; return; }
   const r = t.closest("[data-r]");
   if (r && editing) { const v = +r.dataset.r; draft.rating = draft.rating === v ? 0 : v; paintRate(); return; }
-  const f = t.closest("[data-fav]"); if (f) { toggleFav(f.dataset.fav); return; }
+  const f = t.closest("[data-favd]"); if (f && editing) { draft.favourite = !draft.favourite; f.classList.toggle("on", draft.favourite); return; }
   const gt = t.closest("[data-gt]"); if (gt) { gTab = gt.dataset.gt; render(); return; }
   const gc = t.closest("[data-gc]"); if (gc) { const y = scrollY; gSel = gSel === gc.dataset.gc ? null : gc.dataset.gc; render(); scrollTo(0, y); return; }
   const gd = t.closest("[data-gd]"); if (gd) { const x = gd.dataset.gd, was = gTab; gTab = "ex"; gDet = (was === "ex" && gDet === x) ? null : x; render(); return; }
