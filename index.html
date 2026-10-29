@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Dram Notes v3.4 -->
+<!-- Dram Notes v3.5 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dram Notes v3.4</title>
+<title>Dram Notes v3.5</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -79,6 +79,8 @@ legend{color:var(--mute);font-size:14px;padding:0;margin-bottom:6px}
 .login .fld{width:100%;text-align:left}
 .login .acts{width:100%}
 .err{color:#a2392b;min-height:1.4em;margin:0}
+.tip{position:sticky;bottom:calc(64px + env(safe-area-inset-bottom));background:var(--ink);color:var(--cream);border-radius:var(--r);padding:10px 14px;margin:10px 0;z-index:4;cursor:pointer}
+.tip small{color:#d9bf9c}
 .ver{font:12px Figtree,system-ui,sans-serif;color:var(--mute)}
 .hero .ver{color:#d9bf9c}
 @media(max-width:560px){.top{grid-template-columns:110px 1fr}}
@@ -201,7 +203,7 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.4";
+const VERSION = "3.5";
 let gTab = "cat", gSel = null, gDet = null;
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
@@ -272,7 +274,7 @@ function part(i, ed) {
     const shown = ed ? items : items.filter(x => sl.includes(x));
     return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="checkbox" ${one ? 'data-one="1"' : ""} name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sl.includes(x) ? "checked" : ""}><span>${x}</span></label>`).join("")}</div></fieldset>` : "";
   }).join("");
-  return `${s.amt ? fld("waterAmt", "Amount of water", "text", 'placeholder="e.g. 3 drops, 1 tsp"') : ""}${groups}${s.no ? "" : fld("other." + s.k, "Other descriptors")}${tx("notes." + s.k, "Notes")}`;
+  return `${s.amt ? fld("waterAmt", "Amount of water", "text", 'placeholder="e.g. 3 drops, 1 tsp"') : ""}${groups}${ed ? '<div class="tip" id="tip" hidden></div>' : ""}${s.no ? "" : fld("other." + s.k, "Other descriptors")}${tx("notes." + s.k, "Notes")}`;
 }
 
 function noteView() {
@@ -329,6 +331,7 @@ function paintRate() {
 
 function onClick(e) {
   const t = e.target;
+  if (t.closest("#tip")) { t.closest("#tip").hidden = true; return; }
   const r = t.closest("[data-r]");
   if (r && editing) { const v = +r.dataset.r; draft.rating = draft.rating === v ? 0 : v; paintRate(); return; }
   const f = t.closest("[data-fav]"); if (f) { toggleFav(f.dataset.fav); return; }
@@ -366,13 +369,19 @@ function onClick(e) {
   }
 }
 
+function tip(v) {
+  const e = $("#tip"); if (!e) return;
+  const g = GUIDE.find(x => x[0] === v), d = DETAIL[v];
+  e.innerHTML = g ? `<b>${esc(v)}</b><br>${g[1]}<br><small>e.g. ${SPEC[v].join(", ").toLowerCase()}</small>` : d ? `<b>${esc(v)}</b><br>${d[0]}<br><small>Where you might notice it: ${d[1]}</small>` : "";
+  e.hidden = !e.innerHTML;
+}
 function onInput(e) {
   const t = e.target;
   if (t.id === "q") { q = t.value; renderList(); return; }
   if (!editing) return;
   if (t.dataset.g) {
     if (t.dataset.one && t.checked) document.querySelectorAll(`[data-g="${t.dataset.g}"]`).forEach(i => { if (i !== t) i.checked = false; });
-    draft.tags[t.dataset.g] = [...document.querySelectorAll(`[data-g="${t.dataset.g}"]:checked`)].map(i => i.value); return; }
+    draft.tags[t.dataset.g] = [...document.querySelectorAll(`[data-g="${t.dataset.g}"]:checked`)].map(i => i.value); tip(t.checked ? t.value : ""); return; }
   const f = t.dataset.f; if (!f) return;
   setP(draft, f, t.type === "checkbox" ? t.checked : t.value);
   if (f === "noAge") { const a = document.querySelector('[data-f="age"]'); a.disabled = t.checked; if (t.checked) { a.value = ""; draft.age = ""; } }
