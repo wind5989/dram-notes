@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Dram Notes v3.1 -->
+<!-- Dram Notes v3.2 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dram Notes v3.1</title>
+<title>Dram Notes v3.2</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -101,16 +101,25 @@ const FIREBASE_CONFIG = {
 
 /* ---------- 2. Descriptor lists. Edit freely. ---------- */
 const CATS = ["Scotch", "Irish", "Bourbon", "Rye", "Other"];
-const CHAR = ["Sweet", "Spicy", "Fruity", "Smoky", "Grainy"];
+const SPEC = {
+  Citrus: ["Lemon", "Orange", "Grapefruit", "Orange peel", "Lime"],
+  Fruity: ["Apple", "Pear", "Stone fruit", "Berries", "Dried fruit", "Banana"],
+  Sweet: ["Vanilla", "Caramel", "Honey", "Toffee", "Maple", "Butterscotch"],
+  Spicy: ["Cinnamon", "Black pepper", "Clove", "Ginger", "Nutmeg"],
+  Woody: ["Oak", "Cedar", "Tobacco", "Leather", "Charred wood"],
+  Smoky: ["Peat", "Bonfire", "Char", "Ash", "Brine"]
+};
+const CHAR = Object.keys(SPEC);
+const SPECG = Object.entries(SPEC).map(([f, l]) => [f + " notes", 0, l]);
 const TYPES = ["Single malt", "Blended malt", "Blended", "Single grain", "Single pot still", "Straight", "Other"];
 const REGIONS = { Scotch: ["Islay", "Speyside", "Highland", "Lowland", "Campbeltown", "Islands"], Irish: ["Ireland", "Northern Ireland"], Bourbon: ["Kentucky", "Tennessee", "Indiana", "Texas"], Rye: ["Kentucky", "Pennsylvania", "Maryland", "Canada"], Other: ["Japan", "Canada", "India", "Taiwan", "Australia"] };
-const GUIDE = [["Sweet", "vanilla, caramel, honey, toffee, maple"], ["Spicy", "cinnamon, black pepper, clove, ginger, nutmeg"], ["Fruity", "apple, pear, citrus, berries, dried fruit"], ["Smoky", "smoke, peat, char, ash, brine"], ["Grainy", "malt, cereal, bread, nuts, grass"]];
+const GUIDE = [["Citrus", "Bright and zesty, like fresh peel or juice."], ["Fruity", "Orchard, berry and dried fruit, from crisp to jammy."], ["Sweet", "Dessert-like notes such as vanilla, caramel and honey."], ["Spicy", "A warm, tingling kick, like baking spices or pepper."], ["Woody", "Notes from the barrel: oak, cedar, tobacco and leather."], ["Smoky", "Peat, bonfire and ash, sometimes with a salty sea edge."]];
 const SECTIONS = [
   { k: "appearance", t: "Appearance", g: [["Color", 1, ["Pale straw", "Gold", "Amber", "Copper", "Mahogany"]], ["Viscosity", 1, ["Thin", "Medium", "Oily"]]] },
-  { k: "nose", t: "Nose", g: [["Character", 0, CHAR]] },
-  { k: "taste", t: "Taste", g: [["Character", 0, CHAR]] },
+  { k: "nose", t: "Nose", g: [["Character", 0, CHAR], ...SPECG] },
+  { k: "taste", t: "Taste", g: [["Character", 0, CHAR], ...SPECG] },
   { k: "water", t: "Water", no: 1, amt: 1, g: [["Effect on aroma", 0, ["Opened up", "Softer", "Muted", "No change"]], ["Effect on taste", 0, ["Sweeter", "Spicier", "Smoother", "Flatter", "No change"]]] },
-  { k: "finish", t: "Finish", no: 1, g: [["Length", 1, ["Short", "Medium", "Long"]]] }
+  { k: "finish", t: "Finish", no: 1, g: [["Length", 1, ["Short", "Medium", "Long"]], ...SPECG] }
 ];
 
 /* ---------- Storage: Firebase, or localStorage for testing ---------- */
@@ -158,7 +167,7 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.1";
+const VERSION = "3.2";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
 const TABS = ["All", ...CATS, "Favourites"];
@@ -183,7 +192,7 @@ const home = () => `<div class="hero"><h1>Dram Notes <small class="ver">v${VERSI
   <button class="row" data-v="learn"><span>Flavour Guide</span><small>Learn and explore</small></button>
   ${LOCAL ? "" : `<button class="btn ghost" data-a="out">Sign out</button>`}`;
 
-const learn = () => `<h2>Flavour Guide</h2><p class="mute">The five flavours used in your tasting notes.</p>${GUIDE.map(([n, e]) => `<div class="row card"><b>${n}</b><br><small>${e}</small></div>`).join("")}`;
+const learn = () => `<h2>Flavour Guide</h2><p class="mute">The six flavours used in your tasting notes.</p>${GUIDE.map(([n, d]) => `<div class="row card"><b>${n}</b><br>${d}<br><small>${SPEC[n].join(", ").toLowerCase()}</small></div>`).join("")}`;
 
 const coll = () => `<h2>My Collection</h2><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
   <div class="tabs">${TABS.map(c => `<button class="tab ${c === cat ? "on" : ""}" data-c="${c}">${c === "Favourites" ? "♥ Favourites" : c}</button>${c === "Bourbon" ? '<span class="brk"></span>' : ""}`).join("")}</div>
@@ -223,7 +232,7 @@ function part(i, ed) {
   const groups = s.g.map(([g, one, items]) => {
     const sl = n.tags[s.k + "|" + g] || [];
     const shown = ed ? items : items.filter(x => sl.includes(x));
-    return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="checkbox" name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sl.includes(x) ? "checked" : ""}><span>${x}</span></label>`).join("")}</div></fieldset>` : "";
+    return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="checkbox" ${one ? 'data-one="1"' : ""} name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sl.includes(x) ? "checked" : ""}><span>${x}</span></label>`).join("")}</div></fieldset>` : "";
   }).join("");
   return `${s.amt ? fld("waterAmt", "Amount of water", "text", 'placeholder="e.g. 3 drops, 1 tsp"') : ""}${groups}${s.no ? "" : fld("other." + s.k, "Other descriptors")}${tx("notes." + s.k, "Notes")}`;
 }
@@ -320,7 +329,9 @@ function onInput(e) {
   const t = e.target;
   if (t.id === "q") { q = t.value; renderList(); return; }
   if (!editing) return;
-  if (t.dataset.g) { draft.tags[t.dataset.g] = [...document.querySelectorAll(`[data-g="${t.dataset.g}"]:checked`)].map(i => i.value); return; }
+  if (t.dataset.g) {
+    if (t.dataset.one && t.checked) document.querySelectorAll(`[data-g="${t.dataset.g}"]`).forEach(i => { if (i !== t) i.checked = false; });
+    draft.tags[t.dataset.g] = [...document.querySelectorAll(`[data-g="${t.dataset.g}"]:checked`)].map(i => i.value); return; }
   const f = t.dataset.f; if (!f) return;
   setP(draft, f, t.type === "checkbox" ? t.checked : t.value);
   if (f === "noAge") { const a = document.querySelector('[data-f="age"]'); a.disabled = t.checked; if (t.checked) { a.value = ""; draft.age = ""; } }
