@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Dram Notes v3.0 -->
+<!-- Dram Notes v3.1 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dram Notes v3.0</title>
+<title>Dram Notes v3.1</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -158,7 +158,7 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.0";
+const VERSION = "3.1";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
 const TABS = ["All", ...CATS, "Favourites"];
@@ -223,7 +223,7 @@ function part(i, ed) {
   const groups = s.g.map(([g, one, items]) => {
     const sl = n.tags[s.k + "|" + g] || [];
     const shown = ed ? items : items.filter(x => sl.includes(x));
-    return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="${one ? "radio" : "checkbox"}" name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sl.includes(x) ? "checked" : ""}><span>${x}</span></label>`).join("")}</div></fieldset>` : "";
+    return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="checkbox" name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sl.includes(x) ? "checked" : ""}><span>${x}</span></label>`).join("")}</div></fieldset>` : "";
   }).join("");
   return `${s.amt ? fld("waterAmt", "Amount of water", "text", 'placeholder="e.g. 3 drops, 1 tsp"') : ""}${groups}${s.no ? "" : fld("other." + s.k, "Other descriptors")}${tx("notes." + s.k, "Notes")}`;
 }
@@ -298,6 +298,7 @@ function onClick(e) {
   if (a === "next") { step++; render(); }
   if (a === "edit") { editing = true; step = 0; render(); }
   if (a === "cancel") {
+    if (!confirm("Discard unsaved changes?")) return;
     const o = notes.find(n => n.id === draft.id);
     if (o) openNote({ ...blank(), ...structuredClone(o) }, false); else { draft = null; editing = false; view = "coll"; render(); }
   }
@@ -343,9 +344,8 @@ else {
   const authErr = c => ({
     "auth/invalid-credential": "Wrong email or password.",
     "auth/invalid-email": "That email address is not valid.",
-    "auth/email-already-in-use": "An account with that email already exists. Sign in instead.",
     "auth/weak-password": "Use a password of at least 6 characters.",
-    "auth/operation-not-allowed": "Email and password sign-in is not enabled in Firebase.",
+    "auth/operation-not-allowed": "Email and password sign-in is turned off in Firebase.",
     "auth/too-many-requests": "Too many attempts. Wait a few minutes and try again."
   }[c] || "Sign-in failed. Check your connection and try again.");
   fb.onAuthStateChanged(auth, u => {
@@ -355,14 +355,13 @@ else {
       <label class="fld">Email<input id="em" type="email" autocomplete="username"></label>
       <label class="fld">Password<input id="pw" type="password" autocomplete="current-password"></label>
       <p class="err" id="err" role="alert"></p>
-      <div class="acts"><button class="btn" type="submit">Sign in</button><button class="btn ghost" type="button" id="mk">Create account</button></div></form>`;
+      <div class="acts"><button class="btn" type="submit">Sign in</button></div></form>`;
     const go = async make => {
       const em = $("#em").value.trim(), pw = $("#pw").value;
       if (!em || !pw) { $("#err").textContent = "Enter your email and password."; return; }
       try { await make(auth, em, pw); } catch (e) { $("#err").textContent = authErr(e.code); }
     };
     $("#lf").onsubmit = e => { e.preventDefault(); go(fb.signInWithEmailAndPassword); };
-    $("#mk").onclick = () => go(fb.createUserWithEmailAndPassword);
   });
 }
 </script>
