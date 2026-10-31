@@ -1,16 +1,16 @@
 <!doctype html>
-<!-- Dram Notes v3.9 -->
+<!-- Dram Notes v3.10 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Dram Notes v3.9</title>
+<title>Dram Notes v3.10</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
+:root{--paper:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45  0 0 0 0 .33  0 0 0 0 .2  .5 0 0 0 -.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E");--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#85705a;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
-body{background:var(--bg);color:var(--ink);font:16px/1.45 Figtree,system-ui,sans-serif;padding-top:env(safe-area-inset-top)}
+body{background:var(--bg) var(--paper);color:var(--ink);font:16px/1.45 Figtree,system-ui,sans-serif;padding-top:env(safe-area-inset-top)}
 h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0;font-weight:600}
 h2{font-size:26px}h3{font-size:21px;margin:4px 0 10px}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -23,6 +23,16 @@ button{cursor:pointer}
 .btn{background:var(--brown);color:var(--cream);border:0;border-radius:var(--r);padding:12px 18px;font-weight:600;min-height:48px}
 .btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
 .btn.danger{background:none;color:#a2392b;border:1px solid #d9a79c}
+.cover{container-type:inline-size;position:relative;margin:0 auto;aspect-ratio:2/3;width:min(100%,calc((100vh - 106px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * .6667));width:min(100%,calc((100dvh - 106px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * .6667));background:#2a1810 url(img/cover.webp) center/100% 100% no-repeat;border-radius:12px;box-shadow:0 6px 18px rgba(40,20,8,.35)}
+.cin{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:11cqw 10cqw 8cqw}
+.ttl{text-align:center}.ttl h1{font-size:13.5cqw;line-height:1.05;color:#d9ab5e;text-shadow:0 -1px 1px rgba(0,0,0,.75),0 1px 1px rgba(255,225,170,.28)}
+.ttl small{display:block;color:#b99560;font-size:max(11px,3.2cqw);margin-top:1cqw}.ttl p{margin:3cqw 0 0;color:#cdb08a;font-size:max(13px,4cqw);text-shadow:0 -1px 0 rgba(0,0,0,.6)}
+.ttl::after{content:"";display:block;width:40%;height:1px;margin:5cqw auto 0;background:linear-gradient(90deg,transparent,#c9a15a,transparent);box-shadow:0 1px 0 rgba(0,0,0,.5)}
+.lb{position:relative;display:flex;justify-content:space-between;align-items:center;width:100%;min-height:44px;padding:3.2cqw 5cqw;margin:0 0 3.4cqw;font-size:max(15px,4.8cqw);color:#e4c488;background:linear-gradient(rgba(0,0,0,.34),rgba(0,0,0,.22));border:0;border-radius:2.4cqw;text-align:left;box-shadow:inset 0 2px 5px rgba(0,0,0,.65),inset 0 -1px 0 rgba(255,220,160,.12),0 1px 0 rgba(255,220,160,.14);text-shadow:0 -1px 0 rgba(0,0,0,.7)}
+.lb::before{content:"";position:absolute;inset:1.3cqw;border:1.5px dashed rgba(224,190,130,.5);border-radius:1.4cqw;pointer-events:none}
+.lb small{color:#b99560;font-size:max(12px,3.8cqw)}.lb:active{box-shadow:inset 0 3px 8px rgba(0,0,0,.85)}
+.lb.big{justify-content:center;font-size:max(17px,5.4cqw);font-weight:600;color:#f0d49a;background:linear-gradient(rgba(150,95,30,.5),rgba(90,55,20,.5))}
+.lo{align-self:center;background:none;border:0;min-height:44px;padding:0 4cqw;color:#b99560;font-size:max(13px,3.8cqw);text-decoration:underline;text-underline-offset:3px}
 .hero{background:linear-gradient(160deg,#3a2012,#6b3519);color:var(--cream);border-radius:20px;padding:28px 20px;margin-bottom:16px}
 .hero h1{font-size:34px}.hero p{margin:4px 0 20px;color:#d9bf9c}
 .hero .btn{background:var(--cream);color:var(--brown);width:100%;font-size:18px}
@@ -72,7 +82,7 @@ legend{color:var(--mute);font-size:14px;padding:0;margin-bottom:6px}
 .chip input:focus-visible+span{outline:2px solid var(--ink)}
 .acts{display:flex;gap:12px;margin-top:22px}
 .acts .btn{flex:1}
-.acts.pin{position:sticky;bottom:calc(57px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--line);margin:14px -16px 0;padding:10px 16px;z-index:3}
+.acts.pin{position:sticky;bottom:calc(57px + env(safe-area-inset-bottom));background:var(--bg) var(--paper);border-top:1px solid var(--line);margin:14px -16px 0;padding:10px 16px;z-index:3}
 .wdone{position:sticky;top:8px;display:flex;justify-content:flex-end;pointer-events:none;z-index:2}.wdone .btn{pointer-events:auto}
 .empty{color:var(--mute);padding:20px 4px}
 .toast{position:fixed;bottom:calc(76px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:10px 18px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
@@ -84,7 +94,7 @@ legend{color:var(--mute);font-size:14px;padding:0;margin-bottom:6px}
 .err{color:#a2392b;min-height:1.4em;margin:0}
 .tip{position:sticky;bottom:calc(135px + env(safe-area-inset-bottom));background:var(--ink);color:var(--cream);border-radius:var(--r);padding:10px 14px;margin:10px 0;z-index:4;cursor:pointer}
 .tip small{color:#d9bf9c}
-.ov{position:fixed;inset:0;background:var(--bg);overflow:auto;z-index:8;padding-top:env(safe-area-inset-top)}
+.ov{position:fixed;inset:0;background:var(--bg) var(--paper);overflow:auto;z-index:8;padding-top:env(safe-area-inset-top)}
 .wheel{display:block;width:100%;max-width:340px;margin:10px auto}.wheel g{cursor:pointer;outline:none}.wheel g:focus-visible path{stroke:var(--ink);stroke-width:3}
 .cmp{display:grid;grid-template-columns:72px 1fr 1fr;gap:6px 10px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin:10px 0}.cmp>*{min-width:0;overflow-wrap:anywhere}
 .pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 10px;margin:2px 4px 2px 0;background:var(--panel);font-size:14px}.pill.sh{background:var(--brown);border-color:var(--brown);color:var(--cream)}
@@ -211,7 +221,7 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.9";
+const VERSION = "3.10";
 let gTab = "cat", gSel = null, gDet = null, wOn = false, wSel = null, cA = "", cB = "";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
@@ -232,11 +242,15 @@ async function shrink(file, max, q) {
 }
 
 /* ---------- Pages ---------- */
-const home = () => `<div class="hero"><h1>Dram Notes <small class="ver">v${VERSION}</small></h1><p>Explore · Taste · Record</p><button class="btn" data-a="new">+ New Tasting</button></div>
-  <button class="row" data-v="coll"><span>My Collection</span><small>${notes.length} bottle${notes.length === 1 ? "" : "s"}</small></button>
-  <button class="row" data-v="learn"><span>Flavour Guide</span><small>Learn and explore</small></button>
-  <button class="row" data-v="cmp"><span>Compare</span><small>Two bottles side by side</small></button>
-  ${LOCAL ? "" : `<button class="btn ghost" data-a="out">Sign out</button>`}`;
+const home = () => `<div class="cover"><div class="cin">
+  <div class="ttl"><h1>Dram Notes</h1><small>v${VERSION}</small><p>Explore · Taste · Record</p></div>
+  <div>
+  <button class="lb big" data-a="new">+ New Tasting</button>
+  <button class="lb" data-v="coll"><span>My Collection</span><small>${notes.length} bottle${notes.length === 1 ? "" : "s"}</small></button>
+  <button class="lb" data-v="learn"><span>Flavour Guide</span><small>Learn and explore</small></button>
+  <button class="lb" data-v="cmp"><span>Compare</span><small>Two bottles side by side</small></button>
+  </div>
+  ${LOCAL ? "<span></span>" : `<button class="lo" data-a="out">Sign out</button>`}</div></div>`;
 
 const detailHtml = n => { const [w = "", t = ""] = DETAIL[n] || [], l = n.toLowerCase(); return `<div class="row card"><h3>${n}</h3>${w}<br><small>Where you might notice it: ${t}</small><br><small>In a note: "A light ${l} note on the nose." or "${n} comes through on the taste."</small></div>`; };
 const learn = () => `<h2>Flavour Guide</h2><div class="tabs"><button class="tab ${gTab === "cat" ? "on" : ""}" data-gt="cat">Categories</button><button class="tab ${gTab === "ex" ? "on" : ""}" data-gt="ex">Examples</button><button class="tab ${gTab === "wh" ? "on" : ""}" data-gt="wh">Wheel</button></div>
