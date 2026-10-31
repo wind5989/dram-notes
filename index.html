@@ -260,7 +260,7 @@ async function shrink(file, max, q) {
 
 /* ---------- Pages ---------- */
 const home = () => `<div class="cover"><div class="cin">
-  <div class="ttl"><h1>Dram Notes</h1><small>v${VERSION}</small><p>Explore · Taste · Record</p></div>
+  <div class="ttl"><h1>Whiskey Notes</h1><small>v${VERSION}</small><p>Explore · Taste · Record</p></div>
   <div>
   <button class="lb big" data-a="new">+ New Tasting</button>
   <button class="lb" data-v="coll"><span>My Collection</span><small>${notes.length} bottle${notes.length === 1 ? "" : "s"}</small></button>
@@ -484,7 +484,7 @@ else {
   fb.onAuthStateChanged(auth, u => {
     if (u) { start(); return; }
     unsub?.(); unsub = null; notes = []; draft = null;
-    $("#root").innerHTML = `<form class="login" id="lf"><h1>Dram Notes</h1><small class="ver">v${VERSION}</small>
+    $("#root").innerHTML = `<form class="login" id="lf"><h1>Whyskey Notes</h1><small class="ver">v${VERSION}</small>
       <label class="fld">Email<input id="em" type="email" autocomplete="username"></label>
       <label class="fld">Password<input id="pw" type="password" autocomplete="current-password"></label>
       <p class="err" id="err" role="alert"></p>
