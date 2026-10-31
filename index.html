@@ -263,7 +263,7 @@ const home = () => `<div class="cover"><div class="cin">
   <div class="ttl"><h1>Whisky Notes</h1><small>v${VERSION}</small><p>Explore · Taste · Record</p></div>
   <div>
   <button class="lb big" data-a="new">+ New Tasting</button>
-  <button class="lb" data-v="coll"><span>My Collection</span><small>${notes.length} bottle${notes.length === 1 ? "" : "s"}</small></button>
+  <button class="lb" data-v="coll"><span>My Tastings</span><small>${notes.length} bottle${notes.length === 1 ? "" : "s"}</small></button>
   <button class="lb" data-v="learn"><span>Flavour Guide</span><small>Learn and explore</small></button>
   <button class="lb" data-v="cmp"><span>Compare</span><small>Two bottles side by side</small></button>
   </div>
@@ -274,7 +274,7 @@ const learn = () => `<h2>Flavour Guide</h2><div class="tabs"><button class="tab 
   ${gTab === "wh" ? wheelPage() : gTab === "cat" ? GUIDE.map(([n, d]) => `<button class="row card" data-gc="${n}"><b>${n}</b><br>${d}</button>${gSel === n ? `<div class="tabs">${SPEC[n].map(x => `<button class="tab" data-gd="${esc(x)}">${x}</button>`).join("")}</div>` : ""}`).join("")
   : `${gDet ? detailHtml(gDet) : '<p class="mute">Tap a flavour to see what it is and where to notice it.</p>'}${GUIDE.map(([n]) => `<h3>${n}</h3><div class="tabs">${SPEC[n].map(x => `<button class="tab ${x === gDet ? "on" : ""}" data-gd="${esc(x)}">${x}</button>`).join("")}</div>`).join("")}`}`;
 
-const coll = () => `<h2>My Collection</h2><div class="acts" style="margin:10px 0"><button class="btn" data-a="new">+ New Tasting</button><button class="btn ghost" data-v="cmp">Compare</button></div><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
+const coll = () => `<h2>My Tastings</h2><div class="acts" style="margin:10px 0"><button class="btn" data-a="new">+ New Tasting</button><button class="btn ghost" data-v="cmp">Compare</button></div><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
   <div class="tabs">${TABS.map(c => `<button class="tab ${c === cat ? "on" : ""}" data-c="${c}">${c === "Favourites" ? "♥ Favourites" : c}</button>${c === "Bourbon" ? '<span class="brk"></span>' : ""}`).join("")}</div>
   <div id="list">${listHtml()}</div>`;
 
@@ -321,7 +321,7 @@ function noteView() {
   const n = draft, saved = notes.some(x => x.id === n.id), last = STEPS.length - 1;
   if (!editing) {
     const body = STEPS.map((t, i) => { const h = part(i, false); return i === 0 ? h : (h.trim() ? `<div class="sec"><h3>${t}</h3>${h}</div>` : ""); }).join("");
-    return `<div class="dhead"><button class="btn ghost" data-v="coll">‹ Collection</button><span style="display:flex;align-items:center;gap:8px">${n.favourite ? '<span class="heart on" aria-label="Favourite">♥</span>' : ""}<button class="btn" data-a="edit">Edit</button></span></div>
+    return `<div class="dhead"><button class="btn ghost" data-v="coll">‹ Tastings</button><span style="display:flex;align-items:center;gap:8px">${n.favourite ? '<span class="heart on" aria-label="Favourite">♥</span>' : ""}<button class="btn" data-a="edit">Edit</button></span></div>
       <h2>${esc(n.name)}</h2><fieldset class="lock" disabled>${body}</fieldset>
       ${saved ? `<div class="acts"><button class="btn danger" data-a="del">Delete</button></div>` : ""}`;
   }
@@ -465,7 +465,7 @@ $("#root").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key ==
 
 function start() {
   view = "home"; draft = null; editing = false;
-  $("#root").innerHTML = `<main class="page" id="page"></main><nav class="bar">${[["home", "Home"], ["coll", "Collection"], ["learn", "Learn"]].map(([v, l]) => `<button data-v="${v}">${l}</button>`).join("")}</nav><div class="ov" id="wheelov" hidden></div>`;
+  $("#root").innerHTML = `<main class="page" id="page"></main><nav class="bar">${[["home", "Home"], ["coll", "Tastings"], ["learn", "Learn"]].map(([v, l]) => `<button data-v="${v}">${l}</button>`).join("")}</nav><div class="ov" id="wheelov" hidden></div>`;
   render();
   unsub?.();
   unsub = store.listen(list => { notes = list; if (view === "coll") renderList(); else if (view === "home" || view === "cmp") render(); });
