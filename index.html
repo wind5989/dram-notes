@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Whisky Notes v3.12 -->
+<!-- Whisky Notes v3.13 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Whisky Notes v3.12</title>
+<title>Whisky Notes v3.13</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#5e4a37;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -103,6 +103,96 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 .hero .ver{color:#d9bf9c}
 @media(max-width:560px){.top{grid-template-columns:110px 1fr}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Learning library v3.13 */
+.learn-hub-head{margin:4px 0 18px;padding:6px 2px 0}
+.eyebrow{display:block;font:600 10px/1.3 Figtree,system-ui,sans-serif;letter-spacing:1.8px;color:#8a6847}
+.learn-hub-head h2{font-size:30px;margin:5px 0 7px}
+.learn-hub-head p,.learn-top>p{max-width:600px;color:var(--mute);margin:0}
+.learn-grid,.flavour-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.learn-card{min-width:0;min-height:198px;position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:12px 13px 13px;background:linear-gradient(160deg,#fcf8ef,#f5ead8);border:1px solid #d7c3a3;border-radius:14px;box-shadow:0 2px 5px rgba(69,43,22,.07);color:var(--ink);overflow:hidden}
+.learn-card:active,.flavour-cat-card:active{transform:translateY(1px);box-shadow:inset 0 2px 5px rgba(65,42,24,.12)}
+.learn-number{position:absolute;top:10px;right:12px;font:600 10px Figtree,sans-serif;letter-spacing:1px;color:#927858}
+.learn-art{width:100%;height:78px;display:flex;align-items:center;justify-content:center;margin:2px 0 8px}
+.learn-art svg{width:100%;height:100%;max-width:120px;filter:drop-shadow(0 2px 1px rgba(67,42,23,.08))}
+.learn-card-title{font:600 18px/1.15 Fraunces,Georgia,serif;margin:0 0 5px}
+.learn-card-copy{font-size:12px;line-height:1.35;color:var(--mute);flex:1}
+.learn-card-link{margin-top:10px;font-size:11px;font-weight:600;letter-spacing:.3px;color:#80502f}
+.learn-card-link span{font-size:15px;margin-left:3px}
+.learn-footnote{font-size:12px;line-height:1.5;color:var(--mute);margin:18px 2px 4px}
+.learn-top{margin:0 0 14px}
+.learn-back,.text-link{border:0;background:none;padding:6px 0;color:#80502f;font-weight:600;min-height:38px;text-align:left}
+.learn-top .eyebrow{margin-top:13px}
+.learn-top h2{font-size:29px;margin:4px 0 6px}
+.learn-inline-actions{margin:0 0 8px}
+.learn-note{background:#eee3d0;border-left:3px solid #aa865c;border-radius:0 9px 9px 0;padding:11px 13px;font-size:13px;color:#5e4a37;line-height:1.5;margin:12px 0 15px}
+.flavour-cat-card{min-width:0;min-height:166px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:linear-gradient(160deg,#fcf8ef,#f6ecdd);border:1px solid var(--line);border-radius:14px;padding:11px 12px 10px;color:var(--ink);box-shadow:0 2px 5px rgba(69,43,22,.05)}
+.flavour-art{height:54px;width:100%;display:flex;align-items:center;justify-content:flex-start;margin-bottom:6px}
+.flavour-art svg{width:56px;height:56px}
+.flavour-cat-title{font:600 17px/1.15 Fraunces,Georgia,serif;margin-bottom:4px}
+.flavour-cat-copy{font-size:11px;line-height:1.35;color:var(--mute);flex:1}
+.flavour-count{display:flex;justify-content:space-between;width:100%;margin-top:9px;color:#80502f;font-size:10px;font-weight:600;letter-spacing:.2px}
+.flavour-count span{font-size:16px;line-height:10px}
+.wheel-entry{display:flex;align-items:center;gap:12px;width:100%;margin:14px 0 0;padding:11px 14px;background:#eee3d0;border:1px solid #d9c6a8;border-radius:12px;text-align:left;color:var(--ink)}
+.wheel-entry-mark{display:grid;place-items:center;width:38px;height:38px;border:1px solid #b99a72;border-radius:50%;font-size:23px;color:#94683e;flex:none}
+.wheel-entry span:nth-child(2){flex:1;min-width:0}
+.wheel-entry b,.wheel-entry small{display:block}
+.wheel-entry b{font:600 16px Fraunces,Georgia,serif}
+.wheel-entry small{font-size:11px;color:var(--mute);margin-top:2px}
+.wheel-arrow{font-size:22px;color:#80502f}
+.descriptor-list{display:flex;flex-direction:column;gap:8px}
+.descriptor-card,.stage-card,.style-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.descriptor-card.expanded,.stage-card.expanded,.style-card.expanded{border-color:#bda17c;box-shadow:0 2px 8px rgba(69,43,22,.06)}
+.descriptor-toggle,.stage-toggle,.style-toggle{width:100%;display:flex;align-items:center;gap:12px;border:0;background:none;text-align:left;padding:12px 13px;color:var(--ink);min-height:54px}
+.descriptor-toggle>span:first-child,.style-toggle>span:first-child{flex:1;min-width:0}
+.descriptor-toggle b,.descriptor-toggle small,.stage-title-wrap b,.stage-title-wrap small,.style-toggle b,.style-toggle small{display:block}
+.descriptor-toggle b,.style-toggle b{font:600 16px Fraunces,Georgia,serif}
+.descriptor-toggle small,.style-toggle small,.stage-title-wrap small{font-size:11px;line-height:1.35;color:var(--mute);margin-top:3px}
+.descriptor-plus,.stage-plus{font:400 21px/1 Figtree,sans-serif;color:#8a6847;flex:none}
+.descriptor-detail,.stage-detail,.style-detail{padding:0 14px 13px;color:var(--ink);font-size:13px;line-height:1.5}
+.descriptor-detail p,.stage-detail p,.style-detail p{margin:8px 0}
+.descriptor-detail b,.style-detail b{color:#6f482d}
+.descriptor-tip,.style-note{background:#f1e8d9;border-radius:8px;padding:8px 10px;color:var(--mute);font-size:11px}
+.country-tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 9px;margin:0 0 7px;scrollbar-width:thin}
+.country-tab{background:none;border:1px solid var(--line);border-radius:99px;padding:7px 12px;min-height:38px;white-space:nowrap;font-size:12px;color:var(--mute)}
+.country-tab.on{background:#6f482d;border-color:#6f482d;color:#fbf3e4}
+.country-intro{padding:8px 1px 13px}
+.country-intro h3{margin:0 0 5px}
+.country-intro p{margin:0;color:var(--mute);font-size:13px;line-height:1.5}
+.region-list{display:flex;flex-direction:column;gap:8px}
+.region-card{display:flex;align-items:center;gap:10px;width:100%;padding:12px 13px;background:var(--panel);border:1px solid var(--line);border-radius:12px;color:var(--ink);text-align:left}
+.region-card-main{display:block;flex:1;min-width:0}
+.region-card b,.region-card small,.region-card-main>span{display:block}
+.region-card b{font:600 17px Fraunces,Georgia,serif}
+.region-card small{font-size:10px;color:#8a6847;margin:2px 0 6px}
+.region-card-main>span{font-size:12px;line-height:1.4;color:var(--mute)}
+.region-chevron{font-size:23px;color:#8a6847;flex:none}
+.region-detail{background:linear-gradient(160deg,#fcf8ef,#f6ecdd);border:1px solid var(--line);border-radius:14px;padding:15px}
+.region-kicker{display:block;font-size:10px;letter-spacing:1px;color:#8a6847;line-height:1.45}
+.region-detail h3{font-size:25px;margin:5px 0 12px}
+.region-section{border-top:1px solid #e2d2b9;padding:10px 0 2px}
+.region-section h4{font:600 14px Fraunces,Georgia,serif;margin:0 0 4px;color:#6f482d}
+.region-section p,.region-examples p{margin:0;font-size:13px;line-height:1.5;color:var(--mute)}
+.region-names{font-weight:600;color:var(--ink)!important}
+.region-examples{background:#eee3d0;border-radius:9px;padding:11px 12px;margin-top:11px}
+.region-examples .eyebrow{margin-bottom:5px}
+.region-note{margin-top:13px}
+.process-intro{display:flex;align-items:center;gap:10px;color:#8a6847;font-size:10px;font-weight:600;letter-spacing:1.5px;margin:16px 4px 10px}
+.process-line{height:1px;background:#cdb99a;flex:1}
+.stage-list,.style-list{display:flex;flex-direction:column;gap:9px}
+.stage-toggle{padding:12px;min-height:66px}
+.stage-num{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;border:1px solid #c9b18e;background:#f0e5d2;color:#80502f;font:600 12px Fraunces,Georgia,serif;flex:none}
+.stage-title-wrap{flex:1;min-width:0}
+.stage-title-wrap b{font:600 17px Fraunces,Georgia,serif}
+.stage-terms{border-top:1px solid #e5d6c0;padding-top:9px;margin-top:10px;display:flex;flex-direction:column;gap:3px}
+.stage-terms b{font-size:11px;color:#80502f}
+.stage-terms span{font-size:11px;color:var(--mute)}
+.style-toggle{min-height:60px}
+.style-detail{padding-top:0}
+.style-examples{background:#eee3d0;border-radius:8px;padding:9px 10px;margin:10px 0}
+.style-examples .eyebrow{margin-bottom:4px}
+.style-examples p{margin:0;font-size:12px;color:var(--ink)}
+
 </style>
 </head>
 <body>
@@ -238,7 +328,7 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.12";
+const VERSION = "3.13";
 let gTab = "cat", gSel = null, gDet = null, wOn = false, wSel = null, cA = "", cB = "";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
@@ -264,15 +354,195 @@ const home = () => `<div class="cover"><div class="cin">
   <div>
   <button class="lb big" data-a="new">+ New Tasting</button>
   <button class="lb" data-v="coll"><span>My Tastings</span><small>${notes.length} bottle${notes.length === 1 ? "" : "s"}</small></button>
-  <button class="lb" data-v="learn"><span>Flavour Guide</span><small>Learn and explore</small></button>
+  <button class="lb" data-v="learn"><span>Learning Library</span><small>Explore whisky</small></button>
   <button class="lb" data-v="cmp"><span>Compare</span><small>Two bottles side by side</small></button>
   </div>
   ${LOCAL ? "<span></span>" : `<button class="lo" data-a="out">Sign out</button>`}</div></div>`;
 
-const detailHtml = n => { const [w = "", t = ""] = DETAIL[n] || [], l = n.toLowerCase(); return `<div class="row card"><h3>${n}</h3>${w}<br><small>Where you might notice it: ${t}</small><br><small>In a note: "A light ${l} note on the nose." or "${n} comes through on the taste."</small></div>`; };
-const learn = () => `<h2>Flavour Guide</h2><div class="tabs"><button class="tab ${gTab === "cat" ? "on" : ""}" data-gt="cat">Categories</button><button class="tab ${gTab === "ex" ? "on" : ""}" data-gt="ex">Examples</button><button class="tab ${gTab === "wh" ? "on" : ""}" data-gt="wh">Wheel</button></div>
-  ${gTab === "wh" ? wheelPage() : gTab === "cat" ? GUIDE.map(([n, d]) => `<button class="row card" data-gc="${n}"><b>${n}</b><br>${d}</button>${gSel === n ? `<div class="tabs">${SPEC[n].map(x => `<button class="tab" data-gd="${esc(x)}">${x}</button>`).join("")}</div>` : ""}`).join("")
-  : `${gDet ? detailHtml(gDet) : '<p class="mute">Tap a flavour to see what it is and where to notice it.</p>'}${GUIDE.map(([n]) => `<h3>${n}</h3><div class="tabs">${SPEC[n].map(x => `<button class="tab ${x === gDet ? "on" : ""}" data-gd="${esc(x)}">${x}</button>`).join("")}</div>`).join("")}`}`;
+/* ---------- Learning library: redesigned for v3.13 ---------- */
+let learnSection = "hub";
+let flavourCategory = null, flavourDescriptor = null, flavourWheel = false;
+let learnCountry = "Scotland", learnRegion = null;
+const openLearnItems = new Set();
+
+const HUB_ART = {
+  flavours: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M28 76c8-19 9-39 27-54 15 12 21 33 34 52-20 11-41 13-61 2Z" fill="#d9a75f" opacity=".30"/><path d="M31 74c10-19 12-37 25-51 15 15 20 34 32 49-18 11-39 13-57 2Z" fill="none" stroke="#70452d" stroke-width="2.4" stroke-linejoin="round"/><path d="M56 25c-3 15-10 30-21 47M57 25c8 17 17 31 31 47M44 55c8 2 17 4 26 2" fill="none" stroke="#70452d" stroke-width="1.8" stroke-linecap="round"/><path d="M16 34c-3-7 2-12 7-13M98 31c5-4 9-1 9 4M91 82c7 4 13 1 15-4" fill="none" stroke="#a56d42" stroke-width="2" stroke-linecap="round"/><circle cx="28" cy="25" r="3" fill="#9e7851"/><circle cx="98" cy="61" r="2.5" fill="#9e7851"/></svg>`,
+  regions: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="m12 76 24-31 13 17 19-34 23 37 14-17 7 28Z" fill="#a9b49a" opacity=".55"/><path d="m12 76 24-31 13 17 19-34 23 37 14-17 7 28H12Z" fill="none" stroke="#52634d" stroke-width="2.3" stroke-linejoin="round"/><path d="m49 62 19-34 8 13-10 2-6 10M35 45l7 10-9 0" fill="none" stroke="#52634d" stroke-width="1.6" stroke-linejoin="round"/><path d="M18 82c20-5 53-5 84 0" fill="none" stroke="#8b6246" stroke-width="2" stroke-linecap="round"/><path d="M23 86h74" stroke="#8b6246" stroke-width="1.4" stroke-dasharray="3 4"/></svg>`,
+  production: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M39 21h42l-5 12v8c0 5 10 9 12 16l-2 27H34l-2-27c2-7 12-11 12-16v-8Z" fill="#c58b50" opacity=".3"/><path d="M39 21h42l-5 12v8c0 5 10 9 12 16l-2 27H34l-2-27c2-7 12-11 12-16v-8Z" fill="none" stroke="#70452d" stroke-width="2.4" stroke-linejoin="round"/><path d="M44 21v-8h32v8M43 59h43M47 69c6-4 18-4 26 0" fill="none" stroke="#70452d" stroke-width="2" stroke-linecap="round"/><path d="M51 13c-4-7 3-9 2-13M67 13c-3-6 4-8 3-12" fill="none" stroke="#9e7851" stroke-width="2" stroke-linecap="round"/><circle cx="60" cy="73" r="3" fill="#a56d42"/></svg>`,
+  styles: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M25 28h19l-2 14-3 42H28l-3-42Z" fill="#b8a080" opacity=".45"/><path d="M25 28h19l-2 14-3 42H28l-3-42Z" fill="none" stroke="#70452d" stroke-width="2.2" stroke-linejoin="round"/><path d="M30 28v-9h9v9M61 18h19v14l-4 52H65l-4-52Z" fill="#c58b50" opacity=".36"/><path d="M61 18h19v14l-4 52H65l-4-52Z" fill="none" stroke="#70452d" stroke-width="2.2" stroke-linejoin="round"/><path d="M65 18V9h11v9M89 35h17l-2 13-3 36H94l-3-36Z" fill="#a9b49a" opacity=".5"/><path d="M89 35h17l-2 13-3 36H94l-3-36Z" fill="none" stroke="#52634d" stroke-width="2.2" stroke-linejoin="round"/><path d="M93 35v-8h9v8M22 85h88" stroke="#70452d" stroke-width="2" stroke-linecap="round"/></svg>`
+};
+const CAT_ART = {
+  Citrus: `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="23" fill="#d9b85c" opacity=".38" stroke="#8b6738" stroke-width="2"/><circle cx="32" cy="32" r="17" fill="none" stroke="#8b6738" stroke-width="1.8"/><path d="M32 15v34M15 32h34M20 20l24 24M44 20 20 44" stroke="#8b6738" stroke-width="1.5"/><path d="M33 9c5-5 12-5 15-1-5 4-10 5-15 1Z" fill="#74815b" stroke="#52634d" stroke-width="1.4"/></svg>`,
+  Fruity: `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 19c-17-11-29 4-21 26 5 13 15 14 21 7 7 7 17 6 22-7 8-22-4-37-22-26Z" fill="#b96f5d" opacity=".36" stroke="#875143" stroke-width="2"/><path d="M32 20c-2-8 1-12 6-15M35 13c7-6 14-3 15 2-6 4-11 3-15-2Z" fill="#a9b49a" stroke="#52634d" stroke-width="1.5"/></svg>`,
+  Sweet: `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7c-6 11-19 23-19 35a19 19 0 0 0 38 0C51 30 38 18 32 7Z" fill="#d9a75f" opacity=".42" stroke="#946535" stroke-width="2"/><path d="M23 41c2 7 7 10 14 9" fill="none" stroke="#946535" stroke-width="2" stroke-linecap="round"/><path d="M37 24c5 6 8 11 8 17" fill="none" stroke="#946535" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+  Spicy: `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M14 43c9-17 24-27 39-24-2 14-13 30-31 34-7 2-12-3-8-10Z" fill="#c7794b" opacity=".4" stroke="#87513c" stroke-width="2"/><path d="M21 46c12-12 20-18 31-25M17 39c-6-2-9-7-8-12 6 1 11 5 12 10" fill="none" stroke="#87513c" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+  Woody: `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 21c13-8 27-8 40 0v23c-13 8-27 8-40 0Z" fill="#a87852" opacity=".36" stroke="#70452d" stroke-width="2"/><path d="M12 21c13 8 27 8 40 0M12 44c13-8 27-8 40 0M21 16v33M43 16v33" fill="none" stroke="#70452d" stroke-width="1.7"/><path d="M27 27c-2 5-2 10 1 14M35 26c4 5 3 10 0 15" fill="none" stroke="#70452d" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  Smoky: `<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 48h39l-5-10H18Z" fill="#8a8175" opacity=".4" stroke="#5b5b56" stroke-width="2"/><path d="M22 36c-7-8 4-10 0-18M33 34c-7-9 5-12 1-22M43 36c-5-7 5-10 2-16" fill="none" stroke="#65766e" stroke-width="2" stroke-linecap="round"/><path d="M14 50h38" stroke="#5b5b56" stroke-width="2" stroke-linecap="round"/></svg>`
+};
+const CATEGORY_TINT = {Citrus:"#d9b85c",Fruity:"#b96f5d",Sweet:"#d9a75f",Spicy:"#c7794b",Woody:"#a87852",Smoky:"#8a9b91"};
+const FLAVOUR_COMPARE = {
+  Lemon:"Compared with orange, lemon is sharper and more acidic; grapefruit adds a distinct bitter edge.",
+  Orange:"Orange is rounder and sweeter than lemon; orange peel is more aromatic and bitter than the juice.",
+  Grapefruit:"Grapefruit combines citrus freshness with bitterness; lemon is usually cleaner and more sharply sour.",
+  "Orange peel":"Think of the fragrant oils in the zest, not the juicy sweetness of orange flesh.",
+  Lime:"Lime is greener and sharper than orange; it can suggest fresh zest rather than sweet fruit.",
+  Apple:"Apple tends to be crisp and orchard-like; pear is usually softer and more delicate.",
+  Pear:"Pear is often softer and more floral than the crisp snap of green apple.",
+  "Stone fruit":"Peach and apricot are softer and rounder than crisp apple or pear; plum can be darker and richer.",
+  Berries:"Berry notes suggest tart or jammy red and dark fruit; dried fruit is denser and less fresh.",
+  "Dried fruit":"Raisin, fig and date are concentrated and syrupy, unlike the freshness of orchard fruit.",
+  Banana:"Banana is creamy and ripe; it is different from the sharper, greener impression of apple or pear.",
+  Vanilla:"Vanilla is creamy and aromatic; caramel is more like cooked sugar, while honey has a floral quality.",
+  Caramel:"Caramel suggests cooked sugar; toffee is generally thicker and more buttery.",
+  Honey:"Honey can seem floral and fragrant; vanilla is creamier and caramel more directly sugary.",
+  Toffee:"Toffee is buttery and chewy; caramel is usually a cleaner cooked-sugar impression.",
+  Maple:"Maple suggests a dark, woody syrup; honey is more floral and lighter.",
+  Butterscotch:"Butterscotch has a buttery, sometimes lightly salty quality; caramel is less buttery.",
+  Cinnamon:"Cinnamon is sweet and warming; black pepper is drier and more prickly.",
+  "Black pepper":"Pepper gives a dry, prickling sensation; ginger is warmer and more zesty.",
+  Clove:"Clove is concentrated and pungent, sometimes medicinal; nutmeg is softer and rounder.",
+  Ginger:"Ginger has a bright, zesty heat; cinnamon is sweeter and more like baking spice.",
+  Nutmeg:"Nutmeg is gentle and rounded; clove is sharper and more intense.",
+  Oak:"Oak can suggest dry wood, vanilla or tannin; charred wood leans more toward toast and smoke.",
+  Cedar:"Cedar is aromatic and pencil-box dry; oak is often broader and more tannic.",
+  Tobacco:"Tobacco suggests dry leaf and sometimes a sweet, earthy aroma; leather is deeper and more savoury.",
+  Leather:"Leather is earthy and savoury, not literally smoky; tobacco often suggests dry leaf instead.",
+  "Charred wood":"Charred wood suggests toasted or burnt timber; peat is earthy smoke from the malt-making process.",
+  Peat:"Peat smoke can be earthy, medicinal or phenolic; bonfire smoke is usually sweeter and more like burning wood.",
+  Bonfire:"Bonfire suggests wood smoke; peat can smell more earthy, medicinal or coastal.",
+  Char:"Char is a dry burnt or toasted quality, often associated with the inside of a charred cask; ash is dustier.",
+  Ash:"Ash is the dry, powdery impression left after a fire; bonfire is more aromatic and smoky.",
+  Brine:"Brine suggests salt water or sea spray, not smoke itself; it may sit alongside coastal or peaty notes."
+};
+const LEARN_COUNTRIES = ["Scotland","Ireland","Japan","USA","Canada"];
+const REGION_DATA = {
+  Scotland: {
+    intro:"Scotland has five formally recognised whisky regions or localities. They are useful starting points, but distillery character, cask choice and production matter just as much.",
+    note:"The Islands are often discussed as a group, but are not a separate protected Scotch Whisky region. They are included here as a useful informal geographical grouping.",
+    areas:[
+      {id:"speyside",name:"Speyside",where:"Northeast Scotland, around the River Spey",profile:"Often associated with orchard fruit, honey, floral notes and gentle spice. Sherry-cask examples can bring dried fruit, nuts and richer sweetness. Peat is generally less prominent, though there are exceptions.",production:"A high concentration of distilleries and a broad range of styles. Cask selection and house style create substantial variation within the area.",distilleries:"Glenfiddich · The Glenlivet · The Macallan · Aberlour · The Balvenie",examples:"Glenfiddich 12 · The Glenlivet 12 · Aberlour 12 · The Macallan Sherry Oak 12"},
+      {id:"highlands",name:"Highlands",where:"Mainland Scotland north of the Highland–Lowland line",profile:"The most varied of the traditional regions. Depending on the distillery, expect anything from light orchard fruit and malt to heather, rich dried fruit, coastal salt or smoke.",production:"The region is geographically broad. Coastal location, local water, still design, fermentation and cask policy can all contribute to very different house styles.",distilleries:"Glenmorangie · Dalmore · Clynelish · Oban · Dalwhinnie",examples:"Glenmorangie Original 12 · Dalmore 12 · Oban 14 · Clynelish 14"},
+      {id:"islay",name:"Islay",where:"The island of Islay, off Scotland’s west coast",profile:"Famous for peat smoke, often with medicinal, earthy, seaweed, ash or briny impressions. Not every Islay whisky is heavily peated: some are notably gentle or unpeated.",production:"Peat smoke commonly comes from drying malted barley over peat fires. Coastal maturation sites and individual cask choices may add further character, but smoke intensity is a distillery and expression choice.",distilleries:"Laphroaig · Ardbeg · Lagavulin · Bowmore · Caol Ila · Bunnahabhain · Bruichladdich",examples:"Laphroaig 10 · Ardbeg 10 · Lagavulin 16 · Bowmore 12 · Bunnahabhain 12"},
+      {id:"lowlands",name:"Lowlands",where:"Southern Scotland, south of the Highland–Lowland line",profile:"Often lighter in body, with grassy, floral, cereal, citrus or gentle sweetness. These are tendencies, not a rule; modern Lowland whiskies cover a wider range.",production:"Historically associated with lighter styles and triple distillation at some distilleries, but neither lightness nor triple distillation defines the region.",distilleries:"Auchentoshan · Glenkinchie · Bladnoch",examples:"Auchentoshan 12 · Glenkinchie 12 · Bladnoch 11"},
+      {id:"campbeltown",name:"Campbeltown",where:"The Kintyre peninsula on Scotland’s west coast",profile:"Often robust and distinctive, with combinations of maritime salt, oiliness, fruit, vanilla, toffee and sometimes smoke.",production:"A small region with a strong historic identity. The surviving distilleries have notably different approaches, so the profile is best treated as a loose guide.",distilleries:"Springbank · Glen Scotia · Glengyle (Kilkerran)",examples:"Springbank 10 · Glen Scotia 15 · Kilkerran 12"},
+      {id:"islands",name:"The Islands",where:"Scotland’s whisky-producing islands beyond Islay",profile:"A convenient informal grouping rather than an official Scotch Whisky region. Island whiskies vary widely, but coastal settings, salt, brine, gentle smoke and robust malt are common points of discussion.",production:"Island geography does not impose one production method or flavour. Some distilleries make peated whisky, others unpeated; cask policy and distillery character remain important.",distilleries:"Talisker (Skye) · Highland Park (Orkney) · Arran (Isle of Arran) · Tobermory (Mull) · Jura",examples:"Talisker 10 · Highland Park 12 · Arran 10 · Tobermory 12"}
+    ]
+  },
+  Ireland: {
+    intro:"Irish whiskey is produced across the island of Ireland, including both the Republic of Ireland and Northern Ireland. The areas below are geographical clusters of distilleries, not official flavour regions.",
+    note:"Irish whiskey does not have a recognised regional flavour classification comparable to Scotland’s five protected regions. Use these locations to understand where distilleries are based, not to predict flavour.",
+    areas:[
+      {id:"antrim",name:"Antrim & Northern Ireland",where:"County Antrim and the north of the island",profile:"Bushmills is one of Ireland’s historic whiskey centres. Its range includes approachable blends as well as malt whiskey. Newer Northern Irish distilleries add further diversity.",production:"The area has a long distilling history, but the individual distillery and whiskey style are more useful guides than a regional flavour expectation.",distilleries:"Old Bushmills Distillery · Hinch Distillery · Titanic Distillers (Belfast)",examples:"Bushmills Original · Bushmills 10 Year Old Single Malt · Bushmills Black Bush"},
+      {id:"dublin",name:"Dublin",where:"Dublin city and its surrounding area",profile:"Dublin was historically a major centre of Irish whiskey. The city’s modern distilling revival has brought new distilleries and visitor experiences.",production:"Dublin producers make different styles, including blends and malt-led expressions. A city location does not imply one common flavour profile.",distilleries:"Teeling Distillery · Roe & Co Distillery · Pearse Lyons Distillery",examples:"Teeling Small Batch · Teeling Single Malt · Roe & Co Blended Irish Whiskey"},
+      {id:"cork",name:"Cork & the South",where:"County Cork and southern Ireland",profile:"A major centre for large-scale Irish whiskey production and several well-known brands. The area is particularly associated with the Midleton distillery complex.",production:"Midleton produces a range of styles and brands, including single pot still, single malt and blended whiskey. The range illustrates why production style is more informative than a regional flavour label.",distilleries:"Midleton Distillery · Clonakilty Distillery · West Cork Distillers",examples:"Jameson Original · Redbreast 12 · Green Spot · Powers Gold Label · Midleton Very Rare"},
+      {id:"midlands",name:"Midlands & the East",where:"County Westmeath, County Louth and neighbouring counties",profile:"This area includes important historic sites and whiskey producers, from the Cooley Peninsula to Kilbeggan.",production:"The area includes both revived historic distilling sites and modern production. Peated Irish malt is also represented in this part of the island.",distilleries:"Kilbeggan Distillery · Cooley Distillery",examples:"Kilbeggan Traditional Irish Whiskey · Connemara Peated Single Malt · The Tyrconnell Single Malt"},
+      {id:"west",name:"West & Southwest",where:"Atlantic-facing counties including Kerry and Donegal",profile:"Independent distilleries in the west and southwest add variety to the modern Irish whiskey landscape. Their location is a point of identity, not a dependable flavour formula.",production:"Smaller producers often work with distinct fermentation, cask and finishing choices. Individual releases can differ markedly.",distilleries:"Dingle Distillery · Sliabh Liag Distillers",examples:"Dingle Single Malt · The Legendary Silkie (blended Irish whiskey)"}
+    ]
+  },
+  Japan: {
+    intro:"Japanese whisky production is spread across several islands and climate zones. The geographical groupings below help locate key distilleries, but Japan does not have formal whisky flavour regions.",
+    note:"Japanese producers often develop several spirit styles within one distillery. Water, climate, still design, cask type and blending are more useful than assuming a single regional character.",
+    areas:[
+      {id:"hokkaido",name:"Hokkaido",where:"Japan’s northern main island",profile:"A northern, maritime setting. Yoichi is known for a robust malt style, while newer Hokkaido producers are developing their own identities.",production:"Nikka’s Yoichi distillery is historically associated with direct-fired pot stills and a substantial, weighty spirit character. This is a distillery signature, not a rule for the island.",distilleries:"Nikka Yoichi · Akkeshi Distillery",examples:"Nikka Yoichi Single Malt · Akkeshi single malt releases"},
+      {id:"tohoku",name:"Tohoku",where:"Northeastern Honshu, including Miyagi Prefecture",profile:"A region of varied landscapes and climates. Miyagikyo is often described in contrast to Yoichi as more delicate and fruit-forward.",production:"Nikka’s Miyagikyo distillery uses a different site and production approach from Yoichi. The contrast between the two is a useful example of how one producer can create distinct house styles.",distilleries:"Nikka Miyagikyo (near Sendai, Miyagi)",examples:"Nikka Miyagikyo Single Malt · Nikka From the Barrel (blend using components from more than one site)"},
+      {id:"kanto",name:"Kanto",where:"Eastern Honshu, including Saitama Prefecture",profile:"The area includes Chichibu, one of Japan’s best-known independent whisky producers. Its releases range from fruit-led to richly cask-influenced, depending on the bottling.",production:"Chichibu is known for hands-on small-scale production and a broad range of cask experiments. Individual releases are often limited and can vary considerably.",distilleries:"Chichibu Distillery",examples:"Ichiro’s Malt & Grain · Ichiro’s Malt Chichibu releases"},
+      {id:"central",name:"Central Honshu",where:"The Japanese Alps and central Pacific side of Honshu",profile:"A diverse area with mountain, forest and inland distillery sites. It includes several major producers with contrasting house styles.",production:"Hakushu’s forest setting and gentle smoke are distinctive; Mars Komagatake and Fuji Gotemba add different malt and grain whisky approaches.",distilleries:"Suntory Hakushu · Mars Komagatake (Shinshu) · Fuji Gotemba",examples:"Hakushu 12 · Mars Komagatake releases · Fuji Single Grain"},
+      {id:"kansai",name:"Kansai",where:"Western Honshu, around Osaka and Kyoto",profile:"Yamazaki is Japan’s best-known historic malt distillery and a key reference point for Japanese single malt.",production:"Yamazaki is known for blending spirits matured in different cask types, including American oak, Spanish oak and Japanese mizunara oak. The exact mix varies by expression.",distilleries:"Suntory Yamazaki (Osaka Prefecture)",examples:"Yamazaki Distiller’s Reserve · Yamazaki 12 · Hibiki Japanese Harmony"}
+    ]
+  },
+  USA: {
+    intro:"American whiskey is made across the country. These are major established production areas and useful reference points, not a complete list of every state or distillery.",
+    note:"Bourbon is not limited to Kentucky: it can be made anywhere in the United States if it meets the production standard. Regional climate, grain and local traditions can influence whiskey, but style is not determined by state alone.",
+    areas:[
+      {id:"kentucky",name:"Kentucky",where:"Especially central Kentucky and the Bourbon Trail area",profile:"The best-known centre of bourbon production. Many expressions show corn sweetness, vanilla, caramel, oak and baking spice, although mash bills, yeast, warehouses and maturation create a wide range.",production:"Bourbon must use at least 51% corn in its grain recipe and mature in new charred oak containers. Kentucky has a long-established distilling and warehousing tradition.",distilleries:"Buffalo Trace · Maker’s Mark · Wild Turkey · Woodford Reserve · Heaven Hill · Jim Beam · Four Roses",examples:"Buffalo Trace Bourbon · Maker’s Mark · Woodford Reserve Distiller’s Select · Wild Turkey 101"},
+      {id:"tennessee",name:"Tennessee",where:"Central Tennessee, including Lynchburg and Tullahoma",profile:"Tennessee whiskey often resembles bourbon in its grain-led sweetness and oak influence, but its charcoal-mellowing tradition gives it a distinct identity.",production:"Tennessee whiskey uses a corn-led mash and new charred oak. The best-known tradition is filtering spirit through sugar-maple charcoal before ageing, commonly called the Lincoln County Process.",distilleries:"Jack Daniel’s · George Dickel · Uncle Nearest · Chattanooga Whiskey",examples:"Jack Daniel’s Old No. 7 · Gentleman Jack · George Dickel No. 12"},
+      {id:"indiana",name:"Indiana & the Midwest",where:"Lawrenceburg and other Midwestern production centres",profile:"Indiana is particularly important as a source of high-quality rye and bourbon distillate, including whiskey made for bottlers and brands elsewhere.",production:"Large-scale contract distilling and blending are important here. Some bottles made from Indiana whiskey carry a different brand or state identity, so check the label and producer information.",distilleries:"MGP’s Lawrenceburg distillery · Ross & Squibb Distillery",examples:"Remus Repeal Reserve Bourbon · Ross & Squibb rye and bourbon releases"},
+      {id:"texas",name:"Texas",where:"Central and southern Texas, including Waco and the Hill Country",profile:"Texas producers work with strong seasonal temperature changes and warm conditions. These can encourage substantial interaction between spirit and wood, but the result depends on the warehouse and cask as well as the climate.",production:"Local grain sourcing, climate and experimental maturation are recurring themes. There is no single Texas whiskey recipe or flavour profile.",distilleries:"Balcones Distilling · Garrison Brothers · Firestone & Robertson (TX Whiskey)",examples:"Balcones Texas Single Malt · Garrison Brothers Small Batch Bourbon · TX Blended Whiskey"},
+      {id:"pacific",name:"Pacific Northwest",where:"Washington and Oregon",profile:"A notable centre for American single malt and grain-forward craft whiskey, often drawing on regional barley and local brewing or distilling expertise.",production:"Many producers focus on malted barley and copper pot stills, with a range of new and used oak casks. The American single malt category now has a federal standard of identity.",distilleries:"Westland Distillery (Seattle) · Westward Whiskey (Portland)",examples:"Westland American Single Malt · Westward American Single Malt"},
+      {id:"mountain",name:"Mountain West",where:"Colorado and neighbouring Rocky Mountain states",profile:"A recognised area for independent American malt and bourbon producers, with high-altitude sites and varied warehouse conditions.",production:"Producers take different approaches to grain, stills and maturation. Elevation alone does not define the flavour of a whiskey.",distilleries:"Stranahan’s (Colorado) · Laws Whiskey House (Colorado)",examples:"Stranahan’s Original · Laws Four Grain Straight Bourbon"},
+      {id:"east",name:"East & Mid-Atlantic",where:"New York, Maryland and Virginia",profile:"A mix of rye whiskey traditions and newer American single malt producers. Rye has a particularly strong historic association with parts of the Northeast and Mid-Atlantic.",production:"This area includes modern rye-focused distilleries and malt-whiskey producers. Grain recipes and maturation differ widely by maker.",distilleries:"Sagamore Spirit (Maryland) · Hillrock Estate (New York) · Virginia Distillery Co.",examples:"Sagamore Spirit Signature Rye · Virginia Distillery Co. Courage & Conviction"}
+    ]
+  },
+  Canada: {
+    intro:"Canadian whisky is produced in several parts of the country. These are major production centres and notable regional examples, rather than official whisky regions.",
+    note:"Canada has no formal province-by-province flavour map. Canadian whisky is often associated with blending and flexible grain recipes; the word ‘rye’ on a Canadian whisky label does not necessarily mean a 51% rye mash bill.",
+    areas:[
+      {id:"alberta",name:"Alberta & the Prairies",where:"Calgary and High River, Alberta",profile:"Alberta is an important centre for rye whisky and large-scale Canadian whisky production. Alberta Premium is a prominent example made with a 100% rye grain recipe.",production:"Some Alberta producers specialise in rye grain and also supply whisky used in blends. Canadian whisky must generally be aged for at least three years in small wood.",distilleries:"Alberta Distillers · Highwood Distillers",examples:"Alberta Premium 100% Rye · Alberta Springs · Highwood White Owl"},
+      {id:"ontario",name:"Ontario",where:"Windsor, Grimsby and southern Ontario",profile:"Ontario is one of Canada’s most important whisky-producing areas, with large historic distilleries and newer producers.",production:"The Windsor area has a long history of large-scale grain whisky production. Forty Creek in Grimsby is known for its blending and finishing approach.",distilleries:"Hiram Walker & Sons · Forty Creek Distillery",examples:"Canadian Club 12 · J.P. Wiser’s 10 · Lot No. 40 Rye · Forty Creek Copper Pot"},
+      {id:"manitoba",name:"Manitoba",where:"Gimli, on the western shore of Lake Winnipeg",profile:"Gimli is home to the distillery associated with Crown Royal, one of the best-known Canadian whisky brands.",production:"A major blending and maturation site with a large whisky range. The character of Crown Royal bottlings depends on the individual blend and component whiskies.",distilleries:"Crown Royal Distillery (Gimli)",examples:"Crown Royal Deluxe · Crown Royal Northern Harvest Rye"},
+      {id:"bc",name:"British Columbia",where:"Vancouver Island and the southern interior",profile:"British Columbia has a growing independent whisky scene, including single malt and grain-led craft producers.",production:"Smaller producers often emphasise local barley, pot-still distillation and individual cask programmes. Releases can be limited and vary by batch.",distilleries:"Shelter Point Distillery · Macaloney’s Island Distillery · Okanagan Spirits",examples:"Shelter Point Single Malt · Macaloney’s single malt releases · Laird of Fintry"},
+      {id:"atlantic",name:"Atlantic Canada",where:"Cape Breton Island, Nova Scotia",profile:"Glenora Distillers is a prominent Canadian single malt producer and an important reference point for whisky from Atlantic Canada.",production:"Glenora’s single malt tradition is distinct from the large blended-whisky houses elsewhere in Canada. Its releases provide a clear example of a Canadian malt whisky style.",distilleries:"Glenora Distillers",examples:"Glen Breton Rare Canadian Single Malt"}
+    ]
+  }
+};
+
+const PRODUCTION_STAGES = [
+  {id:"grain",title:"Grain & malting",short:"The raw materials set the starting point.",body:["Whisky begins with cereal grains. Barley, corn, rye and wheat are the most common; the recipe is called the mash bill or grist, depending on the stage and local usage.","For malt whisky, barley is soaked and allowed to germinate. This develops enzymes that later convert grain starch into fermentable sugars. The germination is stopped by drying the malt.","Peated malt is dried using smoke from burning peat. Phenolic smoke compounds cling to the malt and can carry through into the finished whisky. Peat level is a choice, not an automatic feature of every distillery in a region."] ,terms:"Malted barley · Unmalted barley · Peat · Mash bill"},
+  {id:"mashing",title:"Milling & mashing",short:"Starch is made accessible and converted to sugar.",body:["The grain is milled to a coarse meal. Malted barley is commonly milled into grist; corn and other grains may need cooking to make their starch available.","The milled grain is mixed with hot water in a mash tun or cooker. Enzymes in malt convert starch into sugars. The sweet liquid drawn off is called wort; some processes also retain solids in the fermenting mixture.","The grain recipe affects the spirit’s foundations. Corn can bring sweetness and body, rye can contribute peppery spice, and malted barley provides enzymes as well as cereal character."],terms:"Grist · Mash tun · Wort · Mash bill"},
+  {id:"fermentation",title:"Fermentation",short:"Yeast turns sugars into alcohol and creates flavour compounds.",body:["The wort or mash is cooled and yeast is added. Yeast consumes fermentable sugars, producing alcohol, carbon dioxide and flavour compounds such as esters.","Fermentation takes place in vessels often called washbacks or fermenters. Time, yeast strain, temperature and vessel material all influence the wash and the flavours that may carry into the spirit.","Sour mash is a process used in many American whiskey distilleries: a portion of acidic liquid from a previous distillation is added to the next mash. It helps control acidity and supports consistency; it does not mean the whiskey is sour."],terms:"Yeast · Wash · Washback · Esters · Sour mash"},
+  {id:"distillation",title:"Distillation",short:"Alcohol and aroma compounds are concentrated and shaped.",body:["The fermented wash is heated in a still. Alcohol and volatile compounds vaporise, travel through the still and condenser, and are collected as a stronger spirit.","Pot stills are batch-operated and are associated with many malt and pot-still whiskey traditions. Column stills operate continuously and are widely used for grain whiskey and bourbon. Still shape, heating, reflux and the distiller’s cuts influence the spirit’s weight and character.","Scotch malt whisky is commonly distilled twice, while many Irish whiskeys are distilled three times. These are common traditions rather than universal rules. Irish single pot still whiskey combines malted and unmalted barley and is distilled in pot stills."],terms:"Pot still · Column still · Reflux · Spirit cut · Double / triple distillation"},
+  {id:"maturation",title:"Maturation & casks",short:"Time in wood transforms the new spirit.",body:["Newly distilled spirit is filled into casks and left to mature. Wood contributes flavour and colour, while oxygen, evaporation and the local warehouse climate affect how the spirit develops.","Used bourbon barrels can bring vanilla, coconut and gentle oak. Sherry-seasoned casks may contribute dried fruit, nuts and spice. New charred oak, required for bourbon, can add stronger vanilla, caramel, toast and tannin notes.","Cask size, previous contents, the wood itself, warehouse position and climate all matter. A longer age does not automatically mean a better whisky; it means the whisky has spent longer maturing in wood.","A cask finish is a further period in a different cask after the main maturation. Common examples include port, wine, rum or sherry casks."],terms:"New make spirit · Bourbon cask · Sherry cask · Cask strength · Angel’s share · Finish"},
+  {id:"blending",title:"Blending",short:"Different whiskies can be combined to build balance and character.",body:["Blending may combine different casks, ages, grain types or distilleries. The blender aims for balance, complexity or a recognisable house style.","A blended whisky can combine malt whisky and grain whisky. A blended malt combines malt whiskies from more than one distillery, without grain whisky. A single malt comes from one distillery, but can still be a combination of many casks and ages.","Blending is not a sign of lower quality. It is a skilled part of whisky-making and is used for many respected and long-established whiskies."],terms:"Blended whisky · Blended malt · Vatting · House style"},
+  {id:"bottling",title:"Finishing & bottling",short:"The whisky is prepared for the bottle and the label.",body:["Before bottling, whisky may be reduced to the desired strength with water. Some is bottled at cask strength with little or no dilution.","Producers may choose chill filtration to reduce haze when cold or diluted. Others leave the whisky non-chill-filtered. Some whiskies use plain caramel colouring (E150a) for shade consistency; these choices are usually declared by the producer or on the label.","The label can tell you useful things: age statement, alcohol strength (ABV), cask strength, single cask, non-chill-filtered and the whisky’s legal category. An age statement refers to the youngest whisky in the bottle."],terms:"ABV · Cask strength · Chill filtration · Natural colour · Age statement"}
+];
+
+const WHISKY_STYLES = [
+  {id:"single-malt",title:"Single malt",where:"Scotland, Ireland, Japan and other whisky-producing countries",definition:"A whisky made at one distillery from malted barley. ‘Single’ refers to one distillery, not one barrel or one year. The exact legal definition depends on the country.",character:"The style can range from light, floral and fruity to rich, oily or heavily peated. Distillery character and cask selection matter more than the label alone.",examples:"Glenfiddich 12 · The Glenlivet 12 · Yamazaki 12 · Hakushu 12",note:"For Scotch single malt, the whisky must be made from water and malted barley at one distillery and distilled in pot stills."},
+  {id:"single-grain",title:"Single grain",where:"Most familiar in Scotland and Ireland; also produced elsewhere",definition:"Whisky from one distillery that is not classified as single malt. It may use grains such as wheat, corn or rye, usually alongside some malted barley, and is often made in column stills.",character:"Often lighter and softer than many pot-still malt whiskies, though grain whisky can also be rich and distinctive, especially after long maturation.",examples:"Nikka Coffey Grain · Teeling Single Grain · well-aged single-grain Scotch bottlings",note:"‘Grain’ does not mean that the whisky contains no barley. It distinguishes the category from single malt."},
+  {id:"blended-malt",title:"Blended malt",where:"Commonly associated with Scotch whisky",definition:"A blend of single malt whiskies from two or more distilleries. It contains malt whisky only, with no grain whisky in the blend.",character:"The blender can combine different distillery styles to create a balanced or more complex malt-led whisky.",examples:"Johnnie Walker Green Label 15 · Monkey Shoulder",note:"Older labels may use the term ‘vatted malt’. The current Scotch category term is blended malt Scotch whisky."},
+  {id:"blended",title:"Blended whisky",where:"Scotland, Ireland, Canada, Japan and many other countries",definition:"A combination of whiskies, often malt and grain whisky. The exact recipe and legal meaning vary by country.",character:"Blends are designed for balance and consistency, but can also be complex and premium. They are not inherently lower quality than single malts.",examples:"Johnnie Walker Black Label · Chivas Regal 12 · Jameson Original · Hibiki Japanese Harmony",note:"A blended Scotch combines one or more single malt Scotch whiskies with one or more single grain Scotch whiskies."},
+  {id:"single-pot-still",title:"Single pot still Irish whiskey",where:"Ireland",definition:"Irish whiskey made at one distillery in pot stills from a mash containing both malted and unmalted barley. The rules require at least 30% of each, with limited allowance for other cereals.",character:"Often full-bodied and textured, with cereal, orchard fruit, spice and sometimes creamy or oily impressions. Triple distillation is common but not essential to the style definition.",examples:"Redbreast 12 · Green Spot · Powers John’s Lane Release",note:"This is a distinct Irish category, not simply another name for single malt."},
+  {id:"bourbon",title:"Bourbon",where:"United States; strongly associated with Kentucky but made nationwide",definition:"American whiskey made from a mash containing at least 51% corn and matured in new, charred oak containers. It has no general minimum age requirement; ‘straight bourbon’ must be aged at least two years.",character:"Often brings corn sweetness, vanilla, caramel, toasted oak and baking spice. Rye, wheat and the cask-entry strength also influence the final profile.",examples:"Buffalo Trace · Maker’s Mark · Woodford Reserve · Wild Turkey 101",note:"Bourbon is a legal type of American whiskey, not a geographical synonym for Kentucky whiskey."},
+  {id:"rye",title:"Rye whiskey",where:"United States and Canada",definition:"In the United States, rye whiskey must use at least 51% rye in its mash and mature in new, charred oak containers. Canadian whisky may be called ‘rye’ without meeting that 51% requirement.",character:"American rye often shows pepper, herbs, dry spice and bold grain character. Canadian rye can range from rye-forward to a blend where rye is one flavour component among several.",examples:"Rittenhouse Rye · Bulleit Rye · Alberta Premium 100% Rye · Lot No. 40",note:"The meaning of ‘rye’ differs between the US and Canada. Always consider the country and the label."},
+  {id:"tennessee",title:"Tennessee whiskey",where:"Tennessee, United States",definition:"A Tennessee-made whiskey using at least 51% corn and matured in new charred oak, with state requirements including charcoal mellowing before ageing (subject to defined exceptions).",character:"Often similar in broad profile to bourbon, with corn sweetness, vanilla and oak. Charcoal mellowing is intended to soften the spirit before cask maturation.",examples:"Jack Daniel’s Old No. 7 · Gentleman Jack · George Dickel No. 12",note:"Tennessee whiskey has a distinct geographical and production identity; it is not simply a synonym for bourbon."},
+  {id:"canadian",title:"Canadian whisky",where:"Canada",definition:"Whisky made in Canada and generally aged for at least three years in small wood. Canadian rules allow different grain recipes and blending approaches.",character:"Often associated with smooth, approachable blends, but the category includes full-flavoured rye, single-grain and single-malt examples too.",examples:"Crown Royal Deluxe · Canadian Club 12 · Alberta Premium · Lot No. 40",note:"Canadian whisky does not require a 51% rye mash bill. The traditional use of ‘rye’ in Canada is broader than the American legal category."},
+  {id:"japanese",title:"Japanese whisky",where:"Japan",definition:"A national style with an industry labelling standard. Under the Japan Spirits & Liqueurs Makers Association standard, qualifying whisky must be mashed, fermented, distilled, matured in wooden casks in Japan for at least three years, and bottled in Japan at 40% ABV or higher.",character:"There is no single Japanese flavour profile. Producers create light, delicate, fruity, smoky and richly cask-influenced whiskies, often using blending to build balance.",examples:"Yamazaki 12 · Hakushu 12 · Yoichi Single Malt · Hibiki Japanese Harmony",note:"The Japanese whisky labelling standard is an industry standard rather than a government geographical-indication law. Check the label and producer details."},
+  {id:"american-single-malt",title:"American single malt",where:"United States",definition:"A federally recognised US whisky category, effective January 19, 2025. It must be made in the US at one distillery from a fermented mash of 100% malted barley and aged in oak barrels of up to 700 litres.",character:"The category is young as a formal designation but covers a wide range: fruit-led, malty, coastal, smoky or strongly cask-driven styles.",examples:"Westland American Single Malt · Westward American Single Malt · Stranahan’s Original",note:"The new US standard permits used, uncharred new or charred new oak barrels; it is not restricted to new charred oak like bourbon."}
+];
+
+function learnHub() {
+  const cards = [
+    ["flavours","Flavours","Explore aroma and taste descriptors, from citrus to smoke.",HUB_ART.flavours,"01"],
+    ["regions","Regions","Discover whisky-producing places and their traditions.",HUB_ART.regions,"02"],
+    ["production","Production","Follow the journey from grain to the finished whisky.",HUB_ART.production,"03"],
+    ["styles","Whisky Styles","Understand the names and categories on whisky labels.",HUB_ART.styles,"04"]
+  ];
+  return `<div class="learn-hub-head"><span class="eyebrow">THE WHISKY LIBRARY</span><h2>Learn & Explore</h2><p>A field guide to the flavours, places, methods and styles behind the whiskies you taste.</p></div><div class="learn-grid">${cards.map(([id,title,desc,art,num])=>`<button class="learn-card" data-lesson="${id}"><span class="learn-number">${num}</span><span class="learn-art">${art}</span><span class="learn-card-title">${title}</span><span class="learn-card-copy">${desc}</span><span class="learn-card-link">Explore <span aria-hidden="true">↗</span></span></button>`).join("")}</div><p class="learn-footnote">Start anywhere. Each topic begins with a quick overview and opens into more detail as you explore.</p>`;
+}
+function learnTop(title, desc, section) {
+  return `<div class="learn-top"><button class="learn-back" data-learn-home>‹ Learning Library</button><span class="eyebrow">${section}</span><h2>${title}</h2><p>${desc}</p></div>`;
+}
+function flavoursPage() {
+  if (flavourWheel) return `${learnTop("Flavour Wheel","Use the wheel as a visual index. Choose a category, then explore its individual descriptors.","FLAVOURS")}<div class="learn-inline-actions"><button class="text-link" data-wheel-close>‹ Back to flavour categories</button></div>${wheelPage()}`;
+  if (flavourCategory) {
+    const desc = GUIDE.find(x=>x[0]===flavourCategory)?.[1] || "Explore this flavour family.";
+    return `${learnTop(flavourCategory,desc,"FLAVOURS")}<button class="text-link learn-inline-actions" data-flavour-back>‹ All flavour categories</button><div class="learn-note">Think of these as tasting references, not ingredients. A descriptor is useful when it reminds you of something you can recognise.</div><div class="descriptor-list">${SPEC[flavourCategory].map(n=>{const active=flavourDescriptor===n;const d=DETAIL[n]||[];return `<div class="descriptor-card ${active?"expanded":""}"><button class="descriptor-toggle" data-flavour-note="${esc(n)}" aria-expanded="${active}"><span><b>${esc(n)}</b><small>${esc(d[0]||"")}</small></span><span class="descriptor-plus">${active?"−":"+"}</span></button>${active?`<div class="descriptor-detail"><p><b>What to picture</b><br>${esc(d[0]||"")}</p><p><b>Where it may appear</b><br>${esc(d[1]||"It can appear differently from one whisky to another.")}</p>${FLAVOUR_COMPARE[n]?`<p><b>Useful distinction</b><br>${esc(FLAVOUR_COMPARE[n])}</p>`:""}<p class="descriptor-tip">Try smelling first, then tasting. The same note may feel different on the nose, palate or finish.</p></div>`:""}</div>`}).join("")}</div>`;
+  }
+  return `${learnTop("Flavours","Learn to recognise and describe the aromas and tastes you notice in a glass.","FLAVOURS")}<div class="learn-note"><b>There is no test.</b> These descriptors are a shared vocabulary. Use the words that make sense to you, and do not worry about finding every note.</div><div class="flavour-grid">${GUIDE.map(([n,d])=>`<button class="flavour-cat-card" data-flavour-cat="${n}" style="--cat-tint:${CATEGORY_TINT[n]}"><span class="flavour-art">${CAT_ART[n]}</span><span class="flavour-cat-title">${n}</span><span class="flavour-cat-copy">${d}</span><span class="flavour-count">${SPEC[n].length} descriptors <span>›</span></span></button>`).join("")}</div><button class="wheel-entry" data-wheel-open><span class="wheel-entry-mark">✳</span><span><b>Explore the flavour wheel</b><small>See how the six flavour families fit together.</small></span><span class="wheel-arrow">›</span></button>`;
+}
+function regionsPage() {
+  const country=REGION_DATA[learnCountry], area=country.areas.find(a=>a.id===learnRegion);
+  const tabs=LEARN_COUNTRIES.map(c=>`<button class="country-tab ${c===learnCountry?"on":""}" data-country="${c}">${c}</button>`).join("");
+  const header=learnTop("Whisky Regions","Explore the places where whisky is made, with distilleries and familiar bottles as reference points.","REGIONS");
+  const countryNav=`<div class="country-tabs" role="group" aria-label="Choose a country">${tabs}</div>`;
+  if (area) return `${header}${countryNav}<button class="text-link learn-inline-actions" data-region-back>‹ ${learnCountry} overview</button><article class="region-detail"><span class="region-kicker">${learnCountry.toUpperCase()} · ${esc(area.where)}</span><h3>${esc(area.name)}</h3><div class="region-section"><h4>Regional character</h4><p>${esc(area.profile)}</p></div><div class="region-section"><h4>Production & influences</h4><p>${esc(area.production)}</p></div><div class="region-section"><h4>Notable distilleries</h4><p class="region-names">${esc(area.distilleries)}</p></div><div class="region-examples"><span class="eyebrow">REPRESENTATIVE WHISKIES</span><p>${esc(area.examples)}</p></div></article><p class="learn-footnote">Regional character is a starting point, not a rule. The distillery, recipe, stills and casks can matter more than the map.</p>`;
+  return `${header}${countryNav}<div class="country-intro"><h3>${learnCountry}</h3><p>${esc(country.intro)}</p></div><div class="region-list">${country.areas.map(a=>`<button class="region-card" data-region="${a.id}"><span class="region-card-main"><b>${esc(a.name)}</b><small>${esc(a.where)}</small><span>${esc(a.profile)}</span></span><span class="region-chevron">›</span></button>`).join("")}</div><div class="learn-note region-note">${esc(country.note)}</div>`;
+}
+function productionPage() {
+  return `${learnTop("How Whisky Is Made","Follow the process in order. Each stage can influence the aroma, flavour, texture and final style.","PRODUCTION")}<div class="process-intro"><span class="process-line"></span><span>GRAIN TO GLASS</span><span class="process-line"></span></div><div class="stage-list">${PRODUCTION_STAGES.map((s,i)=>{const active=openLearnItems.has("stage:"+s.id);return `<article class="stage-card ${active?"expanded":""}"><button class="stage-toggle" data-expand="stage:${s.id}" aria-expanded="${active}"><span class="stage-num">${String(i+1).padStart(2,"0")}</span><span class="stage-title-wrap"><b>${s.title}</b><small>${s.short}</small></span><span class="stage-plus">${active?"−":"+"}</span></button>${active?`<div class="stage-detail">${s.body.map(p=>`<p>${esc(p)}</p>`).join("")}<div class="stage-terms"><b>Key terms</b><span>${esc(s.terms)}</span></div></div>`:""}</article>`}).join("")}</div><p class="learn-footnote">The process is broadly similar around the world, but recipes, equipment, legal requirements and traditions differ. The differences are part of what makes whisky varied.</p>`;
+}
+function stylesPage() {
+  return `${learnTop("Whisky Styles","Learn what common style names mean, how they are defined and which established bottles illustrate them.","WHISKY STYLES")}<div class="learn-note"><b>Read the label carefully.</b> Some terms are legal categories with precise rules; others describe a broader production tradition. Similar names can mean different things in different countries.</div><div class="style-list">${WHISKY_STYLES.map(s=>{const active=openLearnItems.has("style:"+s.id);return `<article class="style-card ${active?"expanded":""}"><button class="style-toggle" data-expand="style:${s.id}" aria-expanded="${active}"><span><b>${s.title}</b><small>${s.where}</small></span><span class="stage-plus">${active?"−":"+"}</span></button>${active?`<div class="style-detail"><p>${esc(s.definition)}</p><p><b>Typical character</b><br>${esc(s.character)}</p><div class="style-examples"><span class="eyebrow">ESTABLISHED EXAMPLES</span><p>${esc(s.examples)}</p></div><p class="style-note">${esc(s.note)}</p></div>`:""}</article>`}).join("")}</div><p class="learn-footnote">Flavour descriptions are common impressions, not promises. Individual expressions can sit outside the usual expectations for their category.</p>`;
+}
+function learn() {
+  if (learnSection === "hub") return learnHub();
+  if (learnSection === "flavours") return flavoursPage();
+  if (learnSection === "regions") return regionsPage();
+  if (learnSection === "production") return productionPage();
+  if (learnSection === "styles") return stylesPage();
+  return learnHub();
+}
+
 
 const coll = () => `<h2>My Tastings</h2><div class="acts" style="margin:10px 0"><button class="btn" data-a="new">+ New Tasting</button><button class="btn ghost" data-v="cmp">Compare</button></div><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
   <div class="tabs">${TABS.map(c => `<button class="tab ${c === cat ? "on" : ""}" data-c="${c}">${c === "Favourites" ? "♥ Favourites" : c}</button>${c === "Bourbon" ? '<span class="brk"></span>' : ""}`).join("")}</div>
@@ -363,7 +633,7 @@ function paintRate() {
   $("#rv").textContent = draft.rating ? draft.rating + " / 5" : "Tap a star. The left half gives a half star.";
 }
 
-const WCOL = { Citrus: "#dcc23e", Fruity: "#d4453f", Sweet: "#eba33a", Spicy: "#e8683a", Woody: "#8a5a3c", Smoky: "#2f6f9a" };
+const WCOL = { Citrus: "#c7ad65", Fruity: "#b97970", Sweet: "#c99a58", Spicy: "#c17b58", Woody: "#92705a", Smoky: "#718b8e" };
 function wheelSvg() {
   const n = CHAR.length, R = 100, r = 34, c = 110, pt = (a, d) => [(c + d * Math.sin(a)).toFixed(1), (c - d * Math.cos(a)).toFixed(1)];
   return `<svg viewBox="0 0 220 220" class="wheel" role="group" aria-label="Flavour wheel">${CHAR.map((f, i) => {
@@ -401,16 +671,27 @@ function onClick(e) {
   const r = t.closest("[data-r]");
   if (r && editing) { const v = +r.dataset.r; draft.rating = draft.rating === v ? 0 : v; paintRate(); return; }
   const f = t.closest("[data-favd]"); if (f && editing) { draft.favourite = !draft.favourite; f.classList.toggle("on", draft.favourite); return; }
+  const lesson = t.closest("[data-lesson]"); if (lesson) { learnSection = lesson.dataset.lesson; flavourCategory = null; flavourDescriptor = null; flavourWheel = false; learnRegion = null; openLearnItems.clear(); render(); return; }
+  if (t.closest("[data-learn-home]")) { learnSection = "hub"; flavourCategory = null; flavourDescriptor = null; flavourWheel = false; learnRegion = null; openLearnItems.clear(); render(); return; }
+  const fc = t.closest("[data-flavour-cat]"); if (fc) { flavourCategory = fc.dataset.flavourCat; flavourDescriptor = null; render(); return; }
+  if (t.closest("[data-flavour-back]")) { flavourCategory = null; flavourDescriptor = null; render(); return; }
+  const fd = t.closest("[data-flavour-note]"); if (fd) { flavourDescriptor = flavourDescriptor === fd.dataset.flavourNote ? null : fd.dataset.flavourNote; render(); return; }
+  if (t.closest("[data-wheel-open]")) { flavourWheel = true; wSel = null; render(); return; }
+  if (t.closest("[data-wheel-close]")) { flavourWheel = false; wSel = null; render(); return; }
+  const country = t.closest("[data-country]"); if (country) { learnCountry = country.dataset.country; learnRegion = null; render(); return; }
+  const region = t.closest("[data-region]"); if (region) { learnRegion = region.dataset.region; render(); return; }
+  if (t.closest("[data-region-back]")) { learnRegion = null; render(); return; }
+  const expand = t.closest("[data-expand]"); if (expand) { const key = expand.dataset.expand; openLearnItems.has(key) ? openLearnItems.delete(key) : openLearnItems.add(key); render(); return; }
   const gt = t.closest("[data-gt]"); if (gt) { gTab = gt.dataset.gt; render(); return; }
   const gc = t.closest("[data-gc]"); if (gc) { const y = scrollY; gSel = gSel === gc.dataset.gc ? null : gc.dataset.gc; render(); scrollTo(0, y); return; }
-  const gd = t.closest("[data-gd]"); if (gd) { const x = gd.dataset.gd, was = gTab; gTab = "ex"; gDet = (was === "ex" && gDet === x) ? null : x; render(); return; }
+  const gd = t.closest("[data-gd]"); if (gd) { const x = gd.dataset.gd; flavourCategory = Object.keys(SPEC).find(k => SPEC[k].includes(x)) || null; flavourDescriptor = x; flavourWheel = false; wSel = null; render(); return; }
   const gw = t.closest("[data-w]"); if (gw) { wSel = wSel === gw.dataset.w ? null : gw.dataset.w; if (wOn) paintWheel(); else { const y = scrollY; render(); scrollTo(0, y); } return; }
   const wp = t.closest("[data-wp]"); if (wp) { const k = SECTIONS[step - 1].k + "|" + wp.dataset.wp, v = wp.dataset.wv, cur = draft.tags[k] || []; draft.tags[k] = cur.includes(v) ? cur.filter(x => x !== v) : [...cur, v]; paintWheel(); return; }
   const id = t.closest("[data-id]")?.dataset.id;
   if (id) { openNote({ ...blank(), ...structuredClone(notes.find(n => n.id === id)) }, false); return; }
   const c = t.closest("[data-c]"); if (c) { cat = c.dataset.c; render(); return; }
   const v = t.closest("[data-v]");
-  if (v) { if (editing && !confirm("Discard unsaved changes?")) return; editing = false; view = v.dataset.v; if (view !== "note") draft = null; render(); return; }
+  if (v) { if (editing && !confirm("Discard unsaved changes?")) return; editing = false; view = v.dataset.v; if (view !== "note") draft = null; if (view === "learn") { learnSection = "hub"; flavourCategory = null; flavourDescriptor = null; flavourWheel = false; learnRegion = null; openLearnItems.clear(); } render(); return; }
   const sp = t.closest("[data-step]"); if (sp) { step = +sp.dataset.step; render(); return; }
   const a = t.closest("[data-a]")?.dataset.a;
   if (a === "new") openNote(blank(), true);
