@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Whisky Notes v3.18 -->
+<!-- Whisky Notes v3.19 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Whisky Notes v3.18</title>
+<title>Whisky Notes v3.19</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#5e4a37;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -234,7 +234,7 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 
 
 /* v3.16 — Stage 2: Tastings, New Tasting and Compare visual refresh */
-/* v3.18 — quick-entry TSP amount presets */
+/* v3.19 — remove duplicate water amount preview */
 .section-page-head,.tasting-page-head{margin:4px 0 17px;padding:6px 2px 0}
 .section-page-head h2,.tasting-page-head h2{font-size:30px;margin:5px 0 6px}
 .section-page-head p,.tasting-page-head p{margin:0;color:var(--mute);line-height:1.45}
@@ -321,7 +321,7 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 .water-presets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .water-preset{min-height:42px;padding:8px 5px;border:1px solid #cdb99a;border-radius:9px;background:#f8efdf;color:#704a2d;font-weight:700;font-size:16px}
 .water-preset.on{background:#6f482d;border-color:#6f482d;color:#fbf3e4}
-.water-preview,.water-saved-amount{display:inline-block;background:#e9e0cf;border-radius:99px;padding:6px 11px;color:#6f482d;font-size:13px;font-weight:600;margin:9px 0 3px}
+.water-saved-amount{display:inline-block;background:#e9e0cf;border-radius:99px;padding:6px 11px;color:#6f482d;font-size:13px;font-weight:600;margin:9px 0 3px}
 .entry-hint{color:var(--mute);font-size:13px;margin:10px 0}
 .water-entry-panel fieldset{border-top:1px solid #e0cfb3;padding-top:12px}
 .tasting-record-body .entry-panel{margin-bottom:10px}
@@ -827,7 +827,7 @@ function part(i, ed) {
   if (i === STEPS.length - 2) {
     const p = waterAmountParts(n);
     const groups = renderGroups(WATER_SECTION);
-    const amount = ed ? `<div class="water-measure"><label class="fld">Amount added<input data-f="waterAmt" type="number" min="0" step="any" inputmode="decimal" placeholder="Enter a number" value="${esc(p.amount)}"></label><label class="fld">Unit<select data-f="waterUnit"><option value="tsp" ${p.unit === "tsp" ? "selected" : ""}>TSP</option><option value="drops" ${p.unit === "drops" ? "selected" : ""}>Drops</option></select></label></div><div class="water-presets-wrap" id="waterPresetsWrap" ${p.unit === "tsp" ? "" : "hidden"}><span class="water-presets-label">QUICK TSP AMOUNTS</span><div class="water-presets"><button class="water-preset ${p.amount === "0.25" ? "on" : ""}" type="button" data-water-preset="0.25" aria-label="One quarter teaspoon" aria-pressed="${p.amount === "0.25"}">¼</button><button class="water-preset ${p.amount === "0.5" ? "on" : ""}" type="button" data-water-preset="0.5" aria-label="One half teaspoon" aria-pressed="${p.amount === "0.5"}">½</button><button class="water-preset ${p.amount === "0.75" ? "on" : ""}" type="button" data-water-preset="0.75" aria-label="Three quarters teaspoon" aria-pressed="${p.amount === "0.75"}">¾</button><button class="water-preset ${p.amount === "1" ? "on" : ""}" type="button" data-water-preset="1" aria-label="One teaspoon" aria-pressed="${p.amount === "1"}">1</button></div></div><p class="water-preview" id="waterPreview">${p.amount ? `${esc(p.amount)} ${p.unit === "tsp" ? "TSP" : "drops"}` : "Amount will appear here when entered."}</p>`
+    const amount = ed ? `<div class="water-measure"><label class="fld">Amount added<input data-f="waterAmt" type="number" min="0" step="any" inputmode="decimal" placeholder="Enter a number" value="${esc(p.amount)}"></label><label class="fld">Unit<select data-f="waterUnit"><option value="tsp" ${p.unit === "tsp" ? "selected" : ""}>TSP</option><option value="drops" ${p.unit === "drops" ? "selected" : ""}>Drops</option></select></label></div><div class="water-presets-wrap" id="waterPresetsWrap" ${p.unit === "tsp" ? "" : "hidden"}><span class="water-presets-label">QUICK TSP AMOUNTS</span><div class="water-presets"><button class="water-preset ${p.amount === "0.25" ? "on" : ""}" type="button" data-water-preset="0.25" aria-label="One quarter teaspoon" aria-pressed="${p.amount === "0.25"}">¼</button><button class="water-preset ${p.amount === "0.5" ? "on" : ""}" type="button" data-water-preset="0.5" aria-label="One half teaspoon" aria-pressed="${p.amount === "0.5"}">½</button><button class="water-preset ${p.amount === "0.75" ? "on" : ""}" type="button" data-water-preset="0.75" aria-label="Three quarters teaspoon" aria-pressed="${p.amount === "0.75"}">¾</button><button class="water-preset ${p.amount === "1" ? "on" : ""}" type="button" data-water-preset="1" aria-label="One teaspoon" aria-pressed="${p.amount === "1"}">1</button></div></div>`
       : (waterAmountLabel(n) ? `<p class="water-saved-amount">${esc(waterAmountLabel(n))} added</p>` : "");
     const effects = groups || (ed ? `<p class="entry-hint">You can leave this entire step blank if you tasted the whisky neat.</p>` : "");
     const waterNotes = tx("notes.water", "Notes");
@@ -1021,10 +1021,8 @@ function onClick(e) {
     setP(draft, "waterUnit", "tsp");
     const amountInput = document.querySelector('[data-f="waterAmt"]');
     const unitSelect = document.querySelector('[data-f="waterUnit"]');
-    const preview = $("#waterPreview");
     if (amountInput) amountInput.value = amount;
     if (unitSelect) unitSelect.value = "tsp";
-    if (preview) preview.textContent = `${amount} TSP`;
     document.querySelectorAll("[data-water-preset]").forEach(button => {
       const active = button.dataset.waterPreset === amount;
       button.classList.toggle("on", active);
@@ -1104,8 +1102,7 @@ function onInput(e) {
   if (f === "noAge") { const a = document.querySelector('[data-f="age"]'); a.disabled = t.checked; if (t.checked) { a.value = ""; draft.age = ""; } }
   if (f === "category") { const rg = $("#rg"); if (rg) rg.innerHTML = (REGIONS[t.value] || []).map(r => `<option value="${esc(r)}">`).join(""); }
   if (f === "waterAmt" || f === "waterUnit") {
-    const p = waterAmountParts(draft), preview = $("#waterPreview"), presets = $("#waterPresetsWrap");
-    if (preview) preview.textContent = p.amount ? `${p.amount} ${p.unit === "tsp" ? "TSP" : "drops"}` : "Amount will appear here when entered.";
+    const p = waterAmountParts(draft), presets = $("#waterPresetsWrap");
     if (presets) presets.hidden = p.unit !== "tsp";
     document.querySelectorAll("[data-water-preset]").forEach(button => {
       const active = p.unit === "tsp" && Number(button.dataset.waterPreset) === Number(p.amount) && p.amount !== "";
