@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Whisky Notes v3.15 -->
+<!-- Whisky Notes v3.16 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Whisky Notes v3.15</title>
+<title>Whisky Notes v3.16</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#5e4a37;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -231,6 +231,158 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 .water-placeholder p{max-width:420px;margin:0;color:var(--mute);font-size:14px;line-height:1.5}
 @media(max-width:360px){.learn-card-water{grid-template-columns:54px minmax(0,1fr) auto;column-gap:8px;padding:10px}.learn-card-water .learn-art{width:54px;height:58px}.learn-card-water .learn-art svg{max-width:54px}.learn-card-water .learn-card-title{font-size:16px}.learn-card-water .learn-card-link{font-size:12px}}
 
+
+
+/* v3.16 — Stage 2: Tastings, New Tasting and Compare visual refresh */
+.section-page-head,.tasting-page-head{margin:4px 0 17px;padding:6px 2px 0}
+.section-page-head h2,.tasting-page-head h2{font-size:30px;margin:5px 0 6px}
+.section-page-head p,.tasting-page-head p{margin:0;color:var(--mute);line-height:1.45}
+.collection-actions{display:grid;grid-template-columns:1.15fr 1fr;gap:10px;margin:15px 0}
+.collection-actions .btn{width:100%;padding:12px 10px}
+.collection-search{display:flex;align-items:center;gap:9px;background:linear-gradient(160deg,#fcf8ef,#f6ecdd);border:1px solid #d7c3a3;border-radius:12px;padding:0 13px;margin:13px 0 10px;color:#8a6847}
+.collection-search>span{font-size:23px;line-height:1}
+.collection-search input{width:100%;min-width:0;border:0;outline:0;background:transparent;padding:13px 0;font-size:16px;color:var(--ink)}
+.collection-search input::placeholder{color:#8c7964}
+.collection-filters{display:flex;gap:7px;overflow-x:auto;padding:3px 0 10px;scrollbar-width:thin}
+.collection-filters .tab{white-space:nowrap;flex:none;background:#f8f0e2}
+.collection-filters .tab.on{background:#6f482d;border-color:#6f482d;color:#fbf3e4}
+.tasting-list{display:flex;flex-direction:column;gap:9px;margin-top:3px}
+.tasting-row-card{position:relative;display:flex;align-items:center;gap:8px;padding:10px 28px 10px 10px;background:linear-gradient(160deg,#fcf8ef,#f5ead8);border:1px solid #d7c3a3;border-radius:14px;box-shadow:0 2px 5px rgba(69,43,22,.05);min-width:0}
+.tasting-row-main{display:flex;align-items:center;gap:12px;flex:1;min-width:0;padding:0;border:0;background:none;text-align:left;color:var(--ink)}
+.tasting-row-photo{width:64px;height:78px;border-radius:9px;overflow:hidden;display:grid;place-items:center;flex:none;background:#e9dcc6;color:#8c6a44;font-size:30px;border:1px solid #d9c6a8}
+.tasting-row-photo img{width:100%;height:100%;object-fit:cover}
+.tasting-row-info{display:block;min-width:0;flex:1}
+.tasting-row-info>b{display:block;font:600 18px/1.2 Fraunces,Georgia,serif;margin:3px 0;overflow-wrap:anywhere}
+.tasting-row-info>small{display:block;color:var(--mute);font-size:13px;line-height:1.35}
+.tasting-row-kicker{display:block;color:#8a6847;font-size:10px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase}
+.tasting-row-rating{display:flex;align-items:center;gap:7px;margin-top:5px}
+.tasting-row-rating .s{font-size:14px}
+.tasting-row-rating>small{color:var(--mute);font-size:12px}
+.tasting-row-favourite{position:absolute;right:10px;top:8px;color:#b45b43;font-size:15px}
+.tasting-row-arrow{position:absolute;right:10px;bottom:12px;color:#8a6847;font-size:23px}
+.collection-empty,.compare-empty{padding:25px 8px;background:#f8f0e2;border:1px dashed #d7c3a3;border-radius:12px;text-align:center}
+
+/* New/edit tasting cards */
+.tasting-view .tasting-page-head{margin-bottom:13px}
+.tasting-view .tasting-page-head .dhead{align-items:center;margin:8px 0 0}
+.tasting-view .tasting-page-head h2{margin:0;font-size:29px}
+.tasting-view .tasting-page-head p{font-size:13px;margin-top:4px}
+.tasting-head-actions{display:flex;align-items:center;gap:5px;flex:none}
+.tasting-head-actions .heart{min-width:40px;width:40px}
+.tasting-head-actions .btn{min-height:42px;padding:9px 13px}
+.tasting-step-nav{display:flex;gap:7px;overflow-x:auto;padding:3px 0 12px;margin:0 0 3px;scrollbar-width:thin}
+.step-tab{display:flex;align-items:center;gap:7px;white-space:nowrap;min-height:40px;padding:7px 11px;border:1px solid #d7c3a3;border-radius:99px;background:#f8f0e2;color:#6d563f;font-size:13px;font-weight:600;flex:none}
+.step-tab>span{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#eee2cd;color:#80502f;font-size:10px}
+.step-tab.on{background:#6f482d;border-color:#6f482d;color:#fbf3e4}
+.step-tab.on>span{background:#d8b47d;color:#412717}
+.step-tab.optional{border-style:dashed}
+.tasting-step-content{min-width:0}
+.entry-panel{background:linear-gradient(160deg,#fcf8ef,#f5ead8);border:1px solid #d7c3a3;border-radius:15px;padding:15px 14px;margin:0 0 12px;box-shadow:0 2px 5px rgba(69,43,22,.05)}
+.entry-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin:0 0 13px}
+.entry-panel-head .eyebrow{margin-bottom:4px}
+.entry-panel-head h3{font-size:23px;margin:0 0 4px}
+.entry-panel-head p{margin:0;color:var(--mute);font-size:13px;line-height:1.45}
+.bottle-entry-grid{grid-template-columns:132px minmax(0,1fr);gap:13px;margin:0}
+.tasting-view .photo{min-height:172px;background:#f1e6d2;border-color:#cdb99a;color:#805b3a;font-size:13px;line-height:1.35}
+.tasting-view .photo img{object-fit:contain;background:#eee3d0}
+.tasting-view .bottle-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tasting-view .fld{color:#765b40;font-size:13px;font-weight:600;margin:0 0 11px}
+.tasting-view .fld input,.tasting-view .fld select,.tasting-view .fld textarea{margin-top:5px;background:#fffaf1;border-color:#d7c3a3;border-radius:9px;padding:11px 10px;font-size:16px;font-weight:400;min-width:0}
+.tasting-view .fld textarea{min-height:94px;line-height:1.45}
+.tasting-view .grid .fld{margin:0}
+.tasting-view .no-age-chip{align-self:end;margin:0 0 1px}
+.tasting-view fieldset{margin:14px 0 12px;padding:0}
+.tasting-view legend{font:600 15px Fraunces,Georgia,serif;color:#6f482d;margin-bottom:8px}
+.tasting-view .chips{gap:7px}
+.tasting-view .chip span{background:#fffaf1;border-color:#d7c3a3;padding:7px 11px;min-height:40px;line-height:24px;font-size:14px}
+.tasting-view .chip input:checked+span{background:#6f482d;border-color:#6f482d;color:#fbf3e4}
+.tasting-view .sec{border:0;margin:0;padding:0}
+.guided-entry-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#eee3d0;border:1px solid #d9c6a8;border-radius:12px;padding:12px;margin:8px 0 11px}
+.guided-entry-card>div{min-width:0}
+.guided-entry-card .eyebrow{font-size:10px;margin-bottom:4px}
+.guided-entry-card b{display:block;font:600 17px Fraunces,Georgia,serif;color:#5f3d26}
+.guided-entry-card p{font-size:12px;line-height:1.4;color:var(--mute);margin:4px 0 0}
+.guided-entry-card .btn{flex:none;min-height:42px;padding:9px 12px;font-size:13px}
+.quick-tags{margin:10px 0 15px;border-top:1px solid #e1d1b8;border-bottom:1px solid #e1d1b8;padding:9px 0}
+.quick-tags summary{cursor:pointer;color:#80502f;font-size:13px;font-weight:600;min-height:28px;display:flex;align-items:center;gap:4px}
+.quick-tags summary span{font-weight:400;color:var(--mute)}
+.quick-tags[open]{padding-bottom:2px}
+.quick-tags fieldset:first-child{margin-top:11px}
+.tasting-view .entry-panel>.fld:last-child{margin-bottom:0}
+.rating-caption{margin:0;color:var(--mute);font-size:13px}
+.rating-panel .rate{margin:14px 0 4px}
+.rating-panel .fld{margin-top:15px}
+.water-measure{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0 2px}
+.water-measure .fld{margin:0}
+.water-preview,.water-saved-amount{display:inline-block;background:#e9e0cf;border-radius:99px;padding:6px 11px;color:#6f482d;font-size:13px;font-weight:600;margin:9px 0 3px}
+.entry-hint{color:var(--mute);font-size:13px;margin:10px 0}
+.water-entry-panel fieldset{border-top:1px solid #e0cfb3;padding-top:12px}
+.tasting-record-body .entry-panel{margin-bottom:10px}
+.tasting-record-body .entry-panel .fld{margin-bottom:0}
+.tasting-record-body .entry-panel .fld textarea{min-height:60px}
+.record-actions{margin:16px 0 0}
+.tasting-step-actions{gap:8px}
+.tasting-step-actions .btn{min-width:0;padding:11px 13px}
+.tasting-step-actions .btn[data-a="save"]{flex:1.2}
+.tasting-step-actions .btn[data-a="skipWater"]{flex:1}
+
+/* Guided flavour library used from Nose, Taste and Finish */
+.guide-page{max-width:760px;margin:0 auto;padding:16px 16px calc(35px + env(safe-area-inset-bottom))}
+.guide-page-head{margin:0 0 14px}
+.guide-page-head .eyebrow{margin-top:12px}
+.guide-page-head h2{font-size:29px;margin:4px 0 6px}
+.guide-page-head p{margin:0;color:var(--mute);line-height:1.45}
+.guide-category-intro{display:flex;align-items:center;gap:13px;background:#eee3d0;border-radius:12px;padding:12px;margin:5px 0 13px}
+.guide-category-intro .flavour-art{width:58px;height:58px;flex:none;margin:0}
+.guide-category-intro .flavour-art svg{width:56px;height:56px}
+.guide-category-intro h3{font-size:21px;margin:0 0 3px}
+.guide-category-intro p{font-size:13px;line-height:1.4;color:var(--mute);margin:0}
+.guide-add-button{margin-top:8px;min-height:42px;padding:9px 13px;font-size:13px}
+.guide-add-button:disabled{background:#829078;color:#fffaf1;opacity:1}
+
+/* Compare */
+.compare-page-head{margin-bottom:15px}
+.compare-pickers{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:linear-gradient(160deg,#fcf8ef,#f5ead8);border:1px solid #d7c3a3;border-radius:14px;padding:14px;margin:12px 0 14px}
+.compare-pickers .fld{margin:0}
+.compare-view .compare-pickers .fld{color:#765b40;font-size:13px;font-weight:600}
+.compare-view .compare-pickers select{display:block;width:100%;margin-top:6px;padding:11px 9px;background:#fffaf1;border:1px solid #d7c3a3;border-radius:9px;font-size:15px;min-width:0}
+.match-summary-card{background:linear-gradient(160deg,#eee3d0,#e7d5b7);border:1px solid #d1ba96;border-radius:15px;padding:14px 16px;margin:13px 0}
+.match-summary-main{display:flex;align-items:center;gap:14px;margin-top:4px}
+.match-summary-main strong{font:600 36px/1 Fraunces,Georgia,serif;color:#6f482d;flex:none}
+.match-summary-main p{margin:0;color:#5e4a37;font-size:13px;line-height:1.4}
+.compare-facts-card,.compare-flavour-card{background:linear-gradient(160deg,#fcf8ef,#f5ead8);border:1px solid #d7c3a3;border-radius:14px;padding:13px;margin:10px 0}
+.compare-facts-card h3,.compare-flavour-card h3{font-size:20px;margin:0 0 10px}
+.compare-facts-grid{display:grid;grid-template-columns:82px minmax(0,1fr) minmax(0,1fr);gap:9px 8px;align-items:start;font-size:13px;overflow-wrap:anywhere}
+.compare-facts-grid>b{font:600 15px/1.2 Fraunces,Georgia,serif;color:#6f482d}
+.compare-fact-label{font-size:12px;color:#826b52}
+.compare-facts-grid>span:not(.compare-fact-label){min-width:0;color:var(--ink)}
+.compare-flavour-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.compare-flavour-columns>div{min-width:0}
+.compare-flavour-columns>div>b{display:block;font-size:12px;color:#80502f;margin-bottom:5px}
+.compare-flavour-card .pill{font-size:12px;margin:2px 3px 3px 0;padding:4px 8px}
+.compare-view .pill.sh{background:#6f482d}
+
+@media(max-width:560px){
+  .bottle-entry-grid{grid-template-columns:100px minmax(0,1fr);gap:10px}
+  .tasting-view .photo{min-height:142px}
+  .tasting-view .bottle-fields{grid-template-columns:1fr}
+  .guided-entry-card{align-items:flex-start;flex-direction:column}
+  .guided-entry-card .btn{width:100%}
+  .compare-flavour-columns{grid-template-columns:1fr}
+  .compare-flavour-columns>div{border-top:1px solid #e4d4bb;padding-top:7px}
+  .compare-flavour-columns>div:first-child{border-top:0;padding-top:0}
+}
+@media(max-width:380px){
+  .collection-actions{grid-template-columns:1fr 1fr}
+  .collection-actions .btn{font-size:13px;padding:10px 7px}
+  .compare-pickers{grid-template-columns:1fr;gap:5px}
+  .compare-facts-grid{grid-template-columns:68px minmax(0,1fr) minmax(0,1fr);gap:8px 6px;font-size:12px}
+  .compare-facts-grid>b{font-size:13px}
+  .tasting-view .photo{font-size:12px;padding:5px}
+  .tasting-step-actions{flex-wrap:wrap}
+  .tasting-step-actions .btn{flex:1}
+}
+
 </style>
 </head>
 <body>
@@ -320,9 +472,9 @@ const SECTIONS = [
   { k: "appearance", t: "Appearance", g: [["Color", 1, ["Pale straw", "Gold", "Amber", "Copper", "Mahogany"]], ["Viscosity", 1, ["Thin", "Medium", "Oily"]]] },
   { k: "nose", t: "Nose", g: [["Character", 0, CHAR], ...SPECG] },
   { k: "taste", t: "Taste", g: [["Character", 0, CHAR], ...SPECG] },
-  { k: "water", t: "Water", no: 1, amt: 1, g: [["Effect on aroma", 0, ["Opened up", "Softer", "Muted", "No change"]], ["Effect on taste", 0, ["Sweeter", "Spicier", "Smoother", "Flatter", "No change"]]] },
   { k: "finish", t: "Finish", no: 1, g: [["Length", 1, ["Short", "Medium", "Long"]], ...SPECG] }
 ];
+const WATER_SECTION = { k: "water", t: "Water", g: [["Effect on aroma", 0, ["Opened up", "Softer", "Muted", "No change"]], ["Effect on taste", 0, ["Sweeter", "Spicier", "Smoother", "Flatter", "No change"]]] };
 
 /* ---------- Storage: Firebase, or localStorage for testing ---------- */
 const LOCAL = FIREBASE_CONFIG.apiKey.startsWith("PASTE");
@@ -369,12 +521,13 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.15";
-let gTab = "cat", gSel = null, gDet = null, wOn = false, wSel = null, cA = "", cB = "";
+const VERSION = "3.16";
+let gTab = "cat", gSel = null, gDet = null, cA = "", cB = "";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
-const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
+let guideOn = false, guideSection = "nose", guideCategory = null, guideDescriptor = null;
+const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Water (optional)", "Rating"];
 const TABS = ["All", ...CATS, "Favourites"];
-const blank = () => ({ id: crypto.randomUUID(), name: "", distillery: "", category: "Scotch", type: "", region: "", age: "", noAge: false, abv: "", price: "", favourite: false, waterAmt: "", tags: {}, other: {}, notes: {}, rating: 0, comments: "", thumb: "", updated: 0 });
+const blank = () => ({ id: crypto.randomUUID(), name: "", distillery: "", category: "Scotch", type: "", region: "", age: "", noAge: false, abv: "", price: "", favourite: false, waterAmt: "", waterUnit: "", tags: {}, other: {}, notes: {}, rating: 0, comments: "", thumb: "", updated: 0 });
 const getP = (o, p) => p.split(".").reduce((a, k) => a?.[k], o);
 const setP = (o, p, v) => { const ks = p.split("."), l = ks.pop(); ks.reduce((a, k) => a[k], o)[l] = v; };
 const stars = v => `<span class="stars">${[1, 2, 3, 4, 5].map(i => `<span class="s ${v >= i ? "f" : v >= i - .5 ? "h" : ""}">★</span>`).join("")}</span>`;
@@ -590,68 +743,126 @@ function learn() {
 }
 
 
-const coll = () => `<h2>My Tastings</h2><div class="acts" style="margin:10px 0"><button class="btn" data-a="new">+ New Tasting</button><button class="btn ghost" data-v="cmp">Compare</button></div><input class="srch" id="q" type="search" placeholder="Search bottles" value="${esc(q)}">
-  <div class="tabs">${TABS.map(c => `<button class="tab ${c === cat ? "on" : ""}" data-c="${c}">${c === "Favourites" ? "♥ Favourites" : c}</button>${c === "Bourbon" ? '<span class="brk"></span>' : ""}`).join("")}</div>
-  <div id="list">${listHtml()}</div>`;
+const coll = () => `<div class="section-page-head">
+    <span class="eyebrow">YOUR WHISKY NOTEBOOK</span><h2>My Tastings</h2>
+    <p>Your bottles and tasting notes, gathered in one place.</p>
+  </div>
+  <div class="collection-actions"><button class="btn" data-a="new">＋ New Tasting</button><button class="btn ghost" data-v="cmp">Compare Bottles</button></div>
+  <label class="collection-search"><span>⌕</span><input id="q" type="search" placeholder="Search bottles or distilleries" value="${esc(q)}"></label>
+  <div class="collection-filters">${TABS.map(c => `<button class="tab ${c === cat ? "on" : ""}" data-c="${c}">${c === "Favourites" ? "♥ Favourites" : c}</button>`).join("")}</div>
+  <div id="list" class="tasting-list">${listHtml()}</div>`;
 
 function listHtml() {
   const k = q.toLowerCase();
-  const rows = notes.filter(n => (cat === "All" || (cat === "Favourites" ? n.favourite : n.category === cat)) && (!k || (n.name + " " + n.distillery).toLowerCase().includes(k))).sort((a, b) => b.updated - a.updated);
-  return rows.length ? rows.map(n => `<div class="item"><button class="main" data-id="${n.id}">${n.thumb ? `<img src="${n.thumb}" alt="">` : `<div class="ph"></div>`}
-      <span><b>${esc(n.name)}</b><small>${esc(n.category)}${n.region ? " · " + esc(n.region) : ""}${n.abv ? " · " + esc(n.abv) + "%" : ""}</small><br>${stars(n.rating || 0)} <small>${n.rating || ""}</small></span></button>
-      ${n.favourite ? '<span class="heart on" aria-label="Favourite">♥</span>' : ""}</div>`).join("")
-    : `<p class="empty">${notes.length ? "No bottles match." : "No notes yet. Start with New Tasting on the Home page."}</p>`;
+  const rows = notes.filter(n => (cat === "All" || (cat === "Favourites" ? n.favourite : n.category === cat)) && (!k || (n.name + " " + n.distillery + " " + n.region).toLowerCase().includes(k))).sort((a, b) => b.updated - a.updated);
+  return rows.length ? rows.map(n => `<article class="tasting-row-card">
+      <button class="tasting-row-main" data-id="${esc(n.id)}">
+        <span class="tasting-row-photo">${n.thumb ? `<img src="${n.thumb}" alt="">` : `<span aria-hidden="true">◈</span>`}</span>
+        <span class="tasting-row-info"><span class="tasting-row-kicker">${esc(n.category || "Whisky")}${n.region ? " · " + esc(n.region) : ""}</span>
+          <b>${esc(n.name || "Untitled bottle")}</b><small>${esc(n.distillery || "Distillery not recorded")}${n.abv ? " · " + esc(n.abv) + "% ABV" : ""}</small>
+          <span class="tasting-row-rating">${stars(n.rating || 0)} <small>${n.rating ? esc(n.rating) + " / 5" : "Not rated"}</small></span>
+        </span>
+      </button>${n.favourite ? '<span class="tasting-row-favourite" aria-label="Favourite">♥</span>' : ""}
+      <span class="tasting-row-arrow" aria-hidden="true">›</span>
+    </article>`).join("")
+    : `<p class="empty collection-empty">${notes.length ? "No bottles match these filters." : "Your notebook is empty. Start with a new tasting."}</p>`;
 }
 const renderList = () => { const l = $("#list"); if (l) l.innerHTML = listHtml(); };
 
+function waterAmountParts(n) {
+  const raw = String(n.waterAmt ?? "").trim();
+  const m = raw.match(/^(\d+(?:\.\d+)?)\s*(drops?|tsp|teaspoons?)?$/i);
+  if (!m) return { amount: "", unit: String(n.waterUnit || "drops").toLowerCase() === "tsp" ? "tsp" : "drops", legacy: raw };
+  const parsedUnit = m[2] && /^t/i.test(m[2]) ? "tsp" : (n.waterUnit || "drops").toLowerCase() === "tsp" ? "tsp" : "drops";
+  return { amount: m[1], unit: parsedUnit, legacy: "" };
+}
+function waterAmountLabel(n) {
+  const p = waterAmountParts(n);
+  if (p.legacy) return p.legacy;
+  if (!p.amount) return "";
+  return `${p.amount} ${p.unit === "tsp" ? "TSP" : "drops"}`;
+}
+function entryPanelHead(title, kicker, description = "") {
+  return `<header class="entry-panel-head"><div><span class="eyebrow">${kicker}</span><h3>${title}</h3>${description ? `<p>${description}</p>` : ""}</div></header>`;
+}
 function part(i, ed) {
   const n = draft;
   const fld = (k, l, t = "text", x = "") => (!ed && !getP(n, k)) ? "" : `<label class="fld">${l}<input data-f="${k}" type="${t}" ${x} value="${esc(getP(n, k))}"></label>`;
   const tx = (k, l) => (!ed && !getP(n, k)) ? "" : `<label class="fld">${l}<textarea data-f="${k}">${esc(getP(n, k))}</textarea></label>`;
+  const renderGroups = s => s.g.map(([g, one, items]) => {
+    const sl = n.tags?.[s.k + "|" + g] || [];
+    const shown = ed ? items : items.filter(x => sl.includes(x));
+    return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="checkbox" ${one ? 'data-one="1"' : ""} name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sl.includes(x) ? "checked" : ""}><span>${esc(x)}</span></label>`).join("")}</div></fieldset>` : "";
+  }).join("");
+
   if (i === 0) {
     const src = pending || n.thumb;
     const ph = src ? `<img id="pimg" src="${src}" alt="Bottle photo">` : (ed ? "Add bottle photo<br>(tap or drop)" : "No photo");
-    const sel = (k, l, opts, nb) => (!ed && !n[k]) ? "" : `<label class="fld">${l}<select data-f="${k}">${nb ? `<option value="">Not set</option>` : ""}${opts.map(o => `<option ${o === n[k] ? "selected" : ""}>${o}</option>`).join("")}</select></label>`;
-    return `<div class="top"><label class="photo" id="drop">${ph}<input type="file" id="file" accept="image/*" hidden ${ed ? "" : "disabled"}></label><div class="grid">
+    const sel = (k, l, opts, nb) => (!ed && !n[k]) ? "" : `<label class="fld">${l}<select data-f="${k}">${nb ? `<option value="">Not set</option>` : ""}${opts.map(o => `<option value="${esc(o)}" ${o === n[k] ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
+    return `<section class="entry-panel bottle-panel">${entryPanelHead("Bottle", "01 · IDENTIFY", "Start with the bottle details and a photograph of the bottle.")}
+      <div class="top bottle-entry-grid"><label class="photo" id="drop">${ph}<input type="file" id="file" accept="image/*" hidden ${ed ? "" : "disabled"}></label><div class="grid bottle-fields">
       ${fld("name", "Bottle name *")}${fld("distillery", "Distillery")}${sel("category", "Category", CATS)}${sel("type", "Style", TYPES, 1)}
-      ${fld("region", "Region", "text", 'list="rg"')}<datalist id="rg">${(REGIONS[n.category] || []).map(r => `<option value="${r}">`).join("")}</datalist>
-      ${fld("age", "Age (years)", "number", `inputmode="numeric" ${n.noAge ? "disabled" : ""}`)}${ed || n.noAge ? `<label class="chip"><input type="checkbox" data-f="noAge" ${n.noAge ? "checked" : ""}><span>No age statement</span></label>` : ""}
-      ${fld("abv", "ABV %", "number", 'inputmode="decimal" step="0.1"')}${fld("price", "Price")}</div></div>`;
+      ${fld("region", "Region", "text", 'list="rg"')}<datalist id="rg">${(REGIONS[n.category] || []).map(r => `<option value="${esc(r)}">`).join("")}</datalist>
+      ${fld("age", "Age (years)", "number", `inputmode="numeric" ${n.noAge ? "disabled" : ""}`)}${ed || n.noAge ? `<label class="chip no-age-chip"><input type="checkbox" data-f="noAge" ${n.noAge ? "checked" : ""}><span>No age statement</span></label>` : ""}
+      ${fld("abv", "ABV %", "number", 'inputmode="decimal" step="0.1"')}${fld("price", "Price")}</div></div></section>`;
   }
+
   if (i === STEPS.length - 1) {
     const v = n.rating || 0;
-    const r = ed ? `<div class="rate" id="rate">${[1, 2, 3, 4, 5].map(k => `<span class="s ${v >= k ? "f" : v >= k - .5 ? "h" : ""}"><b data-r="${k - .5}"></b><b data-r="${k}"></b>★</span>`).join("")}</div><p class="mute" id="rv">${v ? v + " / 5" : "Tap a star. The left half gives a half star."}</p>`
+    const r = ed ? `<div class="rate" id="rate">${[1, 2, 3, 4, 5].map(k => `<span class="s ${v >= k ? "f" : v >= k - .5 ? "h" : ""}"><b data-r="${k - .5}"></b><b data-r="${k}"></b>★</span>`).join("")}</div><p class="rating-caption" id="rv">${v ? v + " / 5" : "Tap a star. The left half gives a half star."}</p>`
       : (v ? `<div class="big">${stars(v)} <span class="mute">${v} / 5</span></div>` : "");
-    return r + tx("comments", "Overall comments");
+    const comments = tx("comments", "Overall comments");
+    if (!ed && !v && !comments) return "";
+    return `<section class="entry-panel rating-panel">${entryPanelHead("Overall impression", "FINAL STEP", "Give the whisky an overall rating and add any final thoughts.")}${r}${comments}</section>`;
   }
+
+  if (i === STEPS.length - 2) {
+    const p = waterAmountParts(n);
+    const groups = renderGroups(WATER_SECTION);
+    const amount = ed ? `<div class="water-measure"><label class="fld">Amount added<input data-f="waterAmt" type="number" min="0" step="any" inputmode="decimal" placeholder="Enter a number" value="${esc(p.amount)}"></label><label class="fld">Unit<select data-f="waterUnit"><option value="drops" ${p.unit === "drops" ? "selected" : ""}>Drops</option><option value="tsp" ${p.unit === "tsp" ? "selected" : ""}>TSP</option></select></label></div><p class="water-preview" id="waterPreview">${p.amount ? `${esc(p.amount)} ${p.unit === "tsp" ? "TSP" : "drops"}` : "Amount will appear here when entered."}</p>`
+      : (waterAmountLabel(n) ? `<p class="water-saved-amount">${esc(waterAmountLabel(n))} added</p>` : "");
+    const effects = groups || (ed ? `<p class="entry-hint">You can leave this entire step blank if you tasted the whisky neat.</p>` : "");
+    const waterNotes = tx("notes.water", "Notes");
+    if (!ed && !amount && !groups && !waterNotes) return "";
+    return `<section class="entry-panel water-entry-panel">${entryPanelHead("Adding Water", "OPTIONAL STEP", "Record what changes after adding water. Leave this section blank if you tasted the whisky neat.")}${amount}${effects}${waterNotes}</section>`;
+  }
+
   const s = SECTIONS[i - 1];
-  const groups = s.g.map(([g, one, items]) => {
-    const sl = n.tags[s.k + "|" + g] || [];
-    const shown = ed ? items : items.filter(x => sl.includes(x));
-    return shown.length ? `<fieldset><legend>${g}</legend><div class="chips">${shown.map(x => `<label class="chip"><input type="checkbox" ${one ? 'data-one="1"' : ""} name="${s.k}|${g}" data-g="${s.k}|${g}" value="${esc(x)}" ${sl.includes(x) ? "checked" : ""}><span>${x}</span></label>`).join("")}</div></fieldset>` : "";
-  }).join("");
-  return `${ed && s.g.some(([g]) => g.endsWith(" notes")) ? '<button class="btn ghost" type="button" data-a="wopen" style="margin-bottom:10px">Open flavour wheel</button>' : ""}${s.amt ? fld("waterAmt", "Amount of water", "text", 'placeholder="e.g. 3 drops, 1 tsp"') : ""}${groups}${ed ? '<div class="tip" id="tip" hidden></div>' : ""}${s.no ? "" : fld("other." + s.k, "Other descriptors")}${tx("notes." + s.k, "Notes")}`;
+  const groups = renderGroups(s);
+  const flavourSection = ["nose", "taste", "finish"].includes(s.k);
+  const groupContent = flavourSection && ed
+    ? `<div class="guided-entry-card"><div><span class="eyebrow">GUIDED FLAVOUR LIBRARY</span><b>Explore what you notice</b><p>Browse the same flavour reference found in Learn. Choose a descriptor to add it to your notes.</p></div><button class="btn" type="button" data-a="guideOpen" data-section="${s.k}">Explore Flavours <span aria-hidden="true">›</span></button></div><details class="quick-tags"><summary>Quick tags <span>(optional)</span></summary>${groups}</details>`
+    : groups;
+  const noteField = tx("notes." + s.k, "Notes");
+  if (!ed && !groupContent && !noteField) return "";
+  return `<section class="entry-panel tasting-step-panel">${entryPanelHead(s.t, `${String(i + 1).padStart(2, "0")} · TASTING`, s.k === "appearance" ? "Note the whisky's colour and the way it moves in the glass." : s.k === "nose" ? "Record the aromas you notice before tasting." : s.k === "taste" ? "Record the flavours, texture and character on the palate." : "Note how the flavour develops and how long it lasts.")}${groupContent}${noteField}</section>`;
 }
 
 function noteView() {
-  const n = draft, saved = notes.some(x => x.id === n.id), last = STEPS.length - 1;
+  const n = draft, saved = notes.some(x => x.id === n.id), last = STEPS.length - 1, waterStep = STEPS.length - 2;
   if (!editing) {
-    const body = STEPS.map((t, i) => { const h = part(i, false); return i === 0 ? h : (h.trim() ? `<div class="sec"><h3>${t}</h3>${h}</div>` : ""); }).join("");
-    return `<div class="dhead"><button class="btn ghost" data-v="coll">‹ Tastings</button><span style="display:flex;align-items:center;gap:8px">${n.favourite ? '<span class="heart on" aria-label="Favourite">♥</span>' : ""}<button class="btn" data-a="edit">Edit</button></span></div>
-      <h2>${esc(n.name)}</h2><fieldset class="lock" disabled>${body}</fieldset>
-      ${saved ? `<div class="acts"><button class="btn danger" data-a="del">Delete</button></div>` : ""}`;
+    const body = STEPS.map((t, i) => part(i, false)).join("");
+    return `<div class="tasting-page-head"><span class="eyebrow">TASTING RECORD</span><div class="dhead"><div><h2>${esc(n.name || "Untitled bottle")}</h2><p>${esc(n.distillery || n.category || "Whisky tasting")}</p></div><button class="btn" data-a="edit">Edit</button></div></div>
+      <div class="tasting-record-body"><fieldset class="lock" disabled>${body}</fieldset></div>${saved ? `<div class="record-actions"><button class="btn danger" data-a="del">Delete tasting</button></div>` : ""}`;
   }
-  return `<div class="dhead"><h2>${saved ? "Edit tasting" : "New tasting"}</h2><span style="display:flex;align-items:center;gap:4px"><button class="heart ${n.favourite ? "on" : ""}" type="button" data-favd="1" aria-label="Favourite">♥</button><button class="btn ghost" data-a="cancel">Cancel</button></span></div>
-    <div class="tabs">${STEPS.map((t, i) => `<button class="tab ${i === step ? "on" : ""}" data-step="${i}">${t}</button>`).join("")}</div>
-    ${step ? `<h3>${STEPS[step]}</h3>` : ""}${part(step, true)}
-    <div class="acts pin">${step ? `<button class="btn ghost" data-a="back">Back</button>` : ""}${step < last ? `<button class="btn" data-a="next">Next</button>` : ""}<button class="btn ${step < last ? "ghost" : ""}" data-a="save">Save</button></div>`;
+  const stepLabels = STEPS.map((t, i) => t === "Water (optional)" ? "Water · optional" : t);
+  return `<div class="tasting-page-head"><span class="eyebrow">TASTING NOTE ${saved ? "· EDITING" : "· NEW ENTRY"}</span><div class="dhead"><div><h2>${saved ? "Edit Tasting" : "New Tasting"}</h2><p>Work through the steps, or move between them as you like.</p></div><span class="tasting-head-actions"><button class="heart ${n.favourite ? "on" : ""}" type="button" data-favd="1" aria-label="Favourite">♥</button><button class="btn ghost" data-a="cancel">Cancel</button></span></div></div>
+    <nav class="tasting-step-nav" aria-label="Tasting steps">${stepLabels.map((t, i) => `<button class="step-tab ${i === step ? "on" : ""} ${i === waterStep ? "optional" : ""}" data-step="${i}" aria-current="${i === step ? "step" : "false"}"><span>${String(i + 1).padStart(2, "0")}</span>${t}</button>`).join("")}</nav>
+    <div class="tasting-step-content">${part(step, true)}</div>
+    <div class="acts pin tasting-step-actions">${step ? `<button class="btn ghost" data-a="back">Back</button>` : ""}${step === waterStep ? `<button class="btn ghost" data-a="skipWater">Skip Water</button>` : step < last ? `<button class="btn" data-a="next">Next</button>` : ""}<button class="btn ${step < last ? "ghost" : ""}" data-a="save">Save Tasting</button></div>`;
 }
 
 function render() {
-  $("#page").innerHTML = ({ home, coll, learn, cmp, note: noteView })[view]();
-  $("#page").classList.toggle("learning-view", view === "learn");
+  const page = $("#page");
+  page.innerHTML = ({ home, coll, learn, cmp, note: noteView })[view]();
+  ["learning-view", "collection-view", "tasting-view", "compare-view"].forEach(c => page.classList.remove(c));
+  page.classList.toggle("learning-view", view === "learn");
+  page.classList.toggle("collection-view", view === "coll");
+  page.classList.toggle("tasting-view", view === "note");
+  page.classList.toggle("compare-view", view === "cmp");
   document.querySelectorAll(".bar button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "note" ? "coll" : view)));
   if (view === "note" && editing && step === 0) bindPhoto();
+  if (guideOn) paintGuide(); else if ($("#guideov")) $("#guideov").hidden = true;
   window.scrollTo(0, 0);
 }
 
@@ -672,7 +883,9 @@ async function setPhoto(file) {
 }
 
 async function openNote(n, edit) {
-  draft = n; editing = edit; pending = null; step = 0; view = "note"; render();
+  guideOn = false;
+  draft = n; draft.tags ||= {}; draft.notes ||= {}; draft.other ||= {}; draft.waterUnit ||= waterAmountParts(draft).unit;
+  editing = edit; pending = null; step = 0; view = "note"; render();
   if (n.thumb && !edit) { const f = await store.photo(n.id); const i = $("#pimg"); if (f && i && draft?.id === n.id) i.src = f; }
 }
 function paintRate() {
@@ -680,40 +893,74 @@ function paintRate() {
   $("#rv").textContent = draft.rating ? draft.rating + " / 5" : "Tap a star. The left half gives a half star.";
 }
 
-const WCOL = { Citrus: "#c7ad65", Fruity: "#b97970", Sweet: "#c99a58", Spicy: "#c17b58", Woody: "#92705a", Smoky: "#718b8e" };
-function wheelSvg() {
-  const n = CHAR.length, R = 100, r = 34, c = 110, pt = (a, d) => [(c + d * Math.sin(a)).toFixed(1), (c - d * Math.cos(a)).toFixed(1)];
-  return `<svg viewBox="0 0 220 220" class="wheel" role="group" aria-label="Flavour wheel">${CHAR.map((f, i) => {
-    const a0 = i * 2 * Math.PI / n, a1 = (i + 1) * 2 * Math.PI / n, [x0, y0] = pt(a0, R), [x1, y1] = pt(a1, R), [x2, y2] = pt(a1, r), [x3, y3] = pt(a0, r), [lx, ly] = pt((a0 + a1) / 2, (R + r) / 2 + 4);
-    return `<g data-w="${f}" tabindex="0" role="button" aria-label="${f}" opacity="${wSel && wSel !== f ? .4 : 1}"><path d="M${x0} ${y0}A${R} ${R} 0 0 1 ${x1} ${y1}L${x2} ${y2}A${r} ${r} 0 0 0 ${x3} ${y3}Z" fill="${WCOL[f] || "#999"}" stroke="#fbf6ea" stroke-width="2"/><text x="${lx}" y="${ly}" text-anchor="middle" font-size="11" font-weight="600" fill="${f === "Sweet" || f === "Citrus" ? "#3b2417" : "#fff"}">${f}</text></g>`;
-  }).join("")}<circle cx="${c}" cy="${c}" r="${r - 4}" fill="#fbf6ea"/><text x="${c}" y="${c + 4}" text-anchor="middle" font-size="10" fill="#3b2417">Flavours</text></svg>`;
+function addFlavourDescriptor(sectionKey, category, descriptor) {
+  if (!draft) return;
+  draft.notes ||= {};
+  draft.tags ||= {};
+  const current = String(draft.notes[sectionKey] || "").trim();
+  const pieces = current.split(/[,;\n]+/).map(x => x.trim()).filter(Boolean);
+  if (!pieces.some(x => x.toLocaleLowerCase() === descriptor.toLocaleLowerCase())) {
+    draft.notes[sectionKey] = current ? `${current.replace(/[,;\s]+$/, "")}, ${descriptor}` : descriptor;
+  }
+  const broadKey = `${sectionKey}|Character`;
+  const specificKey = `${sectionKey}|${category} notes`;
+  draft.tags[broadKey] ||= [];
+  draft.tags[specificKey] ||= [];
+  if (!draft.tags[broadKey].includes(category)) draft.tags[broadKey].push(category);
+  if (!draft.tags[specificKey].includes(descriptor)) draft.tags[specificKey].push(descriptor);
+  const field = document.querySelector(`[data-f="notes.${sectionKey}"]`);
+  if (field) field.value = draft.notes[sectionKey];
 }
-function paintWheel() {
-  const o = $("#wheelov"); o.hidden = !wOn; if (!wOn) return;
-  const sec = SECTIONS[step - 1], hasC = sec.g.some(g => g[0] === "Character");
-  const chip = (g, v, l) => `<button class="tab ${(draft.tags[sec.k + "|" + g] || []).includes(v) ? "on" : ""}" data-wp="${g}" data-wv="${esc(v)}">${l}</button>`;
-  o.innerHTML = `<div class="page"><h2>${sec.t}: flavour wheel</h2><p class="mute">Tap a slice, then pick anything that fits. Every pick is optional.</p><div class="wdone"><button class="btn" data-a="wdone">Done</button></div>${wheelSvg()}${wSel ? `<h3>${wSel}</h3>${hasC ? `<small class="mute">Broad</small><div class="tabs">${chip("Character", wSel, "Any " + wSel.toLowerCase())}</div><div class="mute" style="text-align:center" aria-hidden="true">–</div>` : ""}<small class="mute">Specific</small><div class="tabs">${SPEC[wSel].map(x => chip(wSel + " notes", x, x)).join("")}</div>` : ""}</div>`;
+function paintGuide() {
+  const o = $("#guideov");
+  if (!o) return;
+  o.hidden = !guideOn;
+  if (!guideOn) return;
+  const sectionName = ({ nose: "Nose", taste: "Taste", finish: "Finish" })[guideSection] || "Tasting";
+  const intro = `<div class="page guide-page"><div class="guide-page-head"><button class="learn-back" data-a="guideDone">‹ Back to ${sectionName}</button><span class="eyebrow">GUIDED TASTING · ${sectionName.toUpperCase()}</span><h2>Explore Flavours</h2><p>Choose a category, read the descriptions and add useful descriptors to your ${sectionName.toLowerCase()} notes. Your existing notes will be kept.</p></div>`;
+  if (!guideCategory) {
+    o.innerHTML = `${intro}<div class="flavour-grid guide-category-grid">${GUIDE.map(([name, description]) => `<button class="flavour-cat-card" data-guide-cat="${name}" style="--cat-tint:${CATEGORY_TINT[name]}"><span class="flavour-art">${CAT_ART[name]}</span><span class="flavour-cat-title">${name}</span><span class="flavour-cat-copy">${esc(description)}</span><span class="flavour-count">${SPEC[name].length} descriptors <span>›</span></span></button>`).join("")}</div></div>`;
+    return;
+  }
+  const introText = GUIDE.find(x => x[0] === guideCategory)?.[1] || "Explore this flavour family.";
+  const descriptorCards = SPEC[guideCategory].map(name => {
+    const active = guideDescriptor === name;
+    const added = (draft?.tags?.[`${guideSection}|${guideCategory} notes`] || []).includes(name);
+    const d = DETAIL[name] || [];
+    return `<article class="descriptor-card ${active ? "expanded" : ""}"><button class="descriptor-toggle" data-guide-desc="${esc(name)}" aria-expanded="${active}"><span><b>${esc(name)}</b><small>${esc(d[0] || "")}</small></span><span class="descriptor-plus">${active ? "−" : "+"}</span></button>${active ? `<div class="descriptor-detail"><p><b>What to picture</b><br>${esc(d[0] || "")}</p><p><b>Where it may appear</b><br>${esc(d[1] || "It can appear differently from one whisky to another.")}</p>${FLAVOUR_COMPARE[name] ? `<p><b>Useful distinction</b><br>${esc(FLAVOUR_COMPARE[name])}</p>` : ""}<button class="btn guide-add-button" data-guide-add="${esc(name)}" data-guide-category="${esc(guideCategory)}" ${added ? "disabled" : ""}>${added ? "Added to notes ✓" : `Add ${esc(name)} to ${sectionName}`}</button></div>` : ""}</article>`;
+  }).join("");
+  o.innerHTML = `${intro}<button class="text-link learn-inline-actions" data-guide-back>‹ All flavour categories</button><div class="guide-category-intro"><span class="flavour-art">${CAT_ART[guideCategory]}</span><div><h3>${guideCategory}</h3><p>${esc(introText)}</p></div></div><div class="descriptor-list">${descriptorCards}</div><p class="learn-footnote">Descriptors are suggestions, not a checklist. Add only the words that match what you notice.</p></div>`;
 }
 const flv = (n, k) => Object.entries(n.tags || {}).filter(([g]) => g.startsWith(k + "|") && (g.endsWith("|Character") || g.endsWith(" notes"))).flatMap(([, v]) => v);
 const pills = (a, c) => a.length ? a.map(x => `<span class="pill ${c}">${esc(x)}</span>`).join("") : '<small class="mute">None</small>';
 function cmpHtml(A, B) {
-  const sec = (k, t) => { const a = [...new Set(flv(A, k))], b = [...new Set(flv(B, k))]; return `<div class="sec"><h3>${t}</h3><small>In common</small><div>${pills(a.filter(x => b.includes(x)), "sh")}</div><small>Only ${esc(A.name)}</small><div>${pills(a.filter(x => !b.includes(x)), "")}</div><small>Only ${esc(B.name)}</small><div>${pills(b.filter(x => !a.includes(x)), "")}</div></div>`; };
+  const sec = (k, t) => {
+    const a = [...new Set(flv(A, k))], b = [...new Set(flv(B, k))];
+    return `<article class="compare-flavour-card"><h3>${t}</h3><div class="compare-flavour-columns"><div><b>In common</b>${pills(a.filter(x => b.includes(x)), "sh")}</div><div><b>${esc(A.name)}</b>${pills(a.filter(x => !b.includes(x)), "")}</div><div><b>${esc(B.name)}</b>${pills(b.filter(x => !a.includes(x)), "")}</div></div></article>`;
+  };
   const all = n => new Set([...flv(n, "nose"), ...flv(n, "taste")]), a = all(A), b = all(B), u = new Set([...a, ...b]), sh = [...a].filter(x => b.has(x)).length;
   const pct = u.size ? Math.round(100 * sh / u.size) : null;
-  const rows = [["Rating", n => n.rating ? stars(n.rating) + " " + n.rating : "–"], ["Category", n => esc(n.category)], ["Region", n => esc(n.region) || "–"], ["Style", n => esc(n.type) || "–"], ["Age", n => n.noAge ? "No age statement" : n.age ? n.age + " years" : "–"], ["ABV", n => n.abv ? esc(n.abv) + "%" : "–"], ["Finish", n => (n.tags?.["finish|Length"] || []).join(", ") || "–"]];
-  return `<div class="row card"><b>Flavour match</b><div class="big">${pct === null ? "–" : pct + "%"}</div><small>${pct === null ? "No Nose or Taste flavours recorded yet." : sh + " of " + u.size + " Nose and Taste flavours in common."}</small></div>
-  <div class="cmp"><b></b><b>${esc(A.name)}</b><b>${esc(B.name)}</b>${rows.map(([l, f]) => `<span class="mute">${l}</span><span>${f(A)}</span><span>${f(B)}</span>`).join("")}</div>${sec("nose", "Nose")}${sec("taste", "Taste")}${sec("finish", "Finish")}`;
+  const rows = [
+    ["Rating", n => n.rating ? stars(n.rating) + " " + n.rating + " / 5" : "–"],
+    ["Category", n => esc(n.category)], ["Region", n => esc(n.region) || "–"], ["Style", n => esc(n.type) || "–"],
+    ["Age", n => n.noAge ? "No age statement" : n.age ? n.age + " years" : "–"], ["ABV", n => n.abv ? esc(n.abv) + "%" : "–"],
+    ["Water added", n => esc(waterAmountLabel(n)) || "–"], ["Finish", n => (n.tags?.["finish|Length"] || []).join(", ") || "–"]
+  ];
+  const water = n => ["Effect on aroma", "Effect on taste"].map(k => (n.tags?.[`water|${k}`] || []).length ? `${k}: ${(n.tags[`water|${k}`] || []).join(", ")}` : "").filter(Boolean).join(" · ") || "–";
+  return `<section class="match-summary-card"><span class="eyebrow">FLAVOUR OVERLAP</span><div class="match-summary-main"><strong>${pct === null ? "–" : pct + "%"}</strong><p>${pct === null ? "No Nose or Taste flavours recorded yet." : `${sh} of ${u.size} recorded Nose and Taste descriptors are in common.`}</p></div></section>
+    <section class="compare-facts-card"><h3>At a glance</h3><div class="compare-facts-grid"><div class="compare-fact-label"></div><b>${esc(A.name)}</b><b>${esc(B.name)}</b>${rows.map(([l, f]) => `<span class="compare-fact-label">${l}</span><span>${f(A)}</span><span>${f(B)}</span>`).join("")}<span class="compare-fact-label">Water observations</span><span>${esc(water(A))}</span><span>${esc(water(B))}</span></div></section>
+    ${sec("nose", "Nose")}${sec("taste", "Taste")}${sec("finish", "Finish")}`;
 }
 const cmp = () => {
-  const o = v => `<option value="">Choose a bottle</option>${[...notes].sort((x, y) => x.name.localeCompare(y.name)).map(n => `<option value="${n.id}" ${n.id === v ? "selected" : ""}>${esc(n.name)}</option>`).join("")}`;
+  const o = v => `<option value="">Choose a bottle</option>${[...notes].sort((x, y) => x.name.localeCompare(y.name)).map(n => `<option value="${esc(n.id)}" ${n.id === v ? "selected" : ""}>${esc(n.name)}</option>`).join("")}`;
   const A = notes.find(n => n.id === cA), B = notes.find(n => n.id === cB);
-  return `<h2>Compare</h2><div class="grid"><label class="fld">Bottle 1<select data-cmp="A">${o(cA)}</select></label><label class="fld">Bottle 2<select data-cmp="B">${o(cB)}</select></label></div>
-  ${notes.length < 2 ? '<p class="empty">Add at least two bottles to compare them.</p>' : A && B ? (A.id === B.id ? '<p class="empty">Choose two different bottles.</p>' : cmpHtml(A, B)) : '<p class="empty">Choose two bottles to compare.</p>'}`;
+  return `<div class="section-page-head"><span class="eyebrow">SIDE BY SIDE</span><h2>Compare Bottles</h2><p>Choose two whiskies to compare their details and recorded tasting notes.</p></div>
+    <section class="compare-pickers"><label class="fld">First bottle<select data-cmp="A">${o(cA)}</select></label><label class="fld">Second bottle<select data-cmp="B">${o(cB)}</select></label></section>
+    ${notes.length < 2 ? '<p class="empty compare-empty">Add at least two bottles to compare them.</p>' : A && B ? (A.id === B.id ? '<p class="empty compare-empty">Choose two different bottles.</p>' : cmpHtml(A, B)) : '<p class="empty compare-empty">Choose two bottles to begin the comparison.</p>'}`;
 };
 
 function onClick(e) {
   const t = e.target;
-  if (t.closest("#tip")) { t.closest("#tip").hidden = true; return; }
   const r = t.closest("[data-r]");
   if (r && editing) { const v = +r.dataset.r; draft.rating = draft.rating === v ? 0 : v; paintRate(); return; }
   const f = t.closest("[data-favd]"); if (f && editing) { draft.favourite = !draft.favourite; f.classList.toggle("on", draft.favourite); return; }
@@ -726,26 +973,30 @@ function onClick(e) {
   const region = t.closest("[data-region]"); if (region) { learnRegion = region.dataset.region; render(); return; }
   if (t.closest("[data-region-back]")) { learnRegion = null; render(); return; }
   const expand = t.closest("[data-expand]"); if (expand) { const key = expand.dataset.expand; openLearnItems.has(key) ? openLearnItems.delete(key) : openLearnItems.add(key); render(); return; }
-  const gt = t.closest("[data-gt]"); if (gt) { gTab = gt.dataset.gt; render(); return; }
-  const gc = t.closest("[data-gc]"); if (gc) { const y = scrollY; gSel = gSel === gc.dataset.gc ? null : gc.dataset.gc; render(); scrollTo(0, y); return; }
-  const gw = t.closest("[data-w]"); if (gw) { wSel = wSel === gw.dataset.w ? null : gw.dataset.w; if (wOn) paintWheel(); else { const y = scrollY; render(); scrollTo(0, y); } return; }
-  const wp = t.closest("[data-wp]"); if (wp) { const k = SECTIONS[step - 1].k + "|" + wp.dataset.wp, v = wp.dataset.wv, cur = draft.tags[k] || []; draft.tags[k] = cur.includes(v) ? cur.filter(x => x !== v) : [...cur, v]; paintWheel(); return; }
+  const guideOpen = t.closest('[data-a="guideOpen"]');
+  if (guideOpen && editing) { guideSection = guideOpen.dataset.section; guideCategory = null; guideDescriptor = null; guideOn = true; paintGuide(); return; }
+  const guideCat = t.closest("[data-guide-cat]"); if (guideCat) { guideCategory = guideCat.dataset.guideCat; guideDescriptor = null; paintGuide(); return; }
+  if (t.closest("[data-guide-back]")) { guideCategory = null; guideDescriptor = null; paintGuide(); return; }
+  const guideDesc = t.closest("[data-guide-desc]"); if (guideDesc) { guideDescriptor = guideDescriptor === guideDesc.dataset.guideDesc ? null : guideDesc.dataset.guideDesc; paintGuide(); return; }
+  const guideAdd = t.closest("[data-guide-add]");
+  if (guideAdd && editing) { addFlavourDescriptor(guideSection, guideAdd.dataset.guideCategory, guideAdd.dataset.guideAdd); paintGuide(); toast("Added to " + ({ nose: "Nose", taste: "Taste", finish: "Finish" })[guideSection] + " notes"); return; }
   const id = t.closest("[data-id]")?.dataset.id;
   if (id) { openNote({ ...blank(), ...structuredClone(notes.find(n => n.id === id)) }, false); return; }
   const c = t.closest("[data-c]"); if (c) { cat = c.dataset.c; render(); return; }
   const v = t.closest("[data-v]");
-  if (v) { if (editing && !confirm("Discard unsaved changes?")) return; editing = false; view = v.dataset.v; if (view !== "note") draft = null; if (view === "learn") { learnSection = "hub"; flavourCategory = null; flavourDescriptor = null; learnRegion = null; openLearnItems.clear(); } render(); return; }
+  if (v) { if (editing && !confirm("Discard unsaved changes?")) return; guideOn = false; editing = false; view = v.dataset.v; if (view !== "note") draft = null; if (view === "learn") { learnSection = "hub"; flavourCategory = null; flavourDescriptor = null; learnRegion = null; openLearnItems.clear(); } render(); return; }
   const sp = t.closest("[data-step]"); if (sp) { step = +sp.dataset.step; render(); return; }
   const a = t.closest("[data-a]")?.dataset.a;
   if (a === "new") openNote(blank(), true);
-  if (a === "wopen") { wOn = true; wSel = null; paintWheel(); }
-  if (a === "wdone") { wOn = false; paintWheel(); const y = scrollY; render(); scrollTo(0, y); }
+  if (a === "guideDone") { guideOn = false; render(); return; }
   if (a === "out") fb.signOut(auth);
-  if (a === "back") { step--; render(); }
-  if (a === "next") { step++; render(); }
+  if (a === "back") { step = Math.max(0, step - 1); render(); }
+  if (a === "next") { step = Math.min(STEPS.length - 1, step + 1); render(); }
+  if (a === "skipWater") { step = STEPS.length - 1; render(); }
   if (a === "edit") { editing = true; step = 0; render(); }
   if (a === "cancel") {
     if (!confirm("Discard unsaved changes?")) return;
+    guideOn = false;
     const o = notes.find(n => n.id === draft.id);
     if (o) openNote({ ...blank(), ...structuredClone(o) }, false); else { draft = null; editing = false; view = "coll"; render(); }
   }
@@ -755,19 +1006,12 @@ function onClick(e) {
     store.save(draft, pending);
     const copy = structuredClone(draft), i = notes.findIndex(n => n.id === draft.id);
     if (i < 0) notes.push(copy); else notes[i] = copy;
-    toast("Saved"); openNote(structuredClone(copy), false);
+    toast("Saved"); guideOn = false; openNote(structuredClone(copy), false);
   }
   if (a === "del" && confirm("Delete this note? This cannot be undone.")) {
     store.del(draft.id); notes = notes.filter(n => n.id !== draft.id);
     draft = null; editing = false; view = "coll"; render(); toast("Deleted");
   }
-}
-
-function tip(v) {
-  const e = $("#tip"); if (!e) return;
-  const g = GUIDE.find(x => x[0] === v), d = DETAIL[v];
-  e.innerHTML = g ? `<b>${esc(v)}</b><br>${g[1]}<br><small>e.g. ${SPEC[v].join(", ").toLowerCase()}</small>` : d ? `<b>${esc(v)}</b><br>${d[0]}<br><small>Where you might notice it: ${d[1]}</small>` : "";
-  e.hidden = !e.innerHTML;
 }
 function onInput(e) {
   const t = e.target;
@@ -776,20 +1020,27 @@ function onInput(e) {
   if (!editing) return;
   if (t.dataset.g) {
     if (t.dataset.one && t.checked) document.querySelectorAll(`[data-g="${t.dataset.g}"]`).forEach(i => { if (i !== t) i.checked = false; });
-    draft.tags[t.dataset.g] = [...document.querySelectorAll(`[data-g="${t.dataset.g}"]:checked`)].map(i => i.value); tip(t.checked ? t.value : ""); return; }
+    draft.tags[t.dataset.g] = [...document.querySelectorAll(`[data-g="${t.dataset.g}"]:checked`)].map(i => i.value);
+    return;
+  }
   const f = t.dataset.f; if (!f) return;
   setP(draft, f, t.type === "checkbox" ? t.checked : t.value);
   if (f === "noAge") { const a = document.querySelector('[data-f="age"]'); a.disabled = t.checked; if (t.checked) { a.value = ""; draft.age = ""; } }
-  if (f === "category") $("#rg").innerHTML = (REGIONS[t.value] || []).map(r => `<option value="${r}">`).join("");
+  if (f === "category") { const rg = $("#rg"); if (rg) rg.innerHTML = (REGIONS[t.value] || []).map(r => `<option value="${esc(r)}">`).join(""); }
+  if (f === "waterAmt" || f === "waterUnit") {
+    const p = waterAmountParts(draft), preview = $("#waterPreview");
+    if (preview) preview.textContent = p.amount ? `${p.amount} ${p.unit === "tsp" ? "TSP" : "drops"}` : "Amount will appear here when entered.";
+  }
 }
+
 $("#root").addEventListener("click", onClick);
 $("#root").addEventListener("input", onInput);
 $("#root").addEventListener("change", onInput);
-$("#root").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.dataset?.w) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); } });
+// Native buttons and controls provide keyboard interaction for the guided flavour library.
 
 function start() {
   view = "home"; draft = null; editing = false;
-  $("#root").innerHTML = `<main class="page" id="page"></main><nav class="bar">${[["home", "Home"], ["coll", "Tastings"], ["learn", "Learn"]].map(([v, l]) => `<button data-v="${v}">${l}</button>`).join("")}</nav><div class="ov" id="wheelov" hidden></div>`;
+  $("#root").innerHTML = `<main class="page" id="page"></main><nav class="bar">${[["home", "Home"], ["coll", "Tastings"], ["learn", "Learn"]].map(([v, l]) => `<button data-v="${v}">${l}</button>`).join("")}</nav><div class="ov" id="guideov" hidden></div>`;
   render();
   unsub?.();
   unsub = store.listen(list => { notes = list; if (view === "coll") renderList(); else if (view === "home" || view === "cmp") render(); });
