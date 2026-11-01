@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Whisky Notes v3.13 -->
+<!-- Whisky Notes v3.14 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Whisky Notes v3.13</title>
+<title>Whisky Notes v3.14</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#5e4a37;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -133,13 +133,6 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 .flavour-cat-copy{font-size:11px;line-height:1.35;color:var(--mute);flex:1}
 .flavour-count{display:flex;justify-content:space-between;width:100%;margin-top:9px;color:#80502f;font-size:10px;font-weight:600;letter-spacing:.2px}
 .flavour-count span{font-size:16px;line-height:10px}
-.wheel-entry{display:flex;align-items:center;gap:12px;width:100%;margin:14px 0 0;padding:11px 14px;background:#eee3d0;border:1px solid #d9c6a8;border-radius:12px;text-align:left;color:var(--ink)}
-.wheel-entry-mark{display:grid;place-items:center;width:38px;height:38px;border:1px solid #b99a72;border-radius:50%;font-size:23px;color:#94683e;flex:none}
-.wheel-entry span:nth-child(2){flex:1;min-width:0}
-.wheel-entry b,.wheel-entry small{display:block}
-.wheel-entry b{font:600 16px Fraunces,Georgia,serif}
-.wheel-entry small{font-size:11px;color:var(--mute);margin-top:2px}
-.wheel-arrow{font-size:22px;color:#80502f}
 .descriptor-list{display:flex;flex-direction:column;gap:8px}
 .descriptor-card,.stage-card,.style-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .descriptor-card.expanded,.stage-card.expanded,.style-card.expanded{border-color:#bda17c;box-shadow:0 2px 8px rgba(69,43,22,.06)}
@@ -193,6 +186,42 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 .style-examples .eyebrow{margin-bottom:4px}
 .style-examples p{margin:0;font-size:12px;color:var(--ink)}
 
+
+/* v3.14 Learn refinements: larger supporting text, fifth card and bottle reference */
+.learning-view .eyebrow{font-size:11px}
+.learning-view .learn-number{font-size:11px}
+.learning-view .learn-card-copy{font-size:13px;line-height:1.4}
+.learning-view .learn-card-link{font-size:12px}
+.learning-view .learn-footnote{font-size:13px}
+.learning-view .flavour-cat-copy{font-size:12px}
+.learning-view .flavour-count{font-size:11px}
+.learning-view .descriptor-toggle small,.learning-view .style-toggle small,.learning-view .stage-title-wrap small{font-size:12px}
+.learning-view .descriptor-tip,.learning-view .style-note{font-size:12px}
+.learning-view .country-tab{font-size:13px}
+.learning-view .region-card small{font-size:11px}
+.learning-view .region-card-main>span{font-size:13px}
+.learning-view .region-kicker{font-size:11px}
+.learning-view .process-intro{font-size:11px}
+.learning-view .stage-terms b,.learning-view .stage-terms span{font-size:12px}
+.learn-card-water{grid-column:1/-1;min-height:108px;height:108px;display:grid;grid-template-columns:66px minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:center;column-gap:12px;padding:12px 14px}
+.learn-card-water .learn-art{grid-column:1;grid-row:1/3;width:66px;height:66px;margin:0}
+.learn-card-water .learn-art svg{max-width:66px}
+.learn-card-water .learn-card-title{grid-column:2;grid-row:1;align-self:end;margin:0 0 3px}
+.learn-card-water .learn-card-copy{grid-column:2;grid-row:2;align-self:start;min-width:0}
+.learn-card-water .learn-card-link{grid-column:3;grid-row:1/3;align-self:center;margin:0;white-space:nowrap}
+.learn-card-water .learn-number{top:7px;right:9px;opacity:.8}
+.learn-reference{display:flex;align-items:center;gap:12px;margin:14px 0 0;padding:12px 14px;background:#eee3d0;border:1px solid #d9c6a8;border-radius:12px;color:var(--ink);text-decoration:none}
+.learn-reference-icon{display:grid;place-items:center;flex:none;width:38px;height:38px;border:1px solid #b99a72;border-radius:50%;font-size:20px;color:#94683e}
+.learn-reference b,.learn-reference small{display:block}
+.learn-reference b{font:600 16px Fraunces,Georgia,serif}
+.learn-reference small{font-size:13px;line-height:1.35;color:var(--mute);margin-top:3px}
+.water-placeholder{display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:20px;padding:24px 18px;background:linear-gradient(160deg,#fcf8ef,#f6ecdd);border:1px solid var(--line);border-radius:14px}
+.water-placeholder-art{display:block;width:110px;height:90px;margin-bottom:10px}
+.water-placeholder-art svg{width:100%;height:100%}
+.water-placeholder h3{margin:0 0 7px}
+.water-placeholder p{max-width:420px;margin:0;color:var(--mute);font-size:14px;line-height:1.5}
+@media(max-width:360px){.learn-card-water{grid-template-columns:54px minmax(0,1fr) auto;column-gap:8px;padding:10px}.learn-card-water .learn-art{width:54px;height:58px}.learn-card-water .learn-art svg{max-width:54px}.learn-card-water .learn-card-title{font-size:16px}.learn-card-water .learn-card-link{font-size:12px}}
+
 </style>
 </head>
 <body>
@@ -209,7 +238,10 @@ const FIREBASE_CONFIG = {
   appId: "1:365703540348:web:626da1915b95fd2b0623f9"
 }
 
-/* ---------- 2. Descriptor lists. Edit freely. ---------- */
+/* ---------- 2. External bottle reference. Change this URL to use another database. ---------- */
+const WHISKY_REFERENCE_URL = "https://www.whiskybase.com/whiskies";
+
+/* ---------- 3. Descriptor lists. Edit freely. ---------- */
 const CATS = ["Scotch", "Irish", "Bourbon", "Rye", "Other"];
 // Paper texture on the non-Home pages. Edit these numbers to taste.
 
@@ -328,7 +360,7 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.13";
+const VERSION = "3.14";
 let gTab = "cat", gSel = null, gDet = null, wOn = false, wSel = null, cA = "", cB = "";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Rating"];
@@ -361,7 +393,7 @@ const home = () => `<div class="cover"><div class="cin">
 
 /* ---------- Learning library: redesigned for v3.13 ---------- */
 let learnSection = "hub";
-let flavourCategory = null, flavourDescriptor = null, flavourWheel = false;
+let flavourCategory = null, flavourDescriptor = null;
 let learnCountry = "Scotland", learnRegion = null;
 const openLearnItems = new Set();
 
@@ -369,7 +401,8 @@ const HUB_ART = {
   flavours: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M28 76c8-19 9-39 27-54 15 12 21 33 34 52-20 11-41 13-61 2Z" fill="#d9a75f" opacity=".30"/><path d="M31 74c10-19 12-37 25-51 15 15 20 34 32 49-18 11-39 13-57 2Z" fill="none" stroke="#70452d" stroke-width="2.4" stroke-linejoin="round"/><path d="M56 25c-3 15-10 30-21 47M57 25c8 17 17 31 31 47M44 55c8 2 17 4 26 2" fill="none" stroke="#70452d" stroke-width="1.8" stroke-linecap="round"/><path d="M16 34c-3-7 2-12 7-13M98 31c5-4 9-1 9 4M91 82c7 4 13 1 15-4" fill="none" stroke="#a56d42" stroke-width="2" stroke-linecap="round"/><circle cx="28" cy="25" r="3" fill="#9e7851"/><circle cx="98" cy="61" r="2.5" fill="#9e7851"/></svg>`,
   regions: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="m12 76 24-31 13 17 19-34 23 37 14-17 7 28Z" fill="#a9b49a" opacity=".55"/><path d="m12 76 24-31 13 17 19-34 23 37 14-17 7 28H12Z" fill="none" stroke="#52634d" stroke-width="2.3" stroke-linejoin="round"/><path d="m49 62 19-34 8 13-10 2-6 10M35 45l7 10-9 0" fill="none" stroke="#52634d" stroke-width="1.6" stroke-linejoin="round"/><path d="M18 82c20-5 53-5 84 0" fill="none" stroke="#8b6246" stroke-width="2" stroke-linecap="round"/><path d="M23 86h74" stroke="#8b6246" stroke-width="1.4" stroke-dasharray="3 4"/></svg>`,
   production: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M39 21h42l-5 12v8c0 5 10 9 12 16l-2 27H34l-2-27c2-7 12-11 12-16v-8Z" fill="#c58b50" opacity=".3"/><path d="M39 21h42l-5 12v8c0 5 10 9 12 16l-2 27H34l-2-27c2-7 12-11 12-16v-8Z" fill="none" stroke="#70452d" stroke-width="2.4" stroke-linejoin="round"/><path d="M44 21v-8h32v8M43 59h43M47 69c6-4 18-4 26 0" fill="none" stroke="#70452d" stroke-width="2" stroke-linecap="round"/><path d="M51 13c-4-7 3-9 2-13M67 13c-3-6 4-8 3-12" fill="none" stroke="#9e7851" stroke-width="2" stroke-linecap="round"/><circle cx="60" cy="73" r="3" fill="#a56d42"/></svg>`,
-  styles: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M25 28h19l-2 14-3 42H28l-3-42Z" fill="#b8a080" opacity=".45"/><path d="M25 28h19l-2 14-3 42H28l-3-42Z" fill="none" stroke="#70452d" stroke-width="2.2" stroke-linejoin="round"/><path d="M30 28v-9h9v9M61 18h19v14l-4 52H65l-4-52Z" fill="#c58b50" opacity=".36"/><path d="M61 18h19v14l-4 52H65l-4-52Z" fill="none" stroke="#70452d" stroke-width="2.2" stroke-linejoin="round"/><path d="M65 18V9h11v9M89 35h17l-2 13-3 36H94l-3-36Z" fill="#a9b49a" opacity=".5"/><path d="M89 35h17l-2 13-3 36H94l-3-36Z" fill="none" stroke="#52634d" stroke-width="2.2" stroke-linejoin="round"/><path d="M93 35v-8h9v8M22 85h88" stroke="#70452d" stroke-width="2" stroke-linecap="round"/></svg>`
+  styles: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M25 28h19l-2 14-3 42H28l-3-42Z" fill="#b8a080" opacity=".45"/><path d="M25 28h19l-2 14-3 42H28l-3-42Z" fill="none" stroke="#70452d" stroke-width="2.2" stroke-linejoin="round"/><path d="M30 28v-9h9v9M61 18h19v14l-4 52H65l-4-52Z" fill="#c58b50" opacity=".36"/><path d="M61 18h19v14l-4 52H65l-4-52Z" fill="none" stroke="#70452d" stroke-width="2.2" stroke-linejoin="round"/><path d="M65 18V9h11v9M89 35h17l-2 13-3 36H94l-3-36Z" fill="#a9b49a" opacity=".5"/><path d="M89 35h17l-2 13-3 36H94l-3-36Z" fill="none" stroke="#52634d" stroke-width="2.2" stroke-linejoin="round"/><path d="M93 35v-8h9v8M22 85h88" stroke="#70452d" stroke-width="2" stroke-linecap="round"/></svg>`,
+  water: `<svg viewBox="0 0 120 100" aria-hidden="true"><path d="M60 9c-8 14-23 29-23 46a23 23 0 0 0 46 0C83 38 68 23 60 9Z" fill="#9eb6b0" opacity=".48" stroke="#526f6b" stroke-width="2.3"/><path d="M48 58c2 8 8 12 16 12M60 19c-3 6-8 12-11 18" fill="none" stroke="#526f6b" stroke-width="2" stroke-linecap="round"/><path d="M19 79c12-6 22-6 33 0s22 6 33 0 17-5 21-3" fill="none" stroke="#8b9f91" stroke-width="2" stroke-linecap="round"/><circle cx="93" cy="24" r="3" fill="#b9a06d"/><circle cx="24" cy="34" r="2.5" fill="#b9a06d"/></svg>`
 };
 const CAT_ART = {
   Citrus: `<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="23" fill="#d9b85c" opacity=".38" stroke="#8b6738" stroke-width="2"/><circle cx="32" cy="32" r="17" fill="none" stroke="#8b6738" stroke-width="1.8"/><path d="M32 15v34M15 32h34M20 20l24 24M44 20 20 44" stroke="#8b6738" stroke-width="1.5"/><path d="M33 9c5-5 12-5 15-1-5 4-10 5-15 1Z" fill="#74815b" stroke="#52634d" stroke-width="1.4"/></svg>`,
@@ -505,20 +538,23 @@ function learnHub() {
     ["flavours","Flavours","Explore aroma and taste descriptors, from citrus to smoke.",HUB_ART.flavours,"01"],
     ["regions","Regions","Discover whisky-producing places and their traditions.",HUB_ART.regions,"02"],
     ["production","Production","Follow the journey from grain to the finished whisky.",HUB_ART.production,"03"],
-    ["styles","Whisky Styles","Understand the names and categories on whisky labels.",HUB_ART.styles,"04"]
+    ["styles","Whisky Styles","Understand the names and categories on whisky labels.",HUB_ART.styles,"04"],
+    ["water","Adding Water","A guide to the effects of adding water to whisky.",HUB_ART.water,"05"]
   ];
-  return `<div class="learn-hub-head"><span class="eyebrow">THE WHISKY LIBRARY</span><h2>Learn & Explore</h2><p>A field guide to the flavours, places, methods and styles behind the whiskies you taste.</p></div><div class="learn-grid">${cards.map(([id,title,desc,art,num])=>`<button class="learn-card" data-lesson="${id}"><span class="learn-number">${num}</span><span class="learn-art">${art}</span><span class="learn-card-title">${title}</span><span class="learn-card-copy">${desc}</span><span class="learn-card-link">Explore <span aria-hidden="true">↗</span></span></button>`).join("")}</div><p class="learn-footnote">Start anywhere. Each topic begins with a quick overview and opens into more detail as you explore.</p>`;
+  return `<div class="learn-hub-head"><span class="eyebrow">THE WHISKY LIBRARY</span><h2>Learn & Explore</h2><p>A field guide to the flavours, places, methods and styles behind the whiskies you taste.</p></div><div class="learn-grid">${cards.map(([id,title,desc,art,num])=>`<button class="learn-card ${id === "water" ? "learn-card-water" : ""}" data-lesson="${id}"><span class="learn-number">${num}</span><span class="learn-art">${art}</span><span class="learn-card-title">${title}</span><span class="learn-card-copy">${desc}</span><span class="learn-card-link">${id === "water" ? "Coming soon" : "Explore"} <span aria-hidden="true">↗</span></span></button>`).join("")}</div><a class="learn-reference" href="${esc(WHISKY_REFERENCE_URL)}" target="_blank" rel="noopener noreferrer"><span class="learn-reference-icon" aria-hidden="true">↗</span><span><b>Whiskybase bottle database</b><small>Look up bottle details, distilleries and community information.</small></span></a><p class="learn-footnote">Start anywhere. Each topic begins with a quick overview and opens into more detail as you explore.</p>`;
 }
 function learnTop(title, desc, section) {
   return `<div class="learn-top"><button class="learn-back" data-learn-home>‹ Learning Library</button><span class="eyebrow">${section}</span><h2>${title}</h2><p>${desc}</p></div>`;
 }
 function flavoursPage() {
-  if (flavourWheel) return `${learnTop("Flavour Wheel","Use the wheel as a visual index. Choose a category, then explore its individual descriptors.","FLAVOURS")}<div class="learn-inline-actions"><button class="text-link" data-wheel-close>‹ Back to flavour categories</button></div>${wheelPage()}`;
   if (flavourCategory) {
     const desc = GUIDE.find(x=>x[0]===flavourCategory)?.[1] || "Explore this flavour family.";
     return `${learnTop(flavourCategory,desc,"FLAVOURS")}<button class="text-link learn-inline-actions" data-flavour-back>‹ All flavour categories</button><div class="learn-note">Think of these as tasting references, not ingredients. A descriptor is useful when it reminds you of something you can recognise.</div><div class="descriptor-list">${SPEC[flavourCategory].map(n=>{const active=flavourDescriptor===n;const d=DETAIL[n]||[];return `<div class="descriptor-card ${active?"expanded":""}"><button class="descriptor-toggle" data-flavour-note="${esc(n)}" aria-expanded="${active}"><span><b>${esc(n)}</b><small>${esc(d[0]||"")}</small></span><span class="descriptor-plus">${active?"−":"+"}</span></button>${active?`<div class="descriptor-detail"><p><b>What to picture</b><br>${esc(d[0]||"")}</p><p><b>Where it may appear</b><br>${esc(d[1]||"It can appear differently from one whisky to another.")}</p>${FLAVOUR_COMPARE[n]?`<p><b>Useful distinction</b><br>${esc(FLAVOUR_COMPARE[n])}</p>`:""}<p class="descriptor-tip">Try smelling first, then tasting. The same note may feel different on the nose, palate or finish.</p></div>`:""}</div>`}).join("")}</div>`;
   }
-  return `${learnTop("Flavours","Learn to recognise and describe the aromas and tastes you notice in a glass.","FLAVOURS")}<div class="learn-note"><b>There is no test.</b> These descriptors are a shared vocabulary. Use the words that make sense to you, and do not worry about finding every note.</div><div class="flavour-grid">${GUIDE.map(([n,d])=>`<button class="flavour-cat-card" data-flavour-cat="${n}" style="--cat-tint:${CATEGORY_TINT[n]}"><span class="flavour-art">${CAT_ART[n]}</span><span class="flavour-cat-title">${n}</span><span class="flavour-cat-copy">${d}</span><span class="flavour-count">${SPEC[n].length} descriptors <span>›</span></span></button>`).join("")}</div><button class="wheel-entry" data-wheel-open><span class="wheel-entry-mark">✳</span><span><b>Explore the flavour wheel</b><small>See how the six flavour families fit together.</small></span><span class="wheel-arrow">›</span></button>`;
+  return `${learnTop("Flavours","Learn to recognise and describe the aromas and tastes you notice in a glass.","FLAVOURS")}<div class="learn-note"><b>There is no test.</b> These descriptors are a shared vocabulary. Use the words that make sense to you, and do not worry about finding every note.</div><div class="flavour-grid">${GUIDE.map(([n,d])=>`<button class="flavour-cat-card" data-flavour-cat="${n}" style="--cat-tint:${CATEGORY_TINT[n]}"><span class="flavour-art">${CAT_ART[n]}</span><span class="flavour-cat-title">${n}</span><span class="flavour-cat-copy">${d}</span><span class="flavour-count">${SPEC[n].length} descriptors <span>›</span></span></button>`).join("")}</div>`;
+}
+function waterPlaceholderPage() {
+  return `${learnTop("Adding Water","A future guide to exploring what changes when water is added to whisky.","WATER")}<div class="water-placeholder"><span class="water-placeholder-art">${HUB_ART.water}</span><h3>Coming in a future update</h3><p>This section will explore how adding water can affect aroma, flavour and the overall tasting experience.</p></div>`;
 }
 function regionsPage() {
   const country=REGION_DATA[learnCountry], area=country.areas.find(a=>a.id===learnRegion);
@@ -540,6 +576,7 @@ function learn() {
   if (learnSection === "regions") return regionsPage();
   if (learnSection === "production") return productionPage();
   if (learnSection === "styles") return stylesPage();
+  if (learnSection === "water") return waterPlaceholderPage();
   return learnHub();
 }
 
@@ -603,6 +640,7 @@ function noteView() {
 
 function render() {
   $("#page").innerHTML = ({ home, coll, learn, cmp, note: noteView })[view]();
+  $("#page").classList.toggle("learning-view", view === "learn");
   document.querySelectorAll(".bar button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "note" ? "coll" : view)));
   if (view === "note" && editing && step === 0) bindPhoto();
   window.scrollTo(0, 0);
@@ -641,7 +679,6 @@ function wheelSvg() {
     return `<g data-w="${f}" tabindex="0" role="button" aria-label="${f}" opacity="${wSel && wSel !== f ? .4 : 1}"><path d="M${x0} ${y0}A${R} ${R} 0 0 1 ${x1} ${y1}L${x2} ${y2}A${r} ${r} 0 0 0 ${x3} ${y3}Z" fill="${WCOL[f] || "#999"}" stroke="#fbf6ea" stroke-width="2"/><text x="${lx}" y="${ly}" text-anchor="middle" font-size="11" font-weight="600" fill="${f === "Sweet" || f === "Citrus" ? "#3b2417" : "#fff"}">${f}</text></g>`;
   }).join("")}<circle cx="${c}" cy="${c}" r="${r - 4}" fill="#fbf6ea"/><text x="${c}" y="${c + 4}" text-anchor="middle" font-size="10" fill="#3b2417">Flavours</text></svg>`;
 }
-const wheelPage = () => `<p class="mute">Tap a slice to explore its flavours, then tap a flavour to learn about it.</p>${wheelSvg()}${wSel ? `<h3>${wSel}</h3><p>${GUIDE.find(x => x[0] === wSel)?.[1] || ""}</p><div class="tabs">${SPEC[wSel].map(x => `<button class="tab" data-gd="${esc(x)}">${x}</button>`).join("")}</div>` : ""}`;
 function paintWheel() {
   const o = $("#wheelov"); o.hidden = !wOn; if (!wOn) return;
   const sec = SECTIONS[step - 1], hasC = sec.g.some(g => g[0] === "Character");
@@ -671,27 +708,24 @@ function onClick(e) {
   const r = t.closest("[data-r]");
   if (r && editing) { const v = +r.dataset.r; draft.rating = draft.rating === v ? 0 : v; paintRate(); return; }
   const f = t.closest("[data-favd]"); if (f && editing) { draft.favourite = !draft.favourite; f.classList.toggle("on", draft.favourite); return; }
-  const lesson = t.closest("[data-lesson]"); if (lesson) { learnSection = lesson.dataset.lesson; flavourCategory = null; flavourDescriptor = null; flavourWheel = false; learnRegion = null; openLearnItems.clear(); render(); return; }
-  if (t.closest("[data-learn-home]")) { learnSection = "hub"; flavourCategory = null; flavourDescriptor = null; flavourWheel = false; learnRegion = null; openLearnItems.clear(); render(); return; }
+  const lesson = t.closest("[data-lesson]"); if (lesson) { learnSection = lesson.dataset.lesson; flavourCategory = null; flavourDescriptor = null; learnRegion = null; openLearnItems.clear(); render(); return; }
+  if (t.closest("[data-learn-home]")) { learnSection = "hub"; flavourCategory = null; flavourDescriptor = null; learnRegion = null; openLearnItems.clear(); render(); return; }
   const fc = t.closest("[data-flavour-cat]"); if (fc) { flavourCategory = fc.dataset.flavourCat; flavourDescriptor = null; render(); return; }
   if (t.closest("[data-flavour-back]")) { flavourCategory = null; flavourDescriptor = null; render(); return; }
   const fd = t.closest("[data-flavour-note]"); if (fd) { flavourDescriptor = flavourDescriptor === fd.dataset.flavourNote ? null : fd.dataset.flavourNote; render(); return; }
-  if (t.closest("[data-wheel-open]")) { flavourWheel = true; wSel = null; render(); return; }
-  if (t.closest("[data-wheel-close]")) { flavourWheel = false; wSel = null; render(); return; }
   const country = t.closest("[data-country]"); if (country) { learnCountry = country.dataset.country; learnRegion = null; render(); return; }
   const region = t.closest("[data-region]"); if (region) { learnRegion = region.dataset.region; render(); return; }
   if (t.closest("[data-region-back]")) { learnRegion = null; render(); return; }
   const expand = t.closest("[data-expand]"); if (expand) { const key = expand.dataset.expand; openLearnItems.has(key) ? openLearnItems.delete(key) : openLearnItems.add(key); render(); return; }
   const gt = t.closest("[data-gt]"); if (gt) { gTab = gt.dataset.gt; render(); return; }
   const gc = t.closest("[data-gc]"); if (gc) { const y = scrollY; gSel = gSel === gc.dataset.gc ? null : gc.dataset.gc; render(); scrollTo(0, y); return; }
-  const gd = t.closest("[data-gd]"); if (gd) { const x = gd.dataset.gd; flavourCategory = Object.keys(SPEC).find(k => SPEC[k].includes(x)) || null; flavourDescriptor = x; flavourWheel = false; wSel = null; render(); return; }
   const gw = t.closest("[data-w]"); if (gw) { wSel = wSel === gw.dataset.w ? null : gw.dataset.w; if (wOn) paintWheel(); else { const y = scrollY; render(); scrollTo(0, y); } return; }
   const wp = t.closest("[data-wp]"); if (wp) { const k = SECTIONS[step - 1].k + "|" + wp.dataset.wp, v = wp.dataset.wv, cur = draft.tags[k] || []; draft.tags[k] = cur.includes(v) ? cur.filter(x => x !== v) : [...cur, v]; paintWheel(); return; }
   const id = t.closest("[data-id]")?.dataset.id;
   if (id) { openNote({ ...blank(), ...structuredClone(notes.find(n => n.id === id)) }, false); return; }
   const c = t.closest("[data-c]"); if (c) { cat = c.dataset.c; render(); return; }
   const v = t.closest("[data-v]");
-  if (v) { if (editing && !confirm("Discard unsaved changes?")) return; editing = false; view = v.dataset.v; if (view !== "note") draft = null; if (view === "learn") { learnSection = "hub"; flavourCategory = null; flavourDescriptor = null; flavourWheel = false; learnRegion = null; openLearnItems.clear(); } render(); return; }
+  if (v) { if (editing && !confirm("Discard unsaved changes?")) return; editing = false; view = v.dataset.v; if (view !== "note") draft = null; if (view === "learn") { learnSection = "hub"; flavourCategory = null; flavourDescriptor = null; learnRegion = null; openLearnItems.clear(); } render(); return; }
   const sp = t.closest("[data-step]"); if (sp) { step = +sp.dataset.step; render(); return; }
   const a = t.closest("[data-a]")?.dataset.a;
   if (a === "new") openNote(blank(), true);
