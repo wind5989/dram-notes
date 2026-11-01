@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Whisky Notes v3.16 -->
+<!-- Whisky Notes v3.17 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Whisky Notes v3.16</title>
+<title>Whisky Notes v3.17</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#5e4a37;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -234,6 +234,7 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 
 
 /* v3.16 — Stage 2: Tastings, New Tasting and Compare visual refresh */
+/* v3.17 — reversible guided descriptors, auto-follow step row, TSP default and expanded comparison observations */
 .section-page-head,.tasting-page-head{margin:4px 0 17px;padding:6px 2px 0}
 .section-page-head h2,.tasting-page-head h2{font-size:30px;margin:5px 0 6px}
 .section-page-head p,.tasting-page-head p{margin:0;color:var(--mute);line-height:1.45}
@@ -270,8 +271,9 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 .tasting-head-actions{display:flex;align-items:center;gap:5px;flex:none}
 .tasting-head-actions .heart{min-width:40px;width:40px}
 .tasting-head-actions .btn{min-height:42px;padding:9px 13px}
-.tasting-step-nav{display:flex;gap:7px;overflow-x:auto;padding:3px 0 12px;margin:0 0 3px;scrollbar-width:thin}
-.step-tab{display:flex;align-items:center;gap:7px;white-space:nowrap;min-height:40px;padding:7px 11px;border:1px solid #d7c3a3;border-radius:99px;background:#f8f0e2;color:#6d563f;font-size:13px;font-weight:600;flex:none}
+.tasting-step-nav{display:flex;flex-flow:row nowrap;align-items:center;gap:7px;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;padding:3px 0 12px;margin:0 0 3px;scrollbar-width:none;white-space:nowrap;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-behavior:smooth}
+.tasting-step-nav::-webkit-scrollbar{display:none}
+.step-tab{display:flex;align-items:center;gap:7px;white-space:nowrap;min-height:40px;padding:7px 11px;border:1px solid #d7c3a3;border-radius:99px;background:#f8f0e2;color:#6d563f;font-size:13px;font-weight:600;flex:0 0 auto}
 .step-tab>span{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#eee2cd;color:#80502f;font-size:10px}
 .step-tab.on{background:#6f482d;border-color:#6f482d;color:#fbf3e4}
 .step-tab.on>span{background:#d8b47d;color:#412717}
@@ -339,6 +341,7 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 .guide-category-intro p{font-size:13px;line-height:1.4;color:var(--mute);margin:0}
 .guide-add-button{margin-top:8px;min-height:42px;padding:9px 13px;font-size:13px}
 .guide-add-button:disabled{background:#829078;color:#fffaf1;opacity:1}
+.guide-add-button.is-added{background:#829078;border-color:#829078;color:#fffaf1}
 
 /* Compare */
 .compare-page-head{margin-bottom:15px}
@@ -521,13 +524,13 @@ if (LOCAL) {
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.16";
+const VERSION = "3.17";
 let gTab = "cat", gSel = null, gDet = null, cA = "", cB = "";
 let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
 let guideOn = false, guideSection = "nose", guideCategory = null, guideDescriptor = null;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Water (optional)", "Rating"];
 const TABS = ["All", ...CATS, "Favourites"];
-const blank = () => ({ id: crypto.randomUUID(), name: "", distillery: "", category: "Scotch", type: "", region: "", age: "", noAge: false, abv: "", price: "", favourite: false, waterAmt: "", waterUnit: "", tags: {}, other: {}, notes: {}, rating: 0, comments: "", thumb: "", updated: 0 });
+const blank = () => ({ id: crypto.randomUUID(), name: "", distillery: "", category: "Scotch", type: "", region: "", age: "", noAge: false, abv: "", price: "", favourite: false, waterAmt: "", waterUnit: "tsp", tags: {}, other: {}, notes: {}, rating: 0, comments: "", thumb: "", updated: 0 });
 const getP = (o, p) => p.split(".").reduce((a, k) => a?.[k], o);
 const setP = (o, p, v) => { const ks = p.split("."), l = ks.pop(); ks.reduce((a, k) => a[k], o)[l] = v; };
 const stars = v => `<span class="stars">${[1, 2, 3, 4, 5].map(i => `<span class="s ${v >= i ? "f" : v >= i - .5 ? "h" : ""}">★</span>`).join("")}</span>`;
@@ -772,8 +775,8 @@ const renderList = () => { const l = $("#list"); if (l) l.innerHTML = listHtml()
 function waterAmountParts(n) {
   const raw = String(n.waterAmt ?? "").trim();
   const m = raw.match(/^(\d+(?:\.\d+)?)\s*(drops?|tsp|teaspoons?)?$/i);
-  if (!m) return { amount: "", unit: String(n.waterUnit || "drops").toLowerCase() === "tsp" ? "tsp" : "drops", legacy: raw };
-  const parsedUnit = m[2] && /^t/i.test(m[2]) ? "tsp" : (n.waterUnit || "drops").toLowerCase() === "tsp" ? "tsp" : "drops";
+  if (!m) return { amount: "", unit: String(n.waterUnit || "tsp").toLowerCase() === "drops" ? "drops" : "tsp", legacy: raw };
+  const parsedUnit = m[2] ? (/^t/i.test(m[2]) ? "tsp" : "drops") : (String(n.waterUnit || "tsp").toLowerCase() === "drops" ? "drops" : "tsp");
   return { amount: m[1], unit: parsedUnit, legacy: "" };
 }
 function waterAmountLabel(n) {
@@ -819,7 +822,7 @@ function part(i, ed) {
   if (i === STEPS.length - 2) {
     const p = waterAmountParts(n);
     const groups = renderGroups(WATER_SECTION);
-    const amount = ed ? `<div class="water-measure"><label class="fld">Amount added<input data-f="waterAmt" type="number" min="0" step="any" inputmode="decimal" placeholder="Enter a number" value="${esc(p.amount)}"></label><label class="fld">Unit<select data-f="waterUnit"><option value="drops" ${p.unit === "drops" ? "selected" : ""}>Drops</option><option value="tsp" ${p.unit === "tsp" ? "selected" : ""}>TSP</option></select></label></div><p class="water-preview" id="waterPreview">${p.amount ? `${esc(p.amount)} ${p.unit === "tsp" ? "TSP" : "drops"}` : "Amount will appear here when entered."}</p>`
+    const amount = ed ? `<div class="water-measure"><label class="fld">Amount added<input data-f="waterAmt" type="number" min="0" step="any" inputmode="decimal" placeholder="Enter a number" value="${esc(p.amount)}"></label><label class="fld">Unit<select data-f="waterUnit"><option value="tsp" ${p.unit === "tsp" ? "selected" : ""}>TSP</option><option value="drops" ${p.unit === "drops" ? "selected" : ""}>Drops</option></select></label></div><p class="water-preview" id="waterPreview">${p.amount ? `${esc(p.amount)} ${p.unit === "tsp" ? "TSP" : "drops"}` : "Amount will appear here when entered."}</p>`
       : (waterAmountLabel(n) ? `<p class="water-saved-amount">${esc(waterAmountLabel(n))} added</p>` : "");
     const effects = groups || (ed ? `<p class="entry-hint">You can leave this entire step blank if you tasted the whisky neat.</p>` : "");
     const waterNotes = tx("notes.water", "Notes");
@@ -864,6 +867,20 @@ function render() {
   if (view === "note" && editing && step === 0) bindPhoto();
   if (guideOn) paintGuide(); else if ($("#guideov")) $("#guideov").hidden = true;
   window.scrollTo(0, 0);
+  keepActiveStepVisible();
+}
+function keepActiveStepVisible() {
+  const nav = document.querySelector(".tasting-step-nav");
+  const active = nav?.querySelector(".step-tab.on");
+  if (!nav || !active) return;
+  const navRect = nav.getBoundingClientRect();
+  const activeRect = active.getBoundingClientRect();
+  const left = activeRect.left - navRect.left + nav.scrollLeft;
+  const right = left + activeRect.width;
+  const visibleLeft = nav.scrollLeft;
+  const visibleRight = visibleLeft + nav.clientWidth;
+  if (left < visibleLeft + 4) nav.scrollTo({ left: Math.max(0, left - 4), behavior: "smooth" });
+  else if (right > visibleRight - 4) nav.scrollTo({ left: right - nav.clientWidth + 4, behavior: "smooth" });
 }
 
 function bindPhoto() {
@@ -893,23 +910,39 @@ function paintRate() {
   $("#rv").textContent = draft.rating ? draft.rating + " / 5" : "Tap a star. The left half gives a half star.";
 }
 
+function noteDescriptorParts(value) {
+  return String(value || "").split(/[,;\n]+/).map(x => x.trim()).filter(Boolean);
+}
+function descriptorIsInNotes(sectionKey, descriptor) {
+  return noteDescriptorParts(draft?.notes?.[sectionKey]).some(x => x.toLocaleLowerCase() === descriptor.toLocaleLowerCase());
+}
 function addFlavourDescriptor(sectionKey, category, descriptor) {
-  if (!draft) return;
+  if (!draft) return false;
   draft.notes ||= {};
   draft.tags ||= {};
-  const current = String(draft.notes[sectionKey] || "").trim();
-  const pieces = current.split(/[,;\n]+/).map(x => x.trim()).filter(Boolean);
-  if (!pieces.some(x => x.toLocaleLowerCase() === descriptor.toLocaleLowerCase())) {
-    draft.notes[sectionKey] = current ? `${current.replace(/[,;\s]+$/, "")}, ${descriptor}` : descriptor;
-  }
   const broadKey = `${sectionKey}|Character`;
   const specificKey = `${sectionKey}|${category} notes`;
-  draft.tags[broadKey] ||= [];
-  draft.tags[specificKey] ||= [];
-  if (!draft.tags[broadKey].includes(category)) draft.tags[broadKey].push(category);
-  if (!draft.tags[specificKey].includes(descriptor)) draft.tags[specificKey].push(descriptor);
+  const pieces = noteDescriptorParts(draft.notes[sectionKey]);
+  const alreadyAdded = pieces.some(x => x.toLocaleLowerCase() === descriptor.toLocaleLowerCase());
+  if (alreadyAdded) {
+    // Remove only the exact descriptor token, preserving the rest of the user's notes.
+    draft.notes[sectionKey] = pieces.filter(x => x.toLocaleLowerCase() !== descriptor.toLocaleLowerCase()).join(", ");
+    draft.tags[specificKey] = (draft.tags[specificKey] || []).filter(x => x.toLocaleLowerCase() !== descriptor.toLocaleLowerCase());
+    if (!draft.tags[specificKey].length) delete draft.tags[specificKey];
+    const categoryStillUsed = (draft.tags[specificKey] || []).length > 0;
+    if (!categoryStillUsed) draft.tags[broadKey] = (draft.tags[broadKey] || []).filter(x => x !== category);
+    if (!draft.tags[broadKey]?.length) delete draft.tags[broadKey];
+  } else {
+    const current = String(draft.notes[sectionKey] || "").trim();
+    draft.notes[sectionKey] = current ? `${current.replace(/[,;\s]+$/, "")}, ${descriptor}` : descriptor;
+    draft.tags[broadKey] ||= [];
+    draft.tags[specificKey] ||= [];
+    if (!draft.tags[broadKey].includes(category)) draft.tags[broadKey].push(category);
+    if (!draft.tags[specificKey].includes(descriptor)) draft.tags[specificKey].push(descriptor);
+  }
   const field = document.querySelector(`[data-f="notes.${sectionKey}"]`);
   if (field) field.value = draft.notes[sectionKey];
+  return !alreadyAdded;
 }
 function paintGuide() {
   const o = $("#guideov");
@@ -925,9 +958,9 @@ function paintGuide() {
   const introText = GUIDE.find(x => x[0] === guideCategory)?.[1] || "Explore this flavour family.";
   const descriptorCards = SPEC[guideCategory].map(name => {
     const active = guideDescriptor === name;
-    const added = (draft?.tags?.[`${guideSection}|${guideCategory} notes`] || []).includes(name);
+    const added = descriptorIsInNotes(guideSection, name);
     const d = DETAIL[name] || [];
-    return `<article class="descriptor-card ${active ? "expanded" : ""}"><button class="descriptor-toggle" data-guide-desc="${esc(name)}" aria-expanded="${active}"><span><b>${esc(name)}</b><small>${esc(d[0] || "")}</small></span><span class="descriptor-plus">${active ? "−" : "+"}</span></button>${active ? `<div class="descriptor-detail"><p><b>What to picture</b><br>${esc(d[0] || "")}</p><p><b>Where it may appear</b><br>${esc(d[1] || "It can appear differently from one whisky to another.")}</p>${FLAVOUR_COMPARE[name] ? `<p><b>Useful distinction</b><br>${esc(FLAVOUR_COMPARE[name])}</p>` : ""}<button class="btn guide-add-button" data-guide-add="${esc(name)}" data-guide-category="${esc(guideCategory)}" ${added ? "disabled" : ""}>${added ? "Added to notes ✓" : `Add ${esc(name)} to ${sectionName}`}</button></div>` : ""}</article>`;
+    return `<article class="descriptor-card ${active ? "expanded" : ""}"><button class="descriptor-toggle" data-guide-desc="${esc(name)}" aria-expanded="${active}"><span><b>${esc(name)}</b><small>${esc(d[0] || "")}</small></span><span class="descriptor-plus">${active ? "−" : "+"}</span></button>${active ? `<div class="descriptor-detail"><p><b>What to picture</b><br>${esc(d[0] || "")}</p><p><b>Where it may appear</b><br>${esc(d[1] || "It can appear differently from one whisky to another.")}</p>${FLAVOUR_COMPARE[name] ? `<p><b>Useful distinction</b><br>${esc(FLAVOUR_COMPARE[name])}</p>` : ""}<button class="btn guide-add-button ${added ? "is-added" : ""}" data-guide-add="${esc(name)}" data-guide-category="${esc(guideCategory)}" aria-pressed="${added}">${added ? "Remove from notes −" : `Add ${esc(name)} to ${sectionName}`}</button></div>` : ""}</article>`;
   }).join("");
   o.innerHTML = `${intro}<button class="text-link learn-inline-actions" data-guide-back>‹ All flavour categories</button><div class="guide-category-intro"><span class="flavour-art">${CAT_ART[guideCategory]}</span><div><h3>${guideCategory}</h3><p>${esc(introText)}</p></div></div><div class="descriptor-list">${descriptorCards}</div><p class="learn-footnote">Descriptors are suggestions, not a checklist. Add only the words that match what you notice.</p></div>`;
 }
@@ -940,15 +973,30 @@ function cmpHtml(A, B) {
   };
   const all = n => new Set([...flv(n, "nose"), ...flv(n, "taste")]), a = all(A), b = all(B), u = new Set([...a, ...b]), sh = [...a].filter(x => b.has(x)).length;
   const pct = u.size ? Math.round(100 * sh / u.size) : null;
+  const observation = (n, key) => {
+    const entered = String(n.notes?.[key] || "").trim();
+    if (entered) return entered;
+    if (key === "appearance") {
+      return [...(n.tags?.["appearance|Color"] || []), ...(n.tags?.["appearance|Viscosity"] || [])].join(", ") || "–";
+    }
+    const descriptors = [...new Set(flv(n, key))];
+    if (key === "finish") descriptors.unshift(...(n.tags?.["finish|Length"] || []));
+    return descriptors.join(", ") || "–";
+  };
+  const water = n => ["Effect on aroma", "Effect on taste"].map(k => (n.tags?.[`water|${k}`] || []).length ? `${k}: ${(n.tags[`water|${k}`] || []).join(", ")}` : "").filter(Boolean).join(" · ") || "–";
   const rows = [
     ["Rating", n => n.rating ? stars(n.rating) + " " + n.rating + " / 5" : "–"],
     ["Category", n => esc(n.category)], ["Region", n => esc(n.region) || "–"], ["Style", n => esc(n.type) || "–"],
     ["Age", n => n.noAge ? "No age statement" : n.age ? n.age + " years" : "–"], ["ABV", n => n.abv ? esc(n.abv) + "%" : "–"],
-    ["Water added", n => esc(waterAmountLabel(n)) || "–"], ["Finish", n => (n.tags?.["finish|Length"] || []).join(", ") || "–"]
+    ["Appearance", n => esc(observation(n, "appearance"))],
+    ["Nose", n => esc(observation(n, "nose"))],
+    ["Taste", n => esc(observation(n, "taste"))],
+    ["Finish", n => esc(observation(n, "finish"))],
+    ["Water added", n => esc(waterAmountLabel(n)) || "–"],
+    ["Water observations", n => esc(water(n))]
   ];
-  const water = n => ["Effect on aroma", "Effect on taste"].map(k => (n.tags?.[`water|${k}`] || []).length ? `${k}: ${(n.tags[`water|${k}`] || []).join(", ")}` : "").filter(Boolean).join(" · ") || "–";
   return `<section class="match-summary-card"><span class="eyebrow">FLAVOUR OVERLAP</span><div class="match-summary-main"><strong>${pct === null ? "–" : pct + "%"}</strong><p>${pct === null ? "No Nose or Taste flavours recorded yet." : `${sh} of ${u.size} recorded Nose and Taste descriptors are in common.`}</p></div></section>
-    <section class="compare-facts-card"><h3>At a glance</h3><div class="compare-facts-grid"><div class="compare-fact-label"></div><b>${esc(A.name)}</b><b>${esc(B.name)}</b>${rows.map(([l, f]) => `<span class="compare-fact-label">${l}</span><span>${f(A)}</span><span>${f(B)}</span>`).join("")}<span class="compare-fact-label">Water observations</span><span>${esc(water(A))}</span><span>${esc(water(B))}</span></div></section>
+    <section class="compare-facts-card"><h3>At a glance</h3><div class="compare-facts-grid"><div class="compare-fact-label"></div><b>${esc(A.name)}</b><b>${esc(B.name)}</b>${rows.map(([l, f]) => `<span class="compare-fact-label">${l}</span><span>${f(A)}</span><span>${f(B)}</span>`).join("")}</div></section>
     ${sec("nose", "Nose")}${sec("taste", "Taste")}${sec("finish", "Finish")}`;
 }
 const cmp = () => {
@@ -979,7 +1027,12 @@ function onClick(e) {
   if (t.closest("[data-guide-back]")) { guideCategory = null; guideDescriptor = null; paintGuide(); return; }
   const guideDesc = t.closest("[data-guide-desc]"); if (guideDesc) { guideDescriptor = guideDescriptor === guideDesc.dataset.guideDesc ? null : guideDesc.dataset.guideDesc; paintGuide(); return; }
   const guideAdd = t.closest("[data-guide-add]");
-  if (guideAdd && editing) { addFlavourDescriptor(guideSection, guideAdd.dataset.guideCategory, guideAdd.dataset.guideAdd); paintGuide(); toast("Added to " + ({ nose: "Nose", taste: "Taste", finish: "Finish" })[guideSection] + " notes"); return; }
+  if (guideAdd && editing) {
+    const added = addFlavourDescriptor(guideSection, guideAdd.dataset.guideCategory, guideAdd.dataset.guideAdd);
+    paintGuide();
+    toast((added ? "Added to " : "Removed from ") + ({ nose: "Nose", taste: "Taste", finish: "Finish" })[guideSection] + " notes");
+    return;
+  }
   const id = t.closest("[data-id]")?.dataset.id;
   if (id) { openNote({ ...blank(), ...structuredClone(notes.find(n => n.id === id)) }, false); return; }
   const c = t.closest("[data-c]"); if (c) { cat = c.dataset.c; render(); return; }
