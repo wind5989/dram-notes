@@ -1,10 +1,10 @@
 <!doctype html>
-<!-- Whisky Notes v3.19 -->
+<!-- Whisky Notes v3.20 -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Whisky Notes v3.19</title>
+<title>Whisky Notes v3.20</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f1e6d2;--panel:#fbf6ea;--line:#dcc9aa;--ink:#3b2417;--mute:#5e4a37;--brown:#7a3d1c;--amber:#e3a03a;--cream:#f7eddb;--r:12px}
@@ -285,6 +285,24 @@ span.heart{display:inline-block;text-align:center;line-height:44px;pointer-event
 .entry-panel-head h3{font-size:23px;margin:0 0 4px}
 .entry-panel-head p{margin:0;color:var(--mute);font-size:13px;line-height:1.45}
 .bottle-entry-grid{grid-template-columns:132px minmax(0,1fr);gap:13px;margin:0}
+
+.label-scan-card{background:#f1e7d6;border:1px solid #d9c6a8;border-radius:12px;padding:12px;margin:13px 0 0}
+.label-scan-head b{display:block;font:600 17px Fraunces,Georgia,serif;color:#5f3d26}
+.label-scan-head p{font-size:12px;line-height:1.45;color:var(--mute);margin:4px 0 10px}
+.label-scan-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.label-scan-actions .btn{min-height:42px;padding:9px 12px;font-size:13px}
+.label-scan-status{color:#765b40;font-size:12px;line-height:1.4;margin:9px 0 0;min-height:1.2em}
+.label-scan-preview{display:flex;align-items:center;gap:10px;margin:10px 0 0;padding:8px;background:#fbf6ea;border:1px solid #dfceb2;border-radius:10px}
+.label-scan-preview[hidden]{display:none}
+.label-scan-preview img{width:78px;height:96px;object-fit:contain;background:#eee3d0;border-radius:6px;flex:none}
+.label-scan-preview span{font-size:12px;color:var(--mute)}
+.label-ocr-text{margin:10px 0 0;border-top:1px solid #dfceb2;padding-top:9px}
+.label-ocr-text summary{cursor:pointer;color:#80502f;font-size:13px;font-weight:600;min-height:30px;display:flex;align-items:center}
+.label-ocr-text .fld{margin:8px 0 0}
+.label-ocr-text textarea{min-height:120px;font-size:14px;line-height:1.45}
+.label-ocr-read{margin:12px 0 0;padding:10px;background:#f1e7d6;border:1px solid #d9c6a8;border-radius:10px}
+.label-ocr-read summary{cursor:pointer;color:#80502f;font-size:13px;font-weight:600}
+.label-ocr-read pre{white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.45 Figtree,system-ui,sans-serif;color:var(--ink);margin:8px 0 0}
 .tasting-view .photo{min-height:172px;background:#f1e6d2;border-color:#cdb99a;color:#805b3a;font-size:13px;line-height:1.35}
 .tasting-view .photo img{object-fit:contain;background:#eee3d0}
 .tasting-view .bottle-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
@@ -492,16 +510,20 @@ let store, auth, fb, unsub;
 if (LOCAL) {
   store = {
     listen(cb) { this.cb = cb; cb(Object.values(ls("dn_notes"))); },
-    async save(n, photo) {
+    async save(n, photo, labelPhoto, removeLabelPhoto = false) {
       const a = ls("dn_notes"); a[n.id] = n; localStorage.setItem("dn_notes", JSON.stringify(a));
       if (photo) { const p = ls("dn_photos"); p[n.id] = photo; localStorage.setItem("dn_photos", JSON.stringify(p)); }
+      if (labelPhoto) { const p = ls("dn_label_photos"); p[n.id] = labelPhoto; localStorage.setItem("dn_label_photos", JSON.stringify(p)); }
+      if (removeLabelPhoto) { const p = ls("dn_label_photos"); delete p[n.id]; localStorage.setItem("dn_label_photos", JSON.stringify(p)); }
       this.cb(Object.values(a));
     },
     async del(id) {
       const a = ls("dn_notes"); delete a[id]; localStorage.setItem("dn_notes", JSON.stringify(a));
+      const p = ls("dn_label_photos"); delete p[id]; localStorage.setItem("dn_label_photos", JSON.stringify(p));
       this.cb(Object.values(a));
     },
-    async photo(id) { return ls("dn_photos")[id] || null; }
+    async photo(id) { return ls("dn_photos")[id] || null; },
+    async labelPhoto(id) { return ls("dn_label_photos")[id] || null; }
   };
 } else {
   const V = "10.12.2", B = "https://www.gstatic.com/firebasejs/" + V + "/";
@@ -514,28 +536,34 @@ if (LOCAL) {
   // Writes are not awaited: offline, the promise only resolves once the server confirms.
   store = {
     listen(cb) { return fs.onSnapshot(col("notes"), s => cb(s.docs.map(d => d.data()))); },
-    async save(n, photo) {
+    async save(n, photo, labelPhoto, removeLabelPhoto = false) {
       fs.setDoc(fs.doc(col("notes"), n.id), n).catch(console.error);
       if (photo) fs.setDoc(fs.doc(col("photos"), n.id), { data: photo }).catch(console.error);
+      if (labelPhoto) fs.setDoc(fs.doc(col("labelPhotos"), n.id), { data: labelPhoto }).catch(console.error);
+      if (removeLabelPhoto) fs.deleteDoc(fs.doc(col("labelPhotos"), n.id)).catch(console.error);
     },
     async del(id) {
       fs.deleteDoc(fs.doc(col("notes"), id)).catch(console.error);
       fs.deleteDoc(fs.doc(col("photos"), id)).catch(console.error);
+      fs.deleteDoc(fs.doc(col("labelPhotos"), id)).catch(console.error);
     },
-    async photo(id) { const d = await fs.getDoc(fs.doc(col("photos"), id)); return d.exists() ? d.data().data : null; }
+    async photo(id) { const d = await fs.getDoc(fs.doc(col("photos"), id)); return d.exists() ? d.data().data : null; },
+    async labelPhoto(id) { const d = await fs.getDoc(fs.doc(col("labelPhotos"), id)); return d.exists() ? d.data().data : null; }
   };
 }
 
 /* ---------- State and helpers ---------- */
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const VERSION = "3.18";
+const VERSION = "3.20";
 let gTab = "cat", gSel = null, gDet = null, cA = "", cB = "";
-let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, editing = false, step = 0;
+let notes = [], cat = "All", q = "", view = "home", draft = null, pending = null, pendingLabel = null, savedLabelPhoto = null, labelRemoved = false, labelOcrStatus = "", labelOcrBusy = false, editing = false, step = 0;
+let tesseractLoadPromise = null, labelScanToken = 0;
+const manualBottleFields = new Set();
 let guideOn = false, guideSection = "nose", guideCategory = null, guideDescriptor = null;
 const STEPS = ["Bottle", ...SECTIONS.map(s => s.t), "Water (optional)", "Rating"];
 const TABS = ["All", ...CATS, "Favourites"];
-const blank = () => ({ id: crypto.randomUUID(), name: "", distillery: "", category: "Scotch", type: "", region: "", age: "", noAge: false, abv: "", price: "", favourite: false, waterAmt: "", waterUnit: "tsp", tags: {}, other: {}, notes: {}, rating: 0, comments: "", thumb: "", updated: 0 });
+const blank = () => ({ id: crypto.randomUUID(), name: "", distillery: "", category: "Scotch", type: "", region: "", age: "", noAge: false, abv: "", price: "", favourite: false, waterAmt: "", waterUnit: "tsp", tags: {}, other: {}, notes: {}, rating: 0, comments: "", thumb: "", labelText: "", updated: 0 });
 const getP = (o, p) => p.split(".").reduce((a, k) => a?.[k], o);
 const setP = (o, p, v) => { const ks = p.split("."), l = ks.pop(); ks.reduce((a, k) => a[k], o)[l] = v; };
 const stars = v => `<span class="stars">${[1, 2, 3, 4, 5].map(i => `<span class="s ${v >= i ? "f" : v >= i - .5 ? "h" : ""}">★</span>`).join("")}</span>`;
@@ -805,14 +833,23 @@ function part(i, ed) {
 
   if (i === 0) {
     const src = pending || n.thumb;
-    const ph = src ? `<img id="pimg" src="${src}" alt="Bottle photo">` : (ed ? "Add bottle photo<br>(tap or drop)" : "No photo");
+    const ph = src ? `<img id="pimg" src="${src}" alt="Full bottle photograph">` : (ed ? "Add full bottle photo<br>(tap or drop)" : "No photo");
     const sel = (k, l, opts, nb) => (!ed && !n[k]) ? "" : `<label class="fld">${l}<select data-f="${k}">${nb ? `<option value="">Not set</option>` : ""}${opts.map(o => `<option value="${esc(o)}" ${o === n[k] ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
-    return `<section class="entry-panel bottle-panel">${entryPanelHead("Bottle", "01 · IDENTIFY", "Start with the bottle details and a photograph of the bottle.")}
+    const labelSrc = pendingLabel || savedLabelPhoto;
+    const labelPreview = labelSrc ? `<div class="label-scan-preview" id="labelPreviewWrap"><img id="labelPreview" src="${labelSrc}" alt="Photographed bottle label"><span>Separate label photograph</span></div>` : `<div class="label-scan-preview" id="labelPreviewWrap" hidden><img id="labelPreview" alt="Photographed bottle label"><span>Separate label photograph</span></div>`;
+    const labelScan = ed ? `<div class="label-scan-card">
+        <div class="label-scan-head"><b>Scan bottle label</b><p>Take a close, clear photograph of the label. OCR will suggest details for the fields above. You can review and change everything manually.</p></div>
+        <div class="label-scan-actions"><button class="btn ghost" type="button" data-a="scanLabel">${labelSrc ? "Take / choose another label" : "Take / choose label photo"}</button>${labelSrc ? `<button class="btn ghost" type="button" data-a="clearLabel">Remove label photo</button>` : ""}<input type="file" id="labelFile" accept="image/*" capture="environment" hidden></div>
+        <p class="label-scan-status" id="labelOcrStatus" role="status">${esc(labelOcrStatus || "OCR reads printed English on this device. An internet connection is needed to load the reader the first time; the label photo is stored separately from the full bottle photo.")}</p>
+        ${labelPreview}
+      </div>${n.labelText ? `<details class="label-ocr-text"><summary>Review text read from label</summary><label class="fld">Recognised label text<textarea data-f="labelText">${esc(n.labelText)}</textarea></label></details>` : labelOcrStatus && !ed ? `<details class="label-ocr-read"><summary>Text read from label</summary><pre>${esc(n.labelText || "")}</pre></details>` : ""}`
+      : `${labelSrc ? `<div class="label-scan-card"><div class="label-scan-head"><b>Reference label photograph</b></div>${labelPreview}</div>` : ""}${n.labelText ? `<details class="label-ocr-read"><summary>Text read from label</summary><pre>${esc(n.labelText)}</pre></details>` : ""}`;
+    return `<section class="entry-panel bottle-panel">${entryPanelHead("Bottle", "01 · IDENTIFY", "Use the full bottle photograph as the display image. A separate label photo can help fill in its details.")}
       <div class="top bottle-entry-grid"><label class="photo" id="drop">${ph}<input type="file" id="file" accept="image/*" hidden ${ed ? "" : "disabled"}></label><div class="grid bottle-fields">
       ${fld("name", "Bottle name *")}${fld("distillery", "Distillery")}${sel("category", "Category", CATS)}${sel("type", "Style", TYPES, 1)}
       ${fld("region", "Region", "text", 'list="rg"')}<datalist id="rg">${(REGIONS[n.category] || []).map(r => `<option value="${esc(r)}">`).join("")}</datalist>
       ${fld("age", "Age (years)", "number", `inputmode="numeric" ${n.noAge ? "disabled" : ""}`)}${ed || n.noAge ? `<label class="chip no-age-chip"><input type="checkbox" data-f="noAge" ${n.noAge ? "checked" : ""}><span>No age statement</span></label>` : ""}
-      ${fld("abv", "ABV %", "number", 'inputmode="decimal" step="0.1"')}${fld("price", "Price")}</div></div></section>`;
+      ${fld("abv", "ABV %", "number", 'inputmode="decimal" step="0.1"')}${fld("price", "Price")}</div></div>${labelScan}</section>`;
   }
 
   if (i === STEPS.length - 1) {
@@ -888,12 +925,159 @@ function keepActiveStepVisible() {
   else if (right > visibleRight - 4) nav.scrollTo({ left: right - nav.clientWidth + 4, behavior: "smooth" });
 }
 
+let labelOcrScriptPromise = null;
+async function loadTesseract() {
+  if (window.Tesseract) return window.Tesseract;
+  if (!labelOcrScriptPromise) {
+    labelOcrScriptPromise = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js";
+      script.async = true;
+      script.onload = () => window.Tesseract ? resolve(window.Tesseract) : reject(new Error("OCR library did not initialise."));
+      script.onerror = () => { labelOcrScriptPromise = null; reject(new Error("Could not load the OCR library. Check the internet connection and try again.")); };
+      document.head.appendChild(script);
+    });
+  }
+  return labelOcrScriptPromise;
+}
+function parseBottleLabel(text) {
+  const lines = String(text || "").split(/\r?\n/).map(x => x.replace(/[|_]+/g, " ").replace(/\s{2,}/g, " ").trim()).filter(Boolean);
+  const joined = lines.join(" ");
+  const result = {};
+  const age = joined.match(/\b(?:aged\s+)?(\d{1,2})\s*(?:years?\s+old|years?|yrs?\.?|yo)\b/i);
+  if (age) result.age = age[1];
+  const abv = joined.match(/\b(\d{2}(?:[.,]\d{1,2})?)\s*%\s*(?:(?:alc(?:ohol)?\s*)?(?:by\s*)?(?:vol(?:ume)?|abv))?/i);
+  if (abv) result.abv = abv[1].replace(",", ".");
+  if (/\bsingle\s+pot\s+still\b/i.test(joined)) result.type = "Single pot still";
+  else if (/\bblended\s+malt\b/i.test(joined)) result.type = "Blended malt";
+  else if (/\bsingle\s+malt\b/i.test(joined)) result.type = "Single malt";
+  else if (/\bsingle\s+grain\b/i.test(joined)) result.type = "Single grain";
+  else if (/\bblended\b/i.test(joined)) result.type = "Blended";
+  else if (/\b(?:straight\s+)?(?:bourbon|rye)\b/i.test(joined)) result.type = "Straight";
+
+  if (/\b(scotch|scottish|scotland|islay|speyside|highland|lowland|campbeltown)\b/i.test(joined)) result.category = "Scotch";
+  else if (/\b(irish|ireland)\b/i.test(joined)) result.category = "Irish";
+  else if (/\b(bourbon|kentucky|tennessee|american whiskey|american whisky)\b/i.test(joined)) result.category = "Bourbon";
+  else if (/\b(rye whiskey|rye whisky|canadian rye)\b/i.test(joined)) result.category = "Rye";
+  else if (/\b(japanese|japan|canadian|canada|indian|india|taiwanese|taiwan)\b/i.test(joined)) result.category = "Other";
+
+  const regionOptions = REGIONS[result.category || ""] || [];
+  const region = regionOptions.find(r => new RegExp(`\\b${r.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\\\$&")}s?\\b`, "i").test(joined));
+  if (region) result.region = region;
+
+  const distilleryLine = lines.find(x => /\b(distillery|distillers|distilling company)\b/i.test(x));
+  if (distilleryLine) {
+    result.distillery = distilleryLine.replace(/\b(the\s+)?(distillery|distillers|distilling company|distilling co\.?|distillers? ltd\.?)\b.*$/i, "").trim().replace(/[,:;\-]+$/, "");
+  }
+  const generic = /\b(single|malt|blended|grain|pot still|scotch|scottish|irish|whisky|whiskey|bourbon|rye|aged|years?|yrs?|yo|distilled|bottled|distillery|distillers|distilling|alcohol|vol|abv|proof|700\s?ml|750\s?ml|40\s?%|46\s?%)\b/i;
+  const nameLine = lines.find(x => x.length >= 3 && x.length <= 42 && !/^\d/.test(x) && !generic.test(x) && !/\d+(?:[.,]\d+)?\s*%/.test(x) && !/\b\d{1,2}\s*(?:years?|yrs?|yo)\b/i.test(x) && !/\b(isle of|island|scotland|ireland|kentucky|tennessee|japan|canada|usa|united states)\b/i.test(x));
+  if (nameLine) result.name = nameLine.replace(/^[^A-Za-z0-9]+|[^A-Za-z0-9'’&. -]+$/g, "").trim();
+  else if (result.distillery) result.name = [result.distillery, result.age].filter(Boolean).join(" ");
+  return result;
+}
+function applyBottleLabelSuggestions(text) {
+  const suggestions = parseBottleLabel(text), filled = [];
+  const fill = (key, value, allowDefault = false) => {
+    if (!value || manualBottleFields.has(key)) return;
+    const current = String(draft[key] ?? "").trim();
+    if (!current || allowDefault) {
+      draft[key] = value;
+      const input = document.querySelector(`[data-f="${key}"]`);
+      if (input) input.value = value;
+      filled.push(key === "name" ? "bottle name" : key === "abv" ? "ABV" : key);
+    }
+  };
+  fill("name", suggestions.name);
+  fill("distillery", suggestions.distillery);
+  fill("age", suggestions.age);
+  fill("abv", suggestions.abv);
+  fill("type", suggestions.type);
+  fill("category", suggestions.category, draft.category === "Scotch");
+  fill("region", suggestions.region);
+  const regionList = $("#rg");
+  if (regionList && suggestions.category) regionList.innerHTML = (REGIONS[draft.category] || []).map(r => `<option value="${esc(r)}">`).join("");
+  return filled;
+}
+function paintLabelStatus() {
+  const status = $("#labelOcrStatus");
+  if (status) status.textContent = labelOcrStatus;
+  const button = document.querySelector('[data-a="scanLabel"]');
+  if (button) { button.disabled = labelOcrBusy; if (labelOcrBusy) button.textContent = "Reading label…"; }
+  document.querySelectorAll('[data-a="save"]').forEach(saveButton => { saveButton.disabled = labelOcrBusy; });
+}
+function paintLabelPreview() {
+  const src = pendingLabel || savedLabelPhoto;
+  const wrap = $("#labelPreviewWrap"), img = $("#labelPreview");
+  if (wrap) wrap.hidden = !src;
+  if (img && src) img.src = src;
+}
+async function processLabelPhoto(file) {
+  if (!file || !file.type.startsWith("image/")) { toast("Choose an image of the bottle label."); return; }
+  const targetId = draft?.id, token = ++labelScanToken;
+  const isCurrent = () => token === labelScanToken && draft?.id === targetId && view === "note" && editing;
+  let worker = null;
+  labelOcrBusy = true;
+  labelOcrStatus = "Preparing label photograph…";
+  paintLabelStatus();
+  try {
+    pendingLabel = await shrink(file, 1000, 0.76);
+    const ocrImage = await shrink(file, 2000, 0.9);
+    if (!isCurrent()) return;
+    labelRemoved = false;
+    paintLabelPreview();
+    labelOcrStatus = "Loading the on-device text reader…";
+    paintLabelStatus();
+    const Tesseract = await loadTesseract();
+    if (!isCurrent()) return;
+    worker = await Tesseract.createWorker("eng", 1, {
+      logger: message => {
+        if (!isCurrent()) return;
+        const pct = typeof message.progress === "number" ? ` ${Math.round(message.progress * 100)}%` : "";
+        labelOcrStatus = `${message.status || "Reading label"}${pct}`;
+        paintLabelStatus();
+      }
+    });
+    const result = await worker.recognize(ocrImage);
+    if (!isCurrent()) return;
+    const text = String(result?.data?.text || "").trim();
+    draft.labelText = text;
+    if (!text) {
+      labelOcrStatus = "No readable text was found. Try a closer, sharper photo with less glare, or enter the details manually.";
+    } else {
+      const filled = applyBottleLabelSuggestions(text);
+      labelOcrStatus = filled.length
+        ? `Read the label and filled: ${filled.join(", ")}. Please check each suggested value.`
+        : "Text was read, but no empty fields could be confidently filled. Review the label text and enter details manually.";
+    }
+    if (step === 0) render();
+  } catch (error) {
+    if (isCurrent()) {
+      console.error("Label OCR failed", error);
+      labelOcrStatus = error?.message || "The label could not be read. You can still enter all bottle details manually.";
+      paintLabelStatus();
+      toast("Label scan could not be completed");
+    }
+  } finally {
+    if (worker) { try { await worker.terminate(); } catch {} }
+    if (isCurrent()) {
+      labelOcrBusy = false;
+      paintLabelStatus();
+    }
+  }
+}
+
 function bindPhoto() {
   const d = $("#drop");
   d.ondragover = e => { e.preventDefault(); d.classList.add("drag"); };
   d.ondragleave = () => d.classList.remove("drag");
   d.ondrop = e => { e.preventDefault(); d.classList.remove("drag"); if (e.dataTransfer.files[0]) setPhoto(e.dataTransfer.files[0]); };
   $("#file").onchange = e => e.target.files[0] && setPhoto(e.target.files[0]);
+  const labelInput = $("#labelFile");
+  if (labelInput) labelInput.onchange = e => {
+    const file = e.target.files[0];
+    if (file) processLabelPhoto(file);
+    e.target.value = "";
+  };
 }
 async function setPhoto(file) {
   try {
@@ -904,11 +1088,21 @@ async function setPhoto(file) {
   } catch { toast("Could not read that image. Try a JPEG or PNG."); }
 }
 
-async function openNote(n, edit) {
+async function openNote(n, edit, labelPhotoHint = null, skipLabelPhotoFetch = false) {
   guideOn = false;
-  draft = n; draft.tags ||= {}; draft.notes ||= {}; draft.other ||= {}; draft.waterUnit ||= waterAmountParts(draft).unit;
-  editing = edit; pending = null; step = 0; view = "note"; render();
-  if (n.thumb && !edit) { const f = await store.photo(n.id); const i = $("#pimg"); if (f && i && draft?.id === n.id) i.src = f; }
+  draft = n; draft.tags ||= {}; draft.notes ||= {}; draft.other ||= {}; draft.labelText ||= ""; draft.waterUnit ||= waterAmountParts(draft).unit;
+  labelScanToken++; editing = edit; pending = null; pendingLabel = null; savedLabelPhoto = labelPhotoHint; labelRemoved = false; labelOcrStatus = ""; labelOcrBusy = false; manualBottleFields.clear(); step = 0; view = "note"; render();
+  if (n.thumb) { const f = await store.photo(n.id); const i = $("#pimg"); if (f && i && draft?.id === n.id) i.src = f; }
+  if (!skipLabelPhotoFetch && store.labelPhoto) {
+    const label = await store.labelPhoto(n.id);
+    if (label && draft?.id === n.id) {
+      savedLabelPhoto = label;
+      if (view === "note" && step === 0) {
+        if ($("#labelPreviewWrap")) paintLabelPreview();
+        else render();
+      }
+    }
+  }
 }
 function paintRate() {
   document.querySelectorAll("#rate .s").forEach((e, k) => { const i = k + 1, v = draft.rating; e.className = "s " + (v >= i ? "f" : v >= i - .5 ? "h" : ""); });
@@ -1061,6 +1255,11 @@ function onClick(e) {
   if (v) { if (editing && !confirm("Discard unsaved changes?")) return; guideOn = false; editing = false; view = v.dataset.v; if (view !== "note") draft = null; if (view === "learn") { learnSection = "hub"; flavourCategory = null; flavourDescriptor = null; learnRegion = null; openLearnItems.clear(); } render(); return; }
   const sp = t.closest("[data-step]"); if (sp) { step = +sp.dataset.step; render(); return; }
   const a = t.closest("[data-a]")?.dataset.a;
+  if (a === "scanLabel") { $("#labelFile")?.click(); return; }
+  if (a === "clearLabel") {
+    pendingLabel = null; savedLabelPhoto = null; labelRemoved = true; labelOcrStatus = "Label photograph removed. The full bottle photo is unchanged.";
+    render(); return;
+  }
   if (a === "new") openNote(blank(), true);
   if (a === "guideDone") { guideOn = false; render(); return; }
   if (a === "out") fb.signOut(auth);
@@ -1075,12 +1274,15 @@ function onClick(e) {
     if (o) openNote({ ...blank(), ...structuredClone(o) }, false); else { draft = null; editing = false; view = "coll"; render(); }
   }
   if (a === "save") {
+    if (labelOcrBusy) { toast("Wait for the label scan to finish before saving"); return; }
     if (!draft.name.trim()) { toast("Add a bottle name first"); step = 0; render(); return; }
     draft.updated = Date.now();
-    store.save(draft, pending);
+    const labelPhotoHint = pendingLabel || (labelRemoved ? null : savedLabelPhoto);
+    const skipLabelPhotoFetch = labelRemoved;
+    store.save(draft, pending, pendingLabel, labelRemoved);
     const copy = structuredClone(draft), i = notes.findIndex(n => n.id === draft.id);
     if (i < 0) notes.push(copy); else notes[i] = copy;
-    toast("Saved"); guideOn = false; openNote(structuredClone(copy), false);
+    toast("Saved"); guideOn = false; openNote(structuredClone(copy), false, labelPhotoHint, skipLabelPhotoFetch);
   }
   if (a === "del" && confirm("Delete this note? This cannot be undone.")) {
     store.del(draft.id); notes = notes.filter(n => n.id !== draft.id);
@@ -1098,6 +1300,7 @@ function onInput(e) {
     return;
   }
   const f = t.dataset.f; if (!f) return;
+  if (["name", "distillery", "category", "type", "region", "age", "abv", "price"].includes(f)) manualBottleFields.add(f);
   setP(draft, f, t.type === "checkbox" ? t.checked : t.value);
   if (f === "noAge") { const a = document.querySelector('[data-f="age"]'); a.disabled = t.checked; if (t.checked) { a.value = ""; draft.age = ""; } }
   if (f === "category") { const rg = $("#rg"); if (rg) rg.innerHTML = (REGIONS[t.value] || []).map(r => `<option value="${esc(r)}">`).join(""); }
